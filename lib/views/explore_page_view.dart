@@ -305,13 +305,16 @@ class _ExplorePageViewState extends State<ExplorePageView> {
                                       ),
                                     ),
                                     _randomAnime[index].libriaId != -1
-                                        ? Container(
-                                            width: 50,
-                                            height: 50,
-                                            decoration: BoxDecoration(
-                                              color: Colors.red,
-                                              borderRadius:
-                                                  BorderRadius.circular(90),
+                                        ? Hero(
+                                            tag: 'animeAvailable',
+                                            child: Container(
+                                              width: 50,
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                color: Colors.red,
+                                                borderRadius:
+                                                    BorderRadius.circular(90),
+                                              ),
                                             ),
                                           )
                                         : const Center(),

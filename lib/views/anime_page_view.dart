@@ -672,21 +672,42 @@ class _AnimePageViewState extends State<AnimePageView> {
                     ],
                   ),
                 ),
-                Hero(
-                  tag: 'animeImage',
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * .35,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(40),
-                        bottomRight: Radius.circular(40),
-                      ),
-                      image: DecorationImage(
-                        image: widget.animeImage.image,
-                        fit: BoxFit.cover,
+                Stack(
+                  children: [
+                    Hero(
+                      tag: 'animeImage',
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * .35,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(40),
+                            bottomRight: Radius.circular(40),
+                          ),
+                          image: DecorationImage(
+                            image: widget.animeImage.image,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    widget.anime.libriaId != -1
+                        ? Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Hero(
+                              tag: 'animeAvailable',
+                              child: Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(90),
+                                ),
+                              ),
+                            ),
+                          )
+                        : const Center(),
+                  ],
                 ),
               ],
             ),
