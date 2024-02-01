@@ -1,12 +1,12 @@
-import 'dart:ui';
-
 import 'package:film_checker/api/api.dart';
 import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/models/character.dart';
 import 'package:film_checker/models/review.dart';
 import 'package:film_checker/models/video.dart';
+import 'package:film_checker/models/picture.dart';
 import 'package:film_checker/views/blocks/anime_page/anime_category_block.dart';
 import 'package:film_checker/views/blocks/anime_page/anime_character_block.dart';
+import 'package:film_checker/views/blocks/anime_page/anime_picture_block.dart';
 import 'package:film_checker/views/blocks/anime_page/anime_review_block.dart';
 import 'package:film_checker/views/blocks/anime_page/anime_video_block.dart';
 import 'package:film_checker/views/characters_page_view.dart';
@@ -34,6 +34,7 @@ class _AnimePageViewState extends State<AnimePageView> {
   List<Character> _characters = [];
   List<Review> _reviews = [];
   List<Video> _videos = [];
+  List<Picture> _pictures = [];
 
   bool _isLoading = true;
 
@@ -43,31 +44,20 @@ class _AnimePageViewState extends State<AnimePageView> {
   void initState() {
     super.initState();
 
-    Api().getCharacters(widget.anime.malId).then((value) {
+    gatherInfo().then((value) {
       if (mounted) {
-        setState(() {
-          _characters = value;
-        });
-
-        Api().getReviews(widget.anime.malId).then((value) {
-          if (mounted) {
-            setState(() {
-              _reviews = value;
-            });
-
-            Api().getVideos(widget.anime.malId).then((value) {
-              if (mounted) {
-                setState(() {
-                  _videos = value;
-
-                  _isLoading = false;
-                });
-              }
-            });
-          }
-        });
+        setState(() {});
       }
     });
+  }
+
+  Future gatherInfo() async {
+    _characters = await Api().getCharacters(widget.anime.malId);
+    _reviews = await Api().getReviews(widget.anime.malId);
+    _videos = await Api().getVideos(widget.anime.malId);
+    _pictures = await Api().getPictures(widget.anime.malId);
+
+    _isLoading = false;
   }
 
   @override
@@ -89,7 +79,7 @@ class _AnimePageViewState extends State<AnimePageView> {
           child: const Icon(
             Icons.arrow_back_ios_new,
             color: Colors.black,
-            size: 32,
+            size: 31,
           ),
         ),
       ),
@@ -103,13 +93,10 @@ class _AnimePageViewState extends State<AnimePageView> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * .3,
+                        height: MediaQuery.of(context).size.height * .315,
                       ),
                       Column(
                         children: [
-                          const SizedBox(
-                            height: 15,
-                          ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,7 +157,7 @@ class _AnimePageViewState extends State<AnimePageView> {
                                     const Icon(
                                       Icons.star,
                                       color: Colors.yellow,
-                                      size: 35,
+                                      size: 30,
                                     ),
                                     const SizedBox(
                                       width: 5,
@@ -178,7 +165,7 @@ class _AnimePageViewState extends State<AnimePageView> {
                                     Text(
                                       '${widget.anime.score}/10',
                                       style: const TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 17,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.white,
                                       ),
@@ -260,8 +247,8 @@ class _AnimePageViewState extends State<AnimePageView> {
                               ),
                             ),
                           ),
-                          const SizedBox(
-                            height: 15,
+                          SizedBox(
+                            height: _characters.isNotEmpty ? 10 : 0,
                           ),
                           !_isLoading
                               ? Column(
@@ -287,6 +274,8 @@ class _AnimePageViewState extends State<AnimePageView> {
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .spaceBetween,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
                                                     children: [
                                                       const Text(
                                                         'Characters',
@@ -317,8 +306,7 @@ class _AnimePageViewState extends State<AnimePageView> {
                                                               : '',
                                                           style:
                                                               const TextStyle(
-                                                            color: Color(
-                                                                0xFF00A3FF),
+                                                            color: Colors.blue,
                                                             fontSize: 17,
                                                             fontWeight:
                                                                 FontWeight.w500,
@@ -430,6 +418,8 @@ class _AnimePageViewState extends State<AnimePageView> {
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .spaceBetween,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
                                                     children: [
                                                       const Text(
                                                         'Reviews',
@@ -458,8 +448,7 @@ class _AnimePageViewState extends State<AnimePageView> {
                                                         child: const Text(
                                                           'see all',
                                                           style: TextStyle(
-                                                            color: Color(
-                                                                0xFF00A3FF),
+                                                            color: Colors.blue,
                                                             fontSize: 17,
                                                             fontWeight:
                                                                 FontWeight.w500,
@@ -494,8 +483,60 @@ class _AnimePageViewState extends State<AnimePageView> {
                                             ),
                                           )
                                         : const Center(),
+                                    _pictures.isNotEmpty
+                                        ? const CustomDivider()
+                                        : const Center(),
+                                    _pictures.isNotEmpty
+                                        ? SizedBox(
+                                            width: double.infinity,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                .4,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                const Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 15),
+                                                  child: Text(
+                                                    'Gallery',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Expanded(
+                                                  child: ListView.builder(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 15),
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    itemCount: _pictures.length,
+                                                    itemBuilder:
+                                                        (context, index) =>
+                                                            AnimePictureBlock(
+                                                      path:
+                                                          _pictures[index].path,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        : const Center(),
                                     SizedBox(
-                                      height: _reviews.isNotEmpty ? 15 : 0,
+                                      height: _pictures.isNotEmpty ? 15 : 0,
                                     ),
                                   ],
                                 )

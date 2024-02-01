@@ -274,7 +274,7 @@ class _HomePageViewState extends State<HomePageView> {
                       ),
                     ),
                     const SizedBox(
-                      height: 50,
+                      height: 60,
                     ),
                   ],
                 ),

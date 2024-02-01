@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:film_checker/views/blocks/account_page/section_block.dart';
 import 'package:flutter/material.dart';
 
@@ -82,7 +80,8 @@ class _AccountPageViewState extends State<AccountPageView> {
                     child: GridView.builder(
                         itemCount: _sections.length,
                         padding: const EdgeInsets.all(20),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           childAspectRatio: 1.4,
                           crossAxisSpacing: 15,
                           mainAxisSpacing: 15,

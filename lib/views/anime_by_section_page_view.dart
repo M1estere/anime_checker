@@ -1,10 +1,10 @@
+import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/views/blocks/anime_big_block.dart';
-import 'package:film_checker/views/blocks/home_page/regular_block.dart';
 import 'package:flutter/material.dart';
 
 class AnimeSectionPageView extends StatefulWidget {
-  final sectionName;
-  final animeList;
+  final String sectionName;
+  final List<Anime> animeList;
 
   const AnimeSectionPageView({
     super.key,

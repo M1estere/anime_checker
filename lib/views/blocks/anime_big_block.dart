@@ -1,8 +1,9 @@
+import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/views/anime_page_view.dart';
 import 'package:flutter/material.dart';
 
 class AnimeBigBlock extends StatelessWidget {
-  final anime;
+  final Anime anime;
 
   const AnimeBigBlock({
     super.key,
@@ -27,41 +28,39 @@ class AnimeBigBlock extends StatelessWidget {
       },
       child: Stack(
         children: [
-          Container(
-            child: Column(
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * .3,
-                  child: Hero(
-                    tag: 'animeImage${anime.malId}',
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
-                      child: Image.network(
-                        anime.images['jpg']['large_image_url'],
-                        fit: BoxFit.cover,
-                      ),
+          Column(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * .3,
+                child: Hero(
+                  tag: 'animeImage${anime.malId}',
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: Image.network(
+                      anime.images['jpg']['large_image_url'],
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: Text(
-                    anime.title,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    textAlign: TextAlign.start,
-                    maxLines: 2,
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: Text(
+                  anime.title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
                   ),
-                )
-              ],
-            ),
+                  textAlign: TextAlign.start,
+                  maxLines: 2,
+                ),
+              )
+            ],
           ),
           anime.libriaId != -1
               ? Hero(

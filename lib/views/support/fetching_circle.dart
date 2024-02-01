@@ -5,16 +5,16 @@ class FetchingCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(
+          SizedBox(
             height: 50,
             width: 50,
             child: CircularProgressIndicator(),
           ),
-          const SizedBox(
+          SizedBox(
             height: 20,
           ),
           Text(

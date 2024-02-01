@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AnimeCategoryBlock extends StatelessWidget {
-  final animeGenre;
+  final Map animeGenre;
 
   const AnimeCategoryBlock({
     super.key,

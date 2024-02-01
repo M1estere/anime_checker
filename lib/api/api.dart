@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/models/character.dart';
 import 'package:film_checker/models/review.dart';
+import 'package:film_checker/models/picture.dart';
 import 'package:film_checker/models/video.dart';
 import 'package:http/http.dart' as http;
 
@@ -28,22 +29,23 @@ class Api {
           continue;
         }
 
-        final libriaResponse = await http.get(Uri.parse(
-            _libriaAnime + processTitleForLibria(decodedData['title']).trim()));
+        // final libriaResponse = await http.get(Uri.parse(
+        //     _libriaAnime + processTitleForLibria(decodedData['title']).trim()));
+
+        // int id = -1;
+        // if (libriaResponse.statusCode == 200) {
+        //   print(libriaResponse.body);
+        //   final decoded = json.decode(libriaResponse.body) as Map;
+        //   if (decoded.containsKey('error')) {
+        //   } else {
+        //     id = decoded['id'];
+        //   }
+        // }
 
         int id = -1;
-        if (libriaResponse.statusCode == 200) {
-          print(libriaResponse.body);
-          final decoded = json.decode(libriaResponse.body) as Map;
-          if (decoded.containsKey('error')) {
-          } else {
-            id = decoded['id'];
-          }
-        }
-
         result.add(Anime.fromJson(decodedData, id));
+        print('took');
       } else {
-        print('Something happened');
         amount++;
         continue;
       }
@@ -123,6 +125,23 @@ class Api {
     } else {
       return [];
     }
+  }
+
+  Future<List<Picture>> getPictures(int id) async {
+    List<Picture> result = [];
+
+    final response = await http.get(Uri.parse('$_animeUrl/$id/pictures'));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body)['data'] as List;
+
+      for (var obj in data) {
+        if (obj['jpg'] != null) {
+          result.add(Picture.fromJson(obj));
+        }
+      }
+    }
+
+    return result;
   }
 }
 

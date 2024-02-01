@@ -1,7 +1,8 @@
+import 'package:film_checker/models/video.dart';
 import 'package:flutter/material.dart';
 
 class AnimeVideoBlock extends StatelessWidget {
-  final video;
+  final Video video;
 
   const AnimeVideoBlock({
     super.key,
@@ -25,11 +26,21 @@ class AnimeVideoBlock extends StatelessWidget {
               ),
             ),
           ),
-          const Center(
-            child: Icon(
-              Icons.play_circle_filled_sharp,
-              color: Colors.red,
-              size: 75,
+          Center(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.circular(
+                  15,
+                ),
+              ),
+              width: 80,
+              height: 50,
+              child: const Icon(
+                Icons.play_arrow,
+                color: Colors.white,
+                size: 35,
+              ),
             ),
           ),
         ],

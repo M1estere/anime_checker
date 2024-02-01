@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class ImageBackground extends StatelessWidget {
-  final image;
+  final Image image;
 
   const ImageBackground({
     super.key,

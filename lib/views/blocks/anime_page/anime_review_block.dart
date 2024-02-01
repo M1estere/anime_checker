@@ -1,7 +1,8 @@
+import 'package:film_checker/models/review.dart';
 import 'package:flutter/material.dart';
 
 class AnimeReviewBlock extends StatelessWidget {
-  final review;
+  final Review review;
 
   const AnimeReviewBlock({
     super.key,

@@ -1,8 +1,9 @@
+import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/views/anime_page_view.dart';
 import 'package:flutter/material.dart';
 
 class HomeRegularBlock extends StatelessWidget {
-  final anime;
+  final Anime anime;
 
   const HomeRegularBlock({
     super.key,

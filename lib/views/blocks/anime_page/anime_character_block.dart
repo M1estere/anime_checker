@@ -1,7 +1,8 @@
+import 'package:film_checker/models/character.dart';
 import 'package:flutter/material.dart';
 
 class AnimeCharacterBlock extends StatelessWidget {
-  final character;
+  final Character character;
 
   const AnimeCharacterBlock({
     super.key,
@@ -13,8 +14,9 @@ class AnimeCharacterBlock extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(right: 15),
       height: MediaQuery.of(context).size.height * .14,
-      width: MediaQuery.of(context).size.height * .13,
+      width: MediaQuery.of(context).size.height * .12,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
             height: MediaQuery.of(context).size.height * .11,

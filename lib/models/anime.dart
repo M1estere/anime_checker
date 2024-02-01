@@ -1,5 +1,3 @@
-import 'package:film_checker/api/api.dart';
-
 class Anime {
   int malId;
   String title;
