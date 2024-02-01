@@ -182,7 +182,7 @@ class _HomePageViewState extends State<HomePageView> {
                             anime: _randomAnime[index],
                           );
                         },
-                        itemCount: _randomAnime.length,
+                        itemCount: (_randomAnime.length / 2).round(),
                       ),
                     ),
                     const SizedBox(
@@ -226,7 +226,7 @@ class _HomePageViewState extends State<HomePageView> {
                             anime: _randomAnime[index],
                           );
                         },
-                        itemCount: _randomAnime.length,
+                        itemCount: (_randomAnime.length / 2).round(),
                       ),
                     ),
                     const SizedBox(
@@ -270,7 +270,7 @@ class _HomePageViewState extends State<HomePageView> {
                             anime: _randomAnime[index],
                           );
                         },
-                        itemCount: _randomAnime.length,
+                        itemCount: (_randomAnime.length / 2).round(),
                       ),
                     ),
                     const SizedBox(

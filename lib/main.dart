@@ -1,5 +1,5 @@
 import 'package:film_checker/app_theme.dart';
-import 'package:film_checker/views/main_app_wrapper.dart';
+import 'package:film_checker/main_app_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
