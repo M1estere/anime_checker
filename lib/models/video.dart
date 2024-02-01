@@ -19,8 +19,8 @@ class Video {
           : json['video']['youtube_id'],
       url: checkTrailer ? json['trailer']['url'] : json['video']['url'],
       coverImage: checkTrailer
-          ? json['trailer']['images']['image_url']
-          : json['video']['images']['image_url'],
+          ? json['trailer']['images']['large_image_url']
+          : json['video']['images']['large_image_url'],
     );
   }
 }

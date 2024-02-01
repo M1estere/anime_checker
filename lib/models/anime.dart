@@ -15,6 +15,8 @@ class Anime {
 
   int libriaId;
 
+  List genres;
+
   Anime({
     required this.malId,
     required this.title,
@@ -26,6 +28,7 @@ class Anime {
     required this.score,
     required this.scoredBy,
     required this.libriaId,
+    required this.genres,
   });
 
   factory Anime.fromJson(Map json, int libriaId) {
@@ -34,12 +37,15 @@ class Anime {
       title: json['title'] ?? '',
       originalTitle: json['title_japanese'] ?? '',
       episodes: json['episodes'] ?? 0,
-      synopsis: json['synopsis'] != null ? json['synopsis'].toString() : '',
+      synopsis: json['synopsis'] != null
+          ? processSynopsis(json['synopsis'].toString())
+          : '',
       images: json['images'] ?? Map,
       trailer: json['trailer'] ?? Map,
       score: json['score'] != null ? json['score'].toDouble() : 0.0,
       scoredBy: json['scored_by'] ?? 0,
       libriaId: libriaId,
+      genres: json['genres'],
     );
   }
 }

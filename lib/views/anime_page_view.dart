@@ -5,8 +5,15 @@ import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/models/character.dart';
 import 'package:film_checker/models/review.dart';
 import 'package:film_checker/models/video.dart';
+import 'package:film_checker/views/blocks/anime_page/anime_category_block.dart';
+import 'package:film_checker/views/blocks/anime_page/anime_character_block.dart';
+import 'package:film_checker/views/blocks/anime_page/anime_review_block.dart';
+import 'package:film_checker/views/blocks/anime_page/anime_video_block.dart';
+import 'package:film_checker/views/characters_page_view.dart';
+import 'package:film_checker/views/reviews_page_view.dart';
+import 'package:film_checker/views/support/divider.dart';
+import 'package:film_checker/views/support/image_background.dart';
 import 'package:film_checker/views/support/fetching_circle.dart';
-import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 
 class AnimePageView extends StatefulWidget {
@@ -29,6 +36,8 @@ class _AnimePageViewState extends State<AnimePageView> {
   List<Video> _videos = [];
 
   bool _isLoading = true;
+
+  bool _maxLinesExpanded = false;
 
   @override
   void initState() {
@@ -86,30 +95,7 @@ class _AnimePageViewState extends State<AnimePageView> {
       ),
       body: Stack(
         children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Stack(
-              children: [
-                SizedBox.expand(
-                  child: ImageFiltered(
-                    imageFilter: ImageFilter.blur(
-                      sigmaX: 20,
-                      sigmaY: 20,
-                    ),
-                    child: widget.animeImage,
-                  ),
-                ),
-                Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(.4),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          ImageBackground(image: widget.animeImage),
           SizedBox(
             child: Stack(
               children: [
@@ -117,114 +103,69 @@ class _AnimePageViewState extends State<AnimePageView> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * .35,
+                        height: MediaQuery.of(context).size.height * .3,
                       ),
                       Column(
                         children: [
                           const SizedBox(
                             height: 15,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 30,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  widget.anime.title,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 30,
-                                    height: 1.2,
-                                  ),
-                                ),
-                                Text(
-                                  '${widget.anime.originalTitle} ${widget.anime.malId}',
-                                  style: const TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w300,
-                                    fontSize: 15,
-                                    height: 1.2,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(right: 10),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 7,
-                                        vertical: 3,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(50),
-                                        color: Colors.grey,
-                                      ),
-                                      child: const Text(
-                                        'Action',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 15,
-                                          letterSpacing: 1.5,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                    Text(
+                                      widget.anime.title,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                        height: 1.2,
                                       ),
                                     ),
-                                    Container(
-                                      margin: const EdgeInsets.only(right: 10),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 7,
-                                        vertical: 3,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(50),
+                                    Text(
+                                      '${widget.anime.originalTitle} ${widget.anime.malId}',
+                                      style: const TextStyle(
                                         color: Colors.grey,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14,
+                                        height: 1.2,
                                       ),
-                                      child: const Text(
-                                        'Adventure',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 15,
-                                          letterSpacing: 1.5,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(right: 10),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 7,
-                                        vertical: 3,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(50),
-                                        color: Colors.grey,
-                                      ),
-                                      child: Text(
-                                        widget.anime.libriaId == -1
-                                            ? 'False'
-                                            : 'True',
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 15,
-                                          letterSpacing: 1.5,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ],
                                 ),
-                                const SizedBox(
-                                  height: 10,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              SizedBox(
+                                height: 30,
+                                width: double.infinity,
+                                child: ListView.builder(
+                                  padding: const EdgeInsets.only(left: 15),
+                                  itemCount: widget.anime.genres.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) =>
+                                      AnimeCategoryBlock(
+                                    animeGenre: widget.anime.genres[index],
+                                  ),
                                 ),
-                                Row(
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
+                                child: Row(
                                   children: [
                                     const Icon(
                                       Icons.star,
@@ -249,32 +190,18 @@ class _AnimePageViewState extends State<AnimePageView> {
                                       '(${widget.anime.scoredBy})',
                                       style: const TextStyle(
                                         color: Colors.grey,
-                                        fontSize: 15,
+                                        fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
                                   ],
-                                )
-                              ],
-                            ),
+                                ),
+                              )
+                            ],
                           ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 30,
-                            ),
-                            child: Divider(
-                              color: Colors.white,
-                              thickness: .5,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
+                          const CustomDivider(),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 30),
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
                             child: SizedBox(
                               width: double.infinity,
                               child: Column(
@@ -293,10 +220,42 @@ class _AnimePageViewState extends State<AnimePageView> {
                                     widget.anime.synopsis,
                                     style: const TextStyle(
                                       color: Colors.white,
-                                      fontWeight: FontWeight.w400,
+                                      fontWeight: FontWeight.w300,
                                       fontSize: 14,
                                     ),
+                                    overflow: _maxLinesExpanded
+                                        ? TextOverflow.visible
+                                        : TextOverflow.ellipsis,
+                                    maxLines: _maxLinesExpanded ? null : 5,
                                   ),
+                                  widget.anime.synopsis.length > 292
+                                      ? Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                if (mounted) {
+                                                  setState(() {
+                                                    _maxLinesExpanded =
+                                                        !_maxLinesExpanded;
+                                                  });
+                                                }
+                                              },
+                                              child: Text(
+                                                _maxLinesExpanded
+                                                    ? 'read less'
+                                                    : 'read more',
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      : const Center(),
                                 ],
                               ),
                             ),
@@ -308,24 +267,115 @@ class _AnimePageViewState extends State<AnimePageView> {
                               ? Column(
                                   children: [
                                     _characters.isNotEmpty
-                                        ? Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 30,
+                                        ? SizedBox(
+                                            width: double.infinity,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                .175,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 15),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      const Text(
+                                                        'Characters',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.of(context)
+                                                              .push(
+                                                            MaterialPageRoute(
+                                                              builder:
+                                                                  (context) {
+                                                                return CharactersPageView(
+                                                                    characters:
+                                                                        _characters);
+                                                              },
+                                                            ),
+                                                          );
+                                                        },
+                                                        child: Text(
+                                                          _characters.length > 5
+                                                              ? 'see all'
+                                                              : '',
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Color(
+                                                                0xFF00A3FF),
+                                                            fontSize: 17,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Expanded(
+                                                  child: ListView.builder(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 15),
+                                                    itemBuilder:
+                                                        (context, index) =>
+                                                            AnimeCharacterBlock(
+                                                      character:
+                                                          _characters[index],
+                                                    ),
+                                                    itemCount:
+                                                        _characters.length > 5
+                                                            ? 5
+                                                            : _characters
+                                                                .length,
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            child: SizedBox(
-                                              width: double.infinity,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  .175,
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  const Text(
-                                                    'Characters',
+                                          )
+                                        : const Center(),
+                                    _videos.isNotEmpty
+                                        ? const CustomDivider()
+                                        : const Center(),
+                                    _videos.isNotEmpty
+                                        ? SizedBox(
+                                            width: double.infinity,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                .21,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                const Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 15),
+                                                  child: Text(
+                                                    'Videos',
                                                     style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 20,
@@ -333,104 +383,50 @@ class _AnimePageViewState extends State<AnimePageView> {
                                                           FontWeight.bold,
                                                     ),
                                                   ),
-                                                  const SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Expanded(
-                                                    child: ListView.builder(
-                                                      itemBuilder:
-                                                          (context, index) =>
-                                                              Container(
-                                                        margin: const EdgeInsets
-                                                            .only(right: 15),
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
-                                                            .14,
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
-                                                            .13,
-                                                        child: Column(
-                                                          children: [
-                                                            SizedBox(
-                                                              height: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .height *
-                                                                  .11,
-                                                              width: double
-                                                                  .infinity,
-                                                              child: ClipRRect(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                                child: Image
-                                                                    .network(
-                                                                  _characters[
-                                                                          index]
-                                                                      .imagePath,
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            FittedBox(
-                                                              child: Text(
-                                                                _characters[
-                                                                        index]
-                                                                    .name,
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 15,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w300,
-                                                                ),
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      itemCount:
-                                                          _characters.length,
-                                                      scrollDirection:
-                                                          Axis.horizontal,
+                                                ),
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Expanded(
+                                                  child: ListView.builder(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 15),
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    itemCount: _videos.length,
+                                                    itemBuilder:
+                                                        (context, index) =>
+                                                            AnimeVideoBlock(
+                                                      video: _videos[index],
                                                     ),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
                                           )
                                         : const Center(),
-                                    SizedBox(
-                                      height: _characters.isNotEmpty ? 15 : 0,
-                                    ),
                                     _reviews.isNotEmpty
-                                        ? Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 30),
-                                            child: SizedBox(
-                                              width: double.infinity,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  .21,
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
+                                        ? const CustomDivider()
+                                        : const Center(),
+                                    _reviews.isNotEmpty
+                                        ? SizedBox(
+                                            width: double.infinity,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                .21,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 15),
+                                                  child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .spaceBetween,
@@ -444,229 +440,69 @@ class _AnimePageViewState extends State<AnimePageView> {
                                                               FontWeight.bold,
                                                         ),
                                                       ),
-                                                      Text(
-                                                        _reviews.length
-                                                                .toString() +
-                                                            ' reviews',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.w400,
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.of(context)
+                                                              .push(
+                                                            MaterialPageRoute(
+                                                              builder:
+                                                                  (context) {
+                                                                return ReviewsPageView(
+                                                                  reviews:
+                                                                      _reviews,
+                                                                );
+                                                              },
+                                                            ),
+                                                          );
+                                                        },
+                                                        child: const Text(
+                                                          'see all',
+                                                          style: TextStyle(
+                                                            color: Color(
+                                                                0xFF00A3FF),
+                                                            fontSize: 17,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
                                                         ),
                                                       ),
                                                     ],
                                                   ),
-                                                  const SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Expanded(
-                                                    child: ListView.builder(
-                                                      scrollDirection:
-                                                          Axis.horizontal,
-                                                      itemCount:
-                                                          _reviews.length,
-                                                      itemBuilder:
-                                                          (context, index) =>
-                                                              Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(10),
-                                                        margin: const EdgeInsets
-                                                            .only(right: 15),
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
-                                                            .21,
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            .7,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(15),
-                                                          color: Colors.grey
-                                                              .withOpacity(.7),
-                                                        ),
-                                                        child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                              _reviews[index]
-                                                                  .review,
-                                                              style:
-                                                                  const TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 15,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w300,
-                                                              ),
-                                                              maxLines: 5,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                            ),
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                Text(
-                                                                  _reviews[
-                                                                          index]
-                                                                      .nickname,
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        15,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                  ),
-                                                                ),
-                                                                Row(
-                                                                  children: [
-                                                                    const Icon(
-                                                                      Icons
-                                                                          .star,
-                                                                      color: Colors
-                                                                          .yellow,
-                                                                    ),
-                                                                    const SizedBox(
-                                                                      width: 5,
-                                                                    ),
-                                                                    Text(
-                                                                      _reviews[
-                                                                              index]
-                                                                          .score
-                                                                          .toString(),
-                                                                      style:
-                                                                          const TextStyle(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontSize:
-                                                                            15,
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                )
-                                                              ],
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Expanded(
+                                                  child: ListView.builder(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 15),
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    itemCount:
+                                                        _reviews.length > 5
+                                                            ? 5
+                                                            : _reviews.length,
+                                                    itemBuilder:
+                                                        (context, index) =>
+                                                            AnimeReviewBlock(
+                                                      review: _reviews[index],
                                                     ),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
                                           )
                                         : const Center(),
                                     SizedBox(
                                       height: _reviews.isNotEmpty ? 15 : 0,
                                     ),
-                                    _videos.isNotEmpty
-                                        ? Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 30),
-                                            child: SizedBox(
-                                              width: double.infinity,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  .21,
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  const Text(
-                                                    'Videos',
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Expanded(
-                                                    child: ListView.builder(
-                                                      scrollDirection:
-                                                          Axis.horizontal,
-                                                      itemCount: _videos.length,
-                                                      itemBuilder:
-                                                          (context, index) =>
-                                                              Container(
-                                                        margin: const EdgeInsets
-                                                            .only(right: 15),
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
-                                                            .21,
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            .7,
-                                                        child: Stack(
-                                                          children: [
-                                                            SizedBox.expand(
-                                                              child: ClipRRect(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            15),
-                                                                child: Image
-                                                                    .network(
-                                                                  _videos[index]
-                                                                      .coverImage,
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Center(
-                                                              child: Icon(
-                                                                Icons
-                                                                    .play_circle_filled_sharp,
-                                                                color:
-                                                                    Colors.red,
-                                                                size: 75,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          )
-                                        : Center(),
-                                    SizedBox(
-                                      height: _videos.isNotEmpty ? 15 : 0,
-                                    ),
                                   ],
                                 )
                               : const FetchingCircle(),
+                          const SizedBox(
+                            height: 30,
+                          ),
                         ],
                       ),
                     ],
@@ -675,9 +511,9 @@ class _AnimePageViewState extends State<AnimePageView> {
                 Stack(
                   children: [
                     Hero(
-                      tag: 'animeImage',
+                      tag: 'animeImage${widget.anime.malId}',
                       child: Container(
-                        height: MediaQuery.of(context).size.height * .35,
+                        height: MediaQuery.of(context).size.height * .3,
                         decoration: BoxDecoration(
                           borderRadius: const BorderRadius.only(
                             bottomLeft: Radius.circular(40),
@@ -695,13 +531,20 @@ class _AnimePageViewState extends State<AnimePageView> {
                             bottom: 0,
                             right: 0,
                             child: Hero(
-                              tag: 'animeAvailable',
+                              tag: 'animeAvailable${widget.anime.malId}',
                               child: Container(
-                                width: 50,
-                                height: 50,
+                                width: 75,
+                                height: 75,
                                 decoration: BoxDecoration(
                                   color: Colors.red,
                                   borderRadius: BorderRadius.circular(90),
+                                ),
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.play_arrow_rounded,
+                                    color: Colors.white,
+                                    size: 45,
+                                  ),
                                 ),
                               ),
                             ),

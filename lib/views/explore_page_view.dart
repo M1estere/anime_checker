@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:film_checker/api/api.dart';
 import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/views/anime_page_view.dart';
+import 'package:film_checker/views/support/image_background.dart';
 import 'package:flutter/material.dart';
-import 'package:lecle_yoyo_player/lecle_yoyo_player.dart';
 import 'package:loop_page_view/loop_page_view.dart';
 
 class ExplorePageView extends StatefulWidget {
@@ -32,7 +32,7 @@ class _ExplorePageViewState extends State<ExplorePageView> {
       if (mounted) {
         setState(() {
           _isLoading = false;
-          _bgImage = _randomAnime[0].images['jpg']['image_url'];
+          _bgImage = _randomAnime[0].images['jpg']['large_image_url'];
 
           _currentImage = Image.network(
             _bgImage,
@@ -53,35 +53,9 @@ class _ExplorePageViewState extends State<ExplorePageView> {
       body: SingleChildScrollView(
         child: Stack(
           children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: Stack(
-                children: [
-                  SizedBox.expand(
-                    child: ImageFiltered(
-                      imageFilter: ImageFilter.blur(
-                        sigmaX: 20,
-                        sigmaY: 20,
-                      ),
-                      child: !_isLoading
-                          ? Image.network(
-                              _bgImage,
-                              fit: BoxFit.fitHeight,
-                            )
-                          : null,
-                    ),
-                  ),
-                  Container(
-                    height: double.infinity,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(.4),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            !_isLoading
+                ? ImageBackground(image: _currentImage)
+                : const Center(),
             SizedBox(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
@@ -243,7 +217,7 @@ class _ExplorePageViewState extends State<ExplorePageView> {
                             if (mounted) {
                               setState(() {
                                 _bgImage = _randomAnime[value]
-                                    .images['jpg']['image_url']
+                                    .images['jpg']['large_image_url']
                                     .toString();
                                 _currentImage = Image.network(
                                   _bgImage,
@@ -276,13 +250,15 @@ class _ExplorePageViewState extends State<ExplorePageView> {
                                       height: double.infinity,
                                       width: double.infinity,
                                       child: Hero(
-                                        tag: 'animeImage',
+                                        tag:
+                                            'animeImage${_randomAnime[index].malId}',
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(50),
                                           child: Image.network(
                                             _randomAnime[index]
-                                                .images['jpg']['image_url']
+                                                .images['jpg']
+                                                    ['large_image_url']
                                                 .toString(),
                                             fit: BoxFit.cover,
                                             loadingBuilder: (context, child,
@@ -306,7 +282,8 @@ class _ExplorePageViewState extends State<ExplorePageView> {
                                     ),
                                     _randomAnime[index].libriaId != -1
                                         ? Hero(
-                                            tag: 'animeAvailable',
+                                            tag:
+                                                'animeAvailable${_randomAnime[index].malId}',
                                             child: Container(
                                               width: 50,
                                               height: 50,
@@ -314,6 +291,13 @@ class _ExplorePageViewState extends State<ExplorePageView> {
                                                 color: Colors.red,
                                                 borderRadius:
                                                     BorderRadius.circular(90),
+                                              ),
+                                              child: const Center(
+                                                child: Icon(
+                                                  Icons.play_arrow_rounded,
+                                                  color: Colors.white,
+                                                  size: 30,
+                                                ),
                                               ),
                                             ),
                                           )

@@ -22,7 +22,8 @@ class Api {
         final decodedData = json.decode(response.body)['data'] as Map;
 
         if (decodedData['images']['jpg'] == null ||
-            decodedData['synopsis'] == null) {
+            decodedData['synopsis'] == null ||
+            decodedData['genres'].isEmpty) {
           amount++;
           continue;
         }
