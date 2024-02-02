@@ -14,7 +14,10 @@ class HomePageView extends StatefulWidget {
 }
 
 class _HomePageViewState extends State<HomePageView> {
-  List<Anime> _randomAnime = [];
+  Anime _topBannerAnime = Anime.createEmpty();
+  List<Anime> _favouriteAnime = [];
+  List<Anime> _seasonalAnime = [];
+  List<Anime> _topWatchedAnime = [];
 
   bool _isLoading = true;
 
@@ -22,15 +25,21 @@ class _HomePageViewState extends State<HomePageView> {
   void initState() {
     super.initState();
 
-    Api().getRandomAnime(10).then((value) {
+    gatherInfo().then((value) {
       if (mounted) {
         setState(() {
-          _randomAnime = value;
-
           _isLoading = false;
         });
       }
     });
+  }
+
+  Future gatherInfo() async {
+    _topBannerAnime = (await Api().getRandomAnime(1))[0];
+
+    _favouriteAnime = await Api().getTopAnimeFiltered(20, 'favorite');
+    _seasonalAnime = await Api().getSeasonalAnime(20);
+    _topWatchedAnime = await Api().getTopAnimeFiltered(20, '');
   }
 
   @override
@@ -49,9 +58,9 @@ class _HomePageViewState extends State<HomePageView> {
                           MaterialPageRoute(
                             builder: (context) {
                               return AnimePageView(
-                                anime: _randomAnime[0],
+                                anime: _topBannerAnime,
                                 animeImage: Image.network(
-                                  _randomAnime[0].images['jpg']
+                                  _topBannerAnime.images['jpg']
                                       ['large_image_url'],
                                   fit: BoxFit.cover,
                                 ),
@@ -66,7 +75,7 @@ class _HomePageViewState extends State<HomePageView> {
                             width: double.infinity,
                             height: MediaQuery.of(context).size.height * .35,
                             child: Image.network(
-                              _randomAnime[0].images['jpg']['large_image_url'],
+                              _topBannerAnime.images['jpg']['large_image_url'],
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -101,7 +110,7 @@ class _HomePageViewState extends State<HomePageView> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Text(
-                                    _randomAnime[0].title,
+                                    _topBannerAnime.title,
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 25,
@@ -112,7 +121,7 @@ class _HomePageViewState extends State<HomePageView> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   Text(
-                                    _randomAnime[0].originalTitle,
+                                    _topBannerAnime.originalTitle,
                                     style: const TextStyle(
                                       color: Colors.grey,
                                       fontSize: 14,
@@ -136,7 +145,7 @@ class _HomePageViewState extends State<HomePageView> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
-                            'Trending',
+                            'Favourites',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20,
@@ -149,8 +158,8 @@ class _HomePageViewState extends State<HomePageView> {
                                 MaterialPageRoute(
                                   builder: (context) {
                                     return AnimeSectionPageView(
-                                      sectionName: 'Trending',
-                                      animeList: _randomAnime,
+                                      sectionName: 'Favourites',
+                                      animeList: _favouriteAnime,
                                     );
                                   },
                                 ),
@@ -179,34 +188,48 @@ class _HomePageViewState extends State<HomePageView> {
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return WideBlock(
-                            anime: _randomAnime[index],
+                            anime: _favouriteAnime[index],
                           );
                         },
-                        itemCount: (_randomAnime.length / 2).round(),
+                        itemCount: (_favouriteAnime.length / 2).round(),
                       ),
                     ),
                     const SizedBox(
                       height: 15,
                     ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'Most Popular',
+                          const Text(
+                            'Seasonal',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
-                          Text(
-                            'see all',
-                            style: TextStyle(
-                              color: Color(0xFF00A3FF),
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return AnimeSectionPageView(
+                                      sectionName: 'Seasonal',
+                                      animeList: _seasonalAnime,
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                            child: const Text(
+                              'see all',
+                              style: TextStyle(
+                                color: Color(0xFF00A3FF),
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ],
@@ -223,34 +246,48 @@ class _HomePageViewState extends State<HomePageView> {
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return HomeRegularBlock(
-                            anime: _randomAnime[index],
+                            anime: _seasonalAnime[index],
                           );
                         },
-                        itemCount: (_randomAnime.length / 2).round(),
+                        itemCount: (_seasonalAnime.length / 2).round(),
                       ),
                     ),
                     const SizedBox(
                       height: 15,
                     ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'Hottest',
+                          const Text(
+                            'Top Watched',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
-                          Text(
-                            'see all',
-                            style: TextStyle(
-                              color: Color(0xFF00A3FF),
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return AnimeSectionPageView(
+                                      sectionName: 'Top Watched',
+                                      animeList: _topWatchedAnime,
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                            child: const Text(
+                              'see all',
+                              style: TextStyle(
+                                color: Color(0xFF00A3FF),
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ],
@@ -267,14 +304,14 @@ class _HomePageViewState extends State<HomePageView> {
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return HomeRegularBlock(
-                            anime: _randomAnime[index],
+                            anime: _topWatchedAnime[index],
                           );
                         },
-                        itemCount: (_randomAnime.length / 2).round(),
+                        itemCount: (_topWatchedAnime.length / 2).round(),
                       ),
                     ),
                     const SizedBox(
-                      height: 60,
+                      height: 15,
                     ),
                   ],
                 ),

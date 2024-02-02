@@ -36,7 +36,7 @@ class _ExplorePageViewState extends State<ExplorePageView> {
   }
 
   Future gatherInfo() async {
-    _anime = await Api().getRandomAnime(10);
+    _anime = await Api().getTopAnimeFiltered(15, 'bypopularity');
 
     _bgImage = _anime[0].images['jpg']['large_image_url'];
     _currentImage = Image.network(

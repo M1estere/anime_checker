@@ -183,7 +183,7 @@ class _AnimePageViewState extends State<AnimePageView> {
                                     ),
                                   ],
                                 ),
-                              )
+                              ),
                             ],
                           ),
                           const CustomDivider(),
@@ -243,6 +243,17 @@ class _AnimePageViewState extends State<AnimePageView> {
                                           ],
                                         )
                                       : const Center(),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    '${widget.anime.status} | ${widget.anime.type} | ${widget.anime.episodes} ep${widget.anime.midDuration}',
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
