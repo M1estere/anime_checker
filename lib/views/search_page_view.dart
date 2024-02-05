@@ -17,18 +17,18 @@ class _SearchPageViewState extends State<SearchPageView> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(15),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const SearchResultsPageView(),
-                ),
-              );
-            },
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Hero(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const SearchResultsPageView(),
+                    ),
+                  );
+                },
+                child: Hero(
                   tag: 'searchBox',
                   child: Material(
                     child: Container(
@@ -94,39 +94,32 @@ class _SearchPageViewState extends State<SearchPageView> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 30,
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              const Text(
+                'Categories',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                  fontWeight: FontWeight.w500,
                 ),
-                const Text(
-                  'Categories',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontWeight: FontWeight.w500,
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SearchCategoryBlock(title: 'Rated Most'),
+                  SizedBox(
+                    height: 10,
                   ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                const Row(
-                  children: [
-                    SearchCategoryBlock(title: 'Rated Most'),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    SearchCategoryBlock(title: 'Genres'),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Row(
-                  children: [
-                    SearchCategoryBlock(title: 'Available to Watch'),
-                  ],
-                ),
-              ],
-            ),
+                  SearchCategoryBlock(title: 'Genres'),
+                ],
+              ),
+            ],
           ),
         ),
       ),
