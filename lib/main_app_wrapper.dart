@@ -14,28 +14,58 @@ class MainWrapper extends StatefulWidget {
 }
 
 class _MainWrapperState extends State<MainWrapper> {
+  PageController _pageController = PageController();
+  List<Widget> _pages = [];
+
   int _currentPageIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    _currentPageIndex = 0;
+    _pages = [
+      ExplorePageView(),
+      HomePageView(),
+      SearchPageView(),
+      AccountPageView(),
+    ];
+
+    _pageController = PageController(initialPage: _currentPageIndex);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _pageController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final bodies = IndexedStack(
-      index: _currentPageIndex,
-      children: const [
-        ExplorePageView(),
-        HomePageView(),
-        SearchPageView(),
-        AccountPageView(),
-      ],
-    );
+    // final bodies = IndexedStack(
+    //   index: _currentPageIndex,
+    //   children: const [
+    //     ExplorePageView(),
+    //     HomePageView(),
+    //     SearchPageView(),
+    //     AccountPageView(),
+    //   ],
+    // );
 
     return Scaffold(
-      body: bodies,
+      // body: _pages[_currentPageIndex],
+      body: PageView(
+        controller: _pageController,
+        physics: NeverScrollableScrollPhysics(),
+        children: _pages,
+      ),
       bottomNavigationBar: StylishBottomBar(
         hasNotch: true,
         currentIndex: _currentPageIndex,
         onTap: (index) {
           setState(() {
             _currentPageIndex = index;
+            _pageController.jumpToPage(_currentPageIndex);
           });
         },
         backgroundColor:

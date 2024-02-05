@@ -18,7 +18,11 @@ class AccountPageView extends StatefulWidget {
   State<AccountPageView> createState() => _AccountPageViewState();
 }
 
-class _AccountPageViewState extends State<AccountPageView> {
+class _AccountPageViewState extends State<AccountPageView>
+    with AutomaticKeepAliveClientMixin<AccountPageView> {
+  @override
+  bool get wantKeepAlive => true;
+
   final List<CustomUserSection> _sections = [
     CustomUserSection(iconData: Icons.favorite, name: 'Favourites'),
     CustomUserSection(iconData: Icons.timer, name: 'Planned'),

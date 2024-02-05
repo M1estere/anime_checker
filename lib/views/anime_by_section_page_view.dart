@@ -17,6 +17,25 @@ class AnimeSectionPageView extends StatefulWidget {
 }
 
 class _AnimeSectionPageViewState extends State<AnimeSectionPageView> {
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    gatherInfo().then((value) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    });
+  }
+
+  Future gatherInfo() async {
+    await Future.delayed(const Duration(milliseconds: 300));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,26 +67,29 @@ class _AnimeSectionPageViewState extends State<AnimeSectionPageView> {
         ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: SizedBox(
-            width: double.infinity,
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: .57,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-              ),
-              itemBuilder: (context, index) {
-                return AnimeBigBlock(
-                  anime: widget.animeList[index],
-                );
-              },
-              itemCount: widget.animeList.length,
-            ),
-          ),
-        ),
+        child: !_isLoading
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: .57,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                    ),
+                    itemBuilder: (context, index) {
+                      return AnimeBigBlock(
+                        anime: widget.animeList[index],
+                      );
+                    },
+                    itemCount: widget.animeList.length,
+                  ),
+                ),
+              )
+            : const Center(),
       ),
     );
   }

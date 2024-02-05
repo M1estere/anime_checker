@@ -13,7 +13,11 @@ class HomePageView extends StatefulWidget {
   State<HomePageView> createState() => _HomePageViewState();
 }
 
-class _HomePageViewState extends State<HomePageView> {
+class _HomePageViewState extends State<HomePageView>
+    with AutomaticKeepAliveClientMixin<HomePageView> {
+  @override
+  bool get wantKeepAlive => true;
+
   Anime _topBannerAnime = Anime.createEmpty();
   List<Anime> _favouriteAnime = [];
   List<Anime> _seasonalAnime = [];

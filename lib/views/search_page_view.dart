@@ -9,7 +9,11 @@ class SearchPageView extends StatefulWidget {
   State<SearchPageView> createState() => _SearchPageViewState();
 }
 
-class _SearchPageViewState extends State<SearchPageView> {
+class _SearchPageViewState extends State<SearchPageView>
+    with AutomaticKeepAliveClientMixin<SearchPageView> {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

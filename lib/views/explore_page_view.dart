@@ -14,7 +14,11 @@ class ExplorePageView extends StatefulWidget {
   State<ExplorePageView> createState() => _ExplorePageViewState();
 }
 
-class _ExplorePageViewState extends State<ExplorePageView> {
+class _ExplorePageViewState extends State<ExplorePageView>
+    with AutomaticKeepAliveClientMixin<ExplorePageView> {
+  @override
+  bool get wantKeepAlive => true;
+
   int _currentIndex = 0;
 
   List<Anime> _anime = [];

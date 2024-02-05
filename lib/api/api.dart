@@ -18,10 +18,10 @@ class Api {
   static const _animeListByGenre =
       'https://api.jikan.moe/v4/anime?order_by=popularity&limit=25&genres=';
 
-  static const _libriaListAnimeUrl =
-      'https://api.anilibria.tv/v2.13/getTitles?code_list=';
+  // static const _libriaListAnimeUrl =
+  //     'https://api.anilibria.tv/v2.13/getTitles?code_list=';
 
-  static const _libriaAnime = 'https://api.anilibria.tv/v2.13/getTitle?code=';
+  // static const _libriaAnime = 'https://api.anilibria.tv/v2.13/getTitle?code=';
 
   static const _animeUrl = 'https://api.jikan.moe/v4/anime';
 
@@ -55,10 +55,9 @@ class Api {
 
         int id = -1;
         result.add(Anime.fromJson(data, id));
-        print('took');
       }
 
-      return await result;
+      return result;
     } else {
       return await getRandomAnime(limit);
     }
@@ -105,7 +104,6 @@ class Api {
 
         int id = -1;
         result.add(Anime.fromJson(data, id));
-        print('took');
       }
 
       return result;
@@ -146,10 +144,8 @@ class Api {
 
         int id = -1;
         result.add(Anime.fromJson(decodedData, id));
-        print('took');
       } else {
         amount++;
-        print('skipped');
         continue;
       }
     }
