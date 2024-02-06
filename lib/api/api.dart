@@ -109,6 +109,7 @@ String processTitleForLibria(String title) {
   result = result.replaceAll(' ', '-');
   result = result.replaceAll(';', '');
   result = result.replaceAll(':', '');
+  result = result.replaceAll('nd-season', '');
 
   return result;
 }

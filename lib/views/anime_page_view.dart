@@ -555,6 +555,12 @@ class _AnimePageViewState extends State<AnimePageView> {
                                                             AnimePictureBlock(
                                                       path:
                                                           _pictures[index].path,
+                                                      imageIndex: index,
+                                                      imagePaths: [
+                                                        for (var obj
+                                                            in _pictures)
+                                                          obj.path
+                                                      ],
                                                     ),
                                                   ),
                                                 ),
