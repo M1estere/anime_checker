@@ -5,6 +5,7 @@ import 'package:film_checker/models/character.dart';
 import 'package:film_checker/models/review.dart';
 import 'package:film_checker/models/video.dart';
 import 'package:film_checker/models/picture.dart';
+import 'package:film_checker/views/anime_series_list_page_view.dart';
 import 'package:film_checker/views/blocks/anime_page/anime_category_block.dart';
 import 'package:film_checker/views/blocks/anime_page/anime_character_block.dart';
 import 'package:film_checker/views/blocks/anime_page/anime_picture_block.dart';
@@ -57,7 +58,10 @@ class _AnimePageViewState extends State<AnimePageView> {
     _reviews = await AnimeController().getReviews(widget.anime.malId);
     _videos = await AnimeController().getVideos(widget.anime.malId);
     _pictures = await AnimeController().getPictures(widget.anime.malId);
-    widget.anime.libriaId = await Api().getLibriaCode(widget.anime.title);
+
+    (int, List) t = (await Api().getLibriaCode(widget.anime.title));
+    widget.anime.libriaId = t.$1;
+    widget.anime.series = t.$2;
 
     _isLoading = false;
   }
@@ -89,7 +93,17 @@ class _AnimePageViewState extends State<AnimePageView> {
           ? FloatingActionButton(
               heroTag: 'animeAvailable${widget.anime.malId}',
               splashColor: Colors.blue.withOpacity(.3),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return AnimeSeriesListPageView(
+                        data: widget.anime.series!,
+                      );
+                    },
+                  ),
+                );
+              },
               backgroundColor: Colors.blue,
               elevation: 15,
               child: const Icon(

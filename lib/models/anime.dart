@@ -19,6 +19,8 @@ class Anime {
 
   List genres;
 
+  List? series;
+
   Anime({
     required this.malId,
     required this.title,

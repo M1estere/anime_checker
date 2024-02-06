@@ -10,7 +10,8 @@ class Api {
   // static const _libriaListAnimeUrl =
   //     'https://api.anilibria.tv/v2.13/getTitles?code_list=';
 
-  static const _libriaAnime = 'https://api.anilibria.tv/v2.13/getTitle?code=';
+  static const _libriaAnime =
+      'https://api.anilibria.tv/v2.13/getTitle?playlist_type=array&code=';
 
   Future<List<Anime>> getTopAnimeFiltered(String filterType) async {
     List<Anime> result = [];
@@ -46,20 +47,22 @@ class Api {
   //   final libriaResponse = await http.get(Uri.parse(_libriaListAnimeUrl + animeQueryPart));
   // }
 
-  Future<int> getLibriaCode(String title) async {
+  Future<(int, List)> getLibriaCode(String title) async {
     title = processTitleForLibria(title);
 
     final libriaResponse = await http.get(Uri.parse(_libriaAnime + title));
     int id = -1;
+    List playlist = [];
     if (libriaResponse.statusCode == 200) {
       final decoded = json.decode(libriaResponse.body) as Map;
       if (decoded.containsKey('error')) {
       } else {
         id = decoded['id'];
+        playlist = decoded['player']['playlist'];
       }
     }
 
-    return id;
+    return (id, playlist);
   }
 
   Future<List<Anime>> getRandomAnime(int amount) async {

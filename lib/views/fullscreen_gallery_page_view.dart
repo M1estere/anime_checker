@@ -41,7 +41,31 @@ class _FullScreenGalleryPageViewState extends State<FullScreenGalleryPageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leadingWidth: MediaQuery.of(context).size.width * .9,
+        leading: Row(
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(
+                Icons.arrow_back_ios_new,
+                size: 35,
+                color: Colors.white,
+              ),
+            ),
+            Text(
+              'gallery'.toUpperCase(),
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                fontSize: 25,
+              ),
+            ),
+          ],
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
