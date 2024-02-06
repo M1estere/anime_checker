@@ -6,7 +6,7 @@ import 'package:film_checker/views/anime_by_section_page_view.dart';
 import 'package:film_checker/views/anime_page_view.dart';
 import 'package:film_checker/views/blocks/home_page/regular_block.dart';
 import 'package:film_checker/views/blocks/home_page/wide_block.dart';
-import 'package:film_checker/views/genre_anime_page_view.dart';
+import 'package:film_checker/views/genre_season_anime_page_view.dart';
 import 'package:film_checker/views/support/custom_network_image.dart';
 import 'package:film_checker/views/support/fetching_circle.dart';
 import 'package:flutter/material.dart';
@@ -225,7 +225,7 @@ class _HomePageViewState extends State<HomePageView>
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return GenreAnimePageView(
+                                    return GenreSeasonAnimePageView(
                                       sectionName: 'Seasonal',
                                       genreNumber: -1,
                                       season: Season.fromJson(2024, 'winter'),

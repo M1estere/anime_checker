@@ -3,17 +3,17 @@ import 'package:film_checker/api/seasons_controller.dart';
 import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/models/pagination.dart';
 import 'package:film_checker/models/season.dart';
-import 'package:film_checker/views/blocks/anime_big_block.dart';
+import 'package:film_checker/views/blocks/common/anime_big_block.dart';
 import 'package:flutter/material.dart';
 
-class GenreAnimePageView extends StatefulWidget {
+class GenreSeasonAnimePageView extends StatefulWidget {
   final String sectionName;
   final int genreNumber;
 
   final int type;
   final Season season;
 
-  const GenreAnimePageView({
+  const GenreSeasonAnimePageView({
     super.key,
     required this.sectionName,
     required this.genreNumber,
@@ -22,10 +22,11 @@ class GenreAnimePageView extends StatefulWidget {
   });
 
   @override
-  State<GenreAnimePageView> createState() => _GenreAnimePageViewState();
+  State<GenreSeasonAnimePageView> createState() =>
+      _GenreSeasonAnimePageViewState();
 }
 
-class _GenreAnimePageViewState extends State<GenreAnimePageView> {
+class _GenreSeasonAnimePageViewState extends State<GenreSeasonAnimePageView> {
   final ScrollController _scrollController = ScrollController();
 
   Pagination _currentPage = Pagination.empty();

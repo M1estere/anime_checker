@@ -1,5 +1,5 @@
 import 'package:film_checker/models/anime.dart';
-import 'package:film_checker/views/blocks/anime_big_block.dart';
+import 'package:film_checker/views/blocks/common/anime_big_block.dart';
 import 'package:flutter/material.dart';
 
 class AnimeSectionPageView extends StatefulWidget {

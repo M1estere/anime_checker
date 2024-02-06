@@ -1,4 +1,4 @@
-import 'package:film_checker/views/blocks/series_block.dart';
+import 'package:film_checker/views/blocks/common/series_block.dart';
 import 'package:flutter/material.dart';
 
 class AnimeSeriesListPageView extends StatefulWidget {

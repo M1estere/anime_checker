@@ -1,6 +1,6 @@
 import 'package:film_checker/models/genre.dart';
 import 'package:film_checker/models/season.dart';
-import 'package:film_checker/views/genre_anime_page_view.dart';
+import 'package:film_checker/views/genre_season_anime_page_view.dart';
 import 'package:flutter/material.dart';
 
 class GenreBlock extends StatelessWidget {
@@ -23,7 +23,7 @@ class GenreBlock extends StatelessWidget {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
-                return GenreAnimePageView(
+                return GenreSeasonAnimePageView(
                   sectionName: genre.name.toLowerCase(),
                   genreNumber: genre.id,
                   type: 0,

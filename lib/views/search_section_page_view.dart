@@ -1,7 +1,7 @@
 import 'package:film_checker/api/genres_controller.dart';
 import 'package:film_checker/api/seasons_controller.dart';
-import 'package:film_checker/views/blocks/genre_block.dart';
-import 'package:film_checker/views/blocks/season_block.dart';
+import 'package:film_checker/views/blocks/common/genre_block.dart';
+import 'package:film_checker/views/blocks/common/season_block.dart';
 import 'package:flutter/material.dart';
 
 class SearchSectionPageView extends StatefulWidget {

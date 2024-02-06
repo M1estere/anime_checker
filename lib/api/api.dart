@@ -7,9 +7,6 @@ class Api {
   static const _topAnimeUrl = 'https://api.jikan.moe/v4/top/anime';
   static const _randomAnimeUrl = 'https://api.jikan.moe/v4/random/anime';
 
-  // static const _libriaListAnimeUrl =
-  //     'https://api.anilibria.tv/v2.13/getTitles?code_list=';
-
   static const _libriaAnime =
       'https://api.anilibria.tv/v2.13/getTitle?playlist_type=array&code=';
 
@@ -38,14 +35,6 @@ class Api {
       return await getRandomAnime(15);
     }
   }
-
-  // Future<List<Anime>> getLibriaCodes(List<Anime> animeList) async {
-  //   String animeQueryPart = '';
-  //   for (var element in animeList) {
-  //     animeQueryPart += '${processTitleForLibria(element.title)},';
-  //   }
-  //   final libriaResponse = await http.get(Uri.parse(_libriaListAnimeUrl + animeQueryPart));
-  // }
 
   Future<(int, List)> getLibriaCode(String title) async {
     title = processTitleForLibria(title);

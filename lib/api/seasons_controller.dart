@@ -26,19 +26,6 @@ class SeasonsController {
           continue;
         }
 
-        // final libriaResponse = await http.get(Uri.parse(
-        //     _libriaAnime + processTitleForLibria(decodedData['title']).trim()));
-
-        // int id = -1;
-        // if (libriaResponse.statusCode == 200) {
-        //   print(libriaResponse.body);
-        //   final decoded = json.decode(libriaResponse.body) as Map;
-        //   if (decoded.containsKey('error')) {
-        //   } else {
-        //     id = decoded['id'];
-        //   }
-        // }
-
         int id = -1;
         result.add(Anime.fromJson(data, id));
       }
