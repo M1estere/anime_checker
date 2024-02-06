@@ -7,6 +7,7 @@ import 'package:film_checker/views/anime_page_view.dart';
 import 'package:film_checker/views/blocks/home_page/regular_block.dart';
 import 'package:film_checker/views/blocks/home_page/wide_block.dart';
 import 'package:film_checker/views/genre_anime_page_view.dart';
+import 'package:film_checker/views/support/custom_network_image.dart';
 import 'package:flutter/material.dart';
 
 class HomePageView extends StatefulWidget {
@@ -83,10 +84,9 @@ class _HomePageViewState extends State<HomePageView>
                           SizedBox(
                             width: double.infinity,
                             height: MediaQuery.of(context).size.height * .35,
-                            child: Image.network(
-                              _topBannerAnime.images['jpg']['large_image_url'],
-                              fit: BoxFit.cover,
-                            ),
+                            child: CustomNetworkImage(
+                                path: _topBannerAnime.images['jpg']
+                                    ['large_image_url']),
                           ),
                           Container(
                             width: double.infinity,

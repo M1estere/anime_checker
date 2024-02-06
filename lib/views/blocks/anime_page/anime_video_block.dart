@@ -1,4 +1,5 @@
 import 'package:film_checker/models/video.dart';
+import 'package:film_checker/views/support/custom_network_image.dart';
 import 'package:flutter/material.dart';
 
 class AnimeVideoBlock extends StatelessWidget {
@@ -20,10 +21,7 @@ class AnimeVideoBlock extends StatelessWidget {
           SizedBox.expand(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(15),
-              child: Image.network(
-                video.coverImage,
-                fit: BoxFit.cover,
-              ),
+              child: CustomNetworkImage(path: video.coverImage),
             ),
           ),
           Center(

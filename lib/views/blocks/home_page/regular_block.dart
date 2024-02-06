@@ -2,7 +2,7 @@ import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/views/anime_page_view.dart';
 import 'package:flutter/material.dart';
 
-class HomeRegularBlock extends StatelessWidget {
+class HomeRegularBlock extends StatefulWidget {
   final Anime anime;
 
   const HomeRegularBlock({
@@ -11,20 +11,29 @@ class HomeRegularBlock extends StatelessWidget {
   });
 
   @override
+  State<HomeRegularBlock> createState() => _HomeRegularBlockState();
+}
+
+class _HomeRegularBlockState extends State<HomeRegularBlock> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
+        Navigator.of(context)
+            .push(
           MaterialPageRoute(
             builder: (context) => AnimePageView(
               animeImage: Image.network(
-                anime.images['jpg']['large_image_url'],
+                widget.anime.images['jpg']['large_image_url'],
                 fit: BoxFit.cover,
               ),
-              anime: anime,
+              anime: widget.anime,
             ),
           ),
-        );
+        )
+            .then((value) {
+          setState(() {});
+        });
       },
       child: Stack(
         children: [
@@ -39,7 +48,7 @@ class HomeRegularBlock extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: Image.network(
-                      anime.images['jpg']['large_image_url'],
+                      widget.anime.images['jpg']['large_image_url'],
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -50,7 +59,7 @@ class HomeRegularBlock extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: Text(
-                    anime.title,
+                    widget.anime.title,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 15,
@@ -63,7 +72,7 @@ class HomeRegularBlock extends StatelessWidget {
               ],
             ),
           ),
-          anime.libriaId != -1
+          widget.anime.libriaId != -1
               ? Padding(
                   padding: const EdgeInsets.only(
                     left: 5,
@@ -73,7 +82,7 @@ class HomeRegularBlock extends StatelessWidget {
                     width: 35,
                     height: 35,
                     decoration: BoxDecoration(
-                      color: Colors.red,
+                      color: Colors.blue,
                       borderRadius: BorderRadius.circular(90),
                     ),
                     child: const Center(

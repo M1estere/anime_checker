@@ -1,4 +1,5 @@
 import 'package:film_checker/models/character.dart';
+import 'package:film_checker/views/support/custom_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CharacterInfoBlock extends StatelessWidget {
@@ -21,10 +22,7 @@ class CharacterInfoBlock extends StatelessWidget {
             width: MediaQuery.of(context).size.width * .2,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(15),
-              child: Image.network(
-                character.imagePath,
-                fit: BoxFit.cover,
-              ),
+              child: CustomNetworkImage(path: character.imagePath),
             ),
           ),
           const SizedBox(

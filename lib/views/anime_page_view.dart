@@ -1,4 +1,5 @@
 import 'package:film_checker/api/anime_controller.dart';
+import 'package:film_checker/api/api.dart';
 import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/models/character.dart';
 import 'package:film_checker/models/review.dart';
@@ -56,6 +57,7 @@ class _AnimePageViewState extends State<AnimePageView> {
     _reviews = await AnimeController().getReviews(widget.anime.malId);
     _videos = await AnimeController().getVideos(widget.anime.malId);
     _pictures = await AnimeController().getPictures(widget.anime.malId);
+    widget.anime.libriaId = await Api().getLibriaCode(widget.anime.title);
 
     _isLoading = false;
   }
@@ -83,6 +85,20 @@ class _AnimePageViewState extends State<AnimePageView> {
           ),
         ),
       ),
+      floatingActionButton: widget.anime.libriaId != -1
+          ? FloatingActionButton(
+              heroTag: 'animeAvailable${widget.anime.malId}',
+              splashColor: Colors.blue.withOpacity(.3),
+              onPressed: () {},
+              backgroundColor: Colors.blue,
+              elevation: 15,
+              child: const Icon(
+                Icons.play_arrow_rounded,
+                size: 45,
+                color: Colors.white,
+              ),
+            )
+          : null,
       body: Stack(
         children: [
           ImageBackground(image: widget.animeImage),
@@ -578,30 +594,6 @@ class _AnimePageViewState extends State<AnimePageView> {
                         ),
                       ),
                     ),
-                    widget.anime.libriaId != -1
-                        ? Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: Hero(
-                              tag: 'animeAvailable${widget.anime.malId}',
-                              child: Container(
-                                width: 75,
-                                height: 75,
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(90),
-                                ),
-                                child: const Center(
-                                  child: Icon(
-                                    Icons.play_arrow_rounded,
-                                    color: Colors.white,
-                                    size: 45,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        : const Center(),
                   ],
                 ),
               ],

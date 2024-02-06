@@ -1,8 +1,9 @@
 import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/views/anime_page_view.dart';
+import 'package:film_checker/views/support/custom_network_image.dart';
 import 'package:flutter/material.dart';
 
-class AnimeBigBlock extends StatelessWidget {
+class AnimeBigBlock extends StatefulWidget {
   final Anime anime;
 
   const AnimeBigBlock({
@@ -11,20 +12,29 @@ class AnimeBigBlock extends StatelessWidget {
   });
 
   @override
+  State<AnimeBigBlock> createState() => _AnimeBigBlockState();
+}
+
+class _AnimeBigBlockState extends State<AnimeBigBlock> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
+        Navigator.of(context)
+            .push(
           MaterialPageRoute(
             builder: (context) => AnimePageView(
               animeImage: Image.network(
-                anime.images['jpg']['large_image_url'],
+                widget.anime.images['jpg']['large_image_url'],
                 fit: BoxFit.cover,
               ),
-              anime: anime,
+              anime: widget.anime,
             ),
           ),
-        );
+        )
+            .then((value) {
+          setState(() {});
+        });
       },
       child: Stack(
         children: [
@@ -34,13 +44,11 @@ class AnimeBigBlock extends StatelessWidget {
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * .26,
                 child: Hero(
-                  tag: 'animeImage${anime.malId}',
+                  tag: 'animeImage${widget.anime.malId}',
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(5),
-                    child: Image.network(
-                      anime.images['jpg']['large_image_url'],
-                      fit: BoxFit.cover,
-                    ),
+                    child: CustomNetworkImage(
+                        path: widget.anime.images['jpg']['large_image_url']),
                   ),
                 ),
               ),
@@ -50,7 +58,7 @@ class AnimeBigBlock extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: Text(
-                  anime.title,
+                  widget.anime.title,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 15,
@@ -62,30 +70,28 @@ class AnimeBigBlock extends StatelessWidget {
               )
             ],
           ),
-          anime.libriaId != -1
-              ? Hero(
-                  tag: 'animeAvailable${anime.malId}',
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 5,
-                      top: 5,
+          widget.anime.libriaId != -1
+              ? Padding(
+                  padding: const EdgeInsets.only(
+                    left: 5,
+                    top: 5,
+                  ),
+                  child: Container(
+                    width: 35,
+                    height: 35,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(90),
                     ),
-                    child: Container(
-                      width: 35,
-                      height: 35,
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(90),
-                      ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.play_arrow_rounded,
-                          color: Colors.white,
-                          size: 20,
-                        ),
+                    child: const Center(
+                      child: Icon(
+                        Icons.play_arrow_rounded,
+                        color: Colors.white,
+                        size: 20,
                       ),
                     ),
-                  ))
+                  ),
+                )
               : const Center(),
         ],
       ),

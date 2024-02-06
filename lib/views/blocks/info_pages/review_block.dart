@@ -1,4 +1,5 @@
 import 'package:film_checker/models/review.dart';
+import 'package:film_checker/views/support/custom_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -47,10 +48,7 @@ class ReviewInfoBlock extends StatelessWidget {
                       height: MediaQuery.of(context).size.width * .15,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(180),
-                        child: Image.network(
-                          review.userImagePath,
-                          fit: BoxFit.cover,
-                        ),
+                        child: CustomNetworkImage(path: review.userImagePath),
                       ),
                     ),
                     const SizedBox(

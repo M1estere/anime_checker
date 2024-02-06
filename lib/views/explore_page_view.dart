@@ -2,6 +2,7 @@ import 'package:film_checker/api/api.dart';
 import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/views/anime_page_view.dart';
 import 'package:film_checker/views/blocks/anime_page/anime_category_block.dart';
+import 'package:film_checker/views/support/custom_network_image.dart';
 import 'package:film_checker/views/support/fetching_circle.dart';
 import 'package:film_checker/views/support/image_background.dart';
 import 'package:flutter/material.dart';
@@ -213,31 +214,14 @@ class _ExplorePageViewState extends State<ExplorePageView>
                                             tag:
                                                 'animeImage${_anime[index].malId}',
                                             child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                              child: Image.network(
-                                                _anime[index]
-                                                    .images['jpg']
-                                                        ['large_image_url']
-                                                    .toString(),
-                                                fit: BoxFit.cover,
-                                                loadingBuilder: (context, child,
-                                                    loadingProgress) {
-                                                  if (loadingProgress == null) {
-                                                    return child;
-                                                  } else {
-                                                    return const Center(
-                                                      child: SizedBox(
-                                                        width: 30,
-                                                        height: 30,
-                                                        child:
-                                                            CircularProgressIndicator(),
-                                                      ),
-                                                    );
-                                                  }
-                                                },
-                                              ),
-                                            ),
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                                child: CustomNetworkImage(
+                                                  path: _anime[index]
+                                                      .images['jpg']
+                                                          ['large_image_url']
+                                                      .toString(),
+                                                )),
                                           ),
                                         ),
                                         _anime[index].libriaId != -1
