@@ -29,6 +29,7 @@ class AnimeReviewBlock extends StatelessWidget {
               color: Colors.white,
               fontSize: 15,
               fontWeight: FontWeight.w300,
+              height: 1.2,
             ),
             maxLines: 5,
             overflow: TextOverflow.ellipsis,

@@ -40,7 +40,7 @@ class _ExplorePageViewState extends State<ExplorePageView>
   }
 
   Future gatherInfo() async {
-    _anime = await Api().getTopAnimeFiltered(15, 'bypopularity');
+    _anime = await Api().getTopAnimeFiltered('bypopularity');
 
     _bgImage = _anime[0].images['jpg']['large_image_url'];
     _currentImage = Image.network(
@@ -48,12 +48,12 @@ class _ExplorePageViewState extends State<ExplorePageView>
       fit: BoxFit.cover,
     );
 
-    print('loaded');
     _isLoading = false;
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SingleChildScrollView(
       child: Stack(
         children: [
@@ -69,7 +69,7 @@ class _ExplorePageViewState extends State<ExplorePageView>
                       ),
                       SizedBox(
                         width: double.infinity,
-                        height: MediaQuery.of(context).size.height * .2,
+                        height: MediaQuery.of(context).size.height * .21,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,7 +168,7 @@ class _ExplorePageViewState extends State<ExplorePageView>
                           top: 10,
                         ),
                         width: double.infinity,
-                        height: MediaQuery.of(context).size.height * .65,
+                        height: MediaQuery.of(context).size.height * .6,
                         child: SizedBox(
                           child: LoopPageView.builder(
                               onPageChanged: (value) {

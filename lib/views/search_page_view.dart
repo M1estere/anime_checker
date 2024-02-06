@@ -16,6 +16,7 @@ class _SearchPageViewState extends State<SearchPageView>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: SafeArea(
@@ -116,7 +117,7 @@ class _SearchPageViewState extends State<SearchPageView>
               const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SearchCategoryBlock(title: 'Rated Most'),
+                  SearchCategoryBlock(title: 'Seasons'),
                   SizedBox(
                     height: 10,
                   ),

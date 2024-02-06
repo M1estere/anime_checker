@@ -1,6 +1,8 @@
-import 'package:film_checker/api/api.dart';
+import 'package:film_checker/api/genres_controller.dart';
+import 'package:film_checker/api/seasons_controller.dart';
 import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/models/pagination.dart';
+import 'package:film_checker/models/season.dart';
 import 'package:film_checker/views/blocks/anime_big_block.dart';
 import 'package:flutter/material.dart';
 
@@ -8,10 +10,15 @@ class GenreAnimePageView extends StatefulWidget {
   final String sectionName;
   final int genreNumber;
 
+  final int type;
+  final Season season;
+
   const GenreAnimePageView({
     super.key,
     required this.sectionName,
     required this.genreNumber,
+    required this.type,
+    required this.season,
   });
 
   @override
@@ -64,11 +71,18 @@ class _GenreAnimePageViewState extends State<GenreAnimePageView> {
   }
 
   Future gatherInfo() async {
-    _animeList =
-        await Api().getAnimeListByGenre(widget.genreNumber.toString(), 1);
+    if (widget.type == 0) {
+      _animeList = await GenresController()
+          .getAnimeListByGenre(widget.genreNumber.toString(), 1);
 
-    _currentPage =
-        await Api().getCurrentGenrePagination(widget.genreNumber.toString(), 1);
+      _currentPage = await GenresController()
+          .getCurrentGenrePagination(widget.genreNumber.toString(), 1);
+    } else if (widget.type == 1) {
+      _animeList = await SeasonsController().getSeasonalAnime(1, widget.season);
+
+      _currentPage = await SeasonsController()
+          .getCurrentSeasonPagination(widget.season, 1);
+    }
   }
 
   Future nextPage() async {
@@ -79,12 +93,20 @@ class _GenreAnimePageViewState extends State<GenreAnimePageView> {
         });
       }
 
-      _animeList.addAll(
-        await Api().getAnimeListByGenre(
-            widget.genreNumber.toString(), _currentPage.currentPage + 1),
-      );
-      _currentPage = await Api().getCurrentGenrePagination(
-          widget.genreNumber.toString(), _currentPage.currentPage + 1);
+      if (widget.type == 0) {
+        _animeList.addAll(
+          await GenresController().getAnimeListByGenre(
+              widget.genreNumber.toString(), _currentPage.currentPage + 1),
+        );
+        _currentPage = await GenresController().getCurrentGenrePagination(
+            widget.genreNumber.toString(), _currentPage.currentPage + 1);
+      } else if (widget.type == 1) {
+        _animeList.addAll(await SeasonsController()
+            .getSeasonalAnime(_currentPage.currentPage + 1, widget.season));
+
+        _currentPage = await SeasonsController().getCurrentSeasonPagination(
+            widget.season, _currentPage.currentPage + 1);
+      }
 
       if (mounted) {
         setState(() {

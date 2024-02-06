@@ -1,5 +1,7 @@
-import 'package:film_checker/api/api.dart';
+import 'package:film_checker/api/genres_controller.dart';
+import 'package:film_checker/api/seasons_controller.dart';
 import 'package:film_checker/views/blocks/genre_block.dart';
+import 'package:film_checker/views/blocks/season_block.dart';
 import 'package:flutter/material.dart';
 
 class SearchSectionPageView extends StatefulWidget {
@@ -31,8 +33,8 @@ class _SearchSectionPageViewState extends State<SearchSectionPageView> {
           });
         }
       });
-    } else if (widget.title.toLowerCase() == 'rated most') {
-      gatherInfo(2).then((value) {
+    } else if (widget.title.toLowerCase() == 'seasons') {
+      gatherInfo(3).then((value) {
         if (mounted) {
           setState(() {
             _isLoading = false;
@@ -44,8 +46,9 @@ class _SearchSectionPageViewState extends State<SearchSectionPageView> {
 
   Future gatherInfo(int type) async {
     if (type == 1) {
-      _content = await Api().getAllGenres();
-    } else if (type == 2) {
+      _content = await GenresController().getAllGenres();
+    } else if (type == 3) {
+      _content = await SeasonsController().getAllSeasons();
     } else {
       return;
     }
@@ -96,6 +99,14 @@ class _SearchSectionPageViewState extends State<SearchSectionPageView> {
                 },
                 scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) {
+                  if (widget.title.toLowerCase() == 'genres') {
+                    return GenreBlock(
+                      orderNumber: index + 1,
+                      genre: _content[index],
+                    );
+                  } else if (widget.title.toLowerCase() == 'seasons') {
+                    return SeasonBlock(season: _content[index]);
+                  }
                   return GenreBlock(
                     orderNumber: index + 1,
                     genre: _content[index],

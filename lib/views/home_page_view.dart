@@ -1,9 +1,12 @@
 import 'package:film_checker/api/api.dart';
+import 'package:film_checker/api/seasons_controller.dart';
 import 'package:film_checker/models/anime.dart';
+import 'package:film_checker/models/season.dart';
 import 'package:film_checker/views/anime_by_section_page_view.dart';
 import 'package:film_checker/views/anime_page_view.dart';
 import 'package:film_checker/views/blocks/home_page/regular_block.dart';
 import 'package:film_checker/views/blocks/home_page/wide_block.dart';
+import 'package:film_checker/views/genre_anime_page_view.dart';
 import 'package:flutter/material.dart';
 
 class HomePageView extends StatefulWidget {
@@ -41,13 +44,15 @@ class _HomePageViewState extends State<HomePageView>
   Future gatherInfo() async {
     _topBannerAnime = (await Api().getRandomAnime(1))[0];
 
-    _favouriteAnime = await Api().getTopAnimeFiltered(20, 'favorite');
-    _seasonalAnime = await Api().getSeasonalAnime(20);
-    _topWatchedAnime = await Api().getTopAnimeFiltered(20, '');
+    _favouriteAnime = await Api().getTopAnimeFiltered('favorite');
+    _seasonalAnime = await SeasonsController()
+        .getSeasonalAnime(1, Season.fromJson(2024, 'winter'));
+    _topWatchedAnime = await Api().getTopAnimeFiltered('');
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Container(
@@ -149,7 +154,7 @@ class _HomePageViewState extends State<HomePageView>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
-                            'Favourites',
+                            'Most Favorited',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20,
@@ -162,7 +167,7 @@ class _HomePageViewState extends State<HomePageView>
                                 MaterialPageRoute(
                                   builder: (context) {
                                     return AnimeSectionPageView(
-                                      sectionName: 'Favourites',
+                                      sectionName: 'Most Favorited',
                                       animeList: _favouriteAnime,
                                     );
                                   },
@@ -185,7 +190,7 @@ class _HomePageViewState extends State<HomePageView>
                       height: 5,
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * .22,
+                      height: MediaQuery.of(context).size.height * .225,
                       width: double.infinity,
                       child: ListView.builder(
                         padding: const EdgeInsets.only(left: 15),
@@ -219,9 +224,11 @@ class _HomePageViewState extends State<HomePageView>
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return AnimeSectionPageView(
+                                    return GenreAnimePageView(
                                       sectionName: 'Seasonal',
-                                      animeList: _seasonalAnime,
+                                      genreNumber: -1,
+                                      season: Season.fromJson(2024, 'winter'),
+                                      type: 1,
                                     );
                                   },
                                 ),
@@ -243,7 +250,7 @@ class _HomePageViewState extends State<HomePageView>
                       height: 5,
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * .29,
+                      height: MediaQuery.of(context).size.height * .3,
                       width: double.infinity,
                       child: ListView.builder(
                         padding: const EdgeInsets.only(left: 15),
@@ -301,7 +308,7 @@ class _HomePageViewState extends State<HomePageView>
                       height: 5,
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * .29,
+                      height: MediaQuery.of(context).size.height * .3,
                       width: double.infinity,
                       child: ListView.builder(
                         padding: const EdgeInsets.only(left: 15),

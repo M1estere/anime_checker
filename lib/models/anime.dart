@@ -39,7 +39,7 @@ class Anime {
   factory Anime.fromJson(Map json, int libriaId) {
     return Anime(
       malId: json['mal_id'] ?? 0,
-      title: json['title'] ?? '',
+      title: json['title'].trim() ?? '',
       originalTitle: json['title_japanese'] ?? '',
       episodes: json['episodes'] ?? 0,
       synopsis: json['synopsis'] != null

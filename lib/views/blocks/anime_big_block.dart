@@ -32,7 +32,7 @@ class AnimeBigBlock extends StatelessWidget {
             children: [
               SizedBox(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * .3,
+                height: MediaQuery.of(context).size.height * .26,
                 child: Hero(
                   tag: 'animeImage${anime.malId}',
                   child: ClipRRect(

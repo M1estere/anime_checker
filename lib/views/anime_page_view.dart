@@ -1,4 +1,4 @@
-import 'package:film_checker/api/api.dart';
+import 'package:film_checker/api/anime_controller.dart';
 import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/models/character.dart';
 import 'package:film_checker/models/review.dart';
@@ -52,10 +52,10 @@ class _AnimePageViewState extends State<AnimePageView> {
   }
 
   Future gatherInfo() async {
-    _characters = await Api().getCharacters(widget.anime.malId);
-    _reviews = await Api().getReviews(widget.anime.malId);
-    _videos = await Api().getVideos(widget.anime.malId);
-    _pictures = await Api().getPictures(widget.anime.malId);
+    _characters = await AnimeController().getCharacters(widget.anime.malId);
+    _reviews = await AnimeController().getReviews(widget.anime.malId);
+    _videos = await AnimeController().getVideos(widget.anime.malId);
+    _pictures = await AnimeController().getPictures(widget.anime.malId);
 
     _isLoading = false;
   }
@@ -270,7 +270,7 @@ class _AnimePageViewState extends State<AnimePageView> {
                                             height: MediaQuery.of(context)
                                                     .size
                                                     .height *
-                                                .175,
+                                                .18,
                                             child: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.start,
@@ -414,7 +414,7 @@ class _AnimePageViewState extends State<AnimePageView> {
                                             height: MediaQuery.of(context)
                                                     .size
                                                     .height *
-                                                .21,
+                                                .215,
                                             child: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.start,

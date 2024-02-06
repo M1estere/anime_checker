@@ -13,7 +13,7 @@ class AnimeCharacterBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(right: 15),
-      height: MediaQuery.of(context).size.height * .14,
+      height: MediaQuery.of(context).size.height * .15,
       width: MediaQuery.of(context).size.height * .12,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
