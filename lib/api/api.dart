@@ -9,7 +9,7 @@ class Api {
   static const _randomAnimeUrl = 'https://api.jikan.moe/v4/random/anime';
 
   static const _libriaAnime =
-      'https://api.anilibria.tv/v2.6.2/getTitle?playlist_type=array&code=';
+      'https://api.anilibria.tv/v2.13/getTitle?playlist_type=array&code=';
 
   Future<List<Anime>> getTopAnimeFiltered(String filterType) async {
     List<Anime> result = [];
@@ -52,6 +52,7 @@ class Api {
           playlist = decoded['player']['playlist'];
         }
       }
+
       print('Libria id: $id');
       return (id, playlist);
     } on HandshakeException catch (e) {

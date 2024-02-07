@@ -14,7 +14,7 @@ class AnimeReviewBlock extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.only(right: 15),
-      height: MediaQuery.of(context).size.height * .21,
+      height: MediaQuery.of(context).size.height * .215,
       width: MediaQuery.of(context).size.width * .7,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),

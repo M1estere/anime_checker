@@ -447,7 +447,7 @@ class _AnimePageViewState extends State<AnimePageView> {
                                             height: MediaQuery.of(context)
                                                     .size
                                                     .height *
-                                                .215,
+                                                .223,
                                             child: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.start,

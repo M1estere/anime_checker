@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class YoutubeVideoPlayerPageView extends StatefulWidget {
@@ -23,7 +22,7 @@ class _YoutubeVideoPlayerPageViewState
     params: const YoutubePlayerParams(
       mute: false,
       showControls: true,
-      showFullscreenButton: true,
+      showFullscreenButton: false,
       loop: false,
     ),
   );
@@ -37,27 +36,55 @@ class _YoutubeVideoPlayerPageViewState
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SizedBox(
-        child: YoutubePlayerScaffold(
-          backgroundColor: Colors.blue,
-          enableFullScreenOnVerticalDrag: true,
-          autoFullScreen: true,
-          defaultOrientations: const [
-            DeviceOrientation.portraitUp,
-            DeviceOrientation.portraitDown,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        leadingWidth: MediaQuery.of(context).size.width * .9,
+        leading: Row(
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(
+                Icons.arrow_back_ios_new,
+                size: 35,
+                color: Colors.white,
+              ),
+            ),
           ],
-          controller: _controller,
-          aspectRatio: 16 / 9,
-          builder: (context, player) => Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [player],
-          ),
         ),
       ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          YoutubePlayer(
+            controller: _controller,
+            aspectRatio: 16 / 9,
+          ),
+        ],
+      ),
     );
-    // ),
+    // return SafeArea(
+    //   child: SizedBox(
+    //     child: YoutubePlayerScaffold(
+    //       backgroundColor: Colors.blue,
+    //       enableFullScreenOnVerticalDrag: true,
+    //       autoFullScreen: true,
+    //       defaultOrientations: const [
+    //         DeviceOrientation.portraitUp,
+    //         DeviceOrientation.portraitDown,
+    //       ],
+    //       controller: _controller,
+    //       aspectRatio: 16 / 9,
+    //       builder: (context, player) => Column(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         crossAxisAlignment: CrossAxisAlignment.center,
+    //         children: [player],
+    //       ),
+    //     ),
     //   ),
     // );
   }
