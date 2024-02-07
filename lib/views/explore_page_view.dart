@@ -70,7 +70,7 @@ class _ExplorePageViewState extends State<ExplorePageView>
                       ),
                       SizedBox(
                         width: double.infinity,
-                        height: MediaQuery.of(context).size.height * .21,
+                        height: MediaQuery.of(context).size.height * .18,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,7 +87,7 @@ class _ExplorePageViewState extends State<ExplorePageView>
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 25,
-                                      height: 1.2,
+                                      height: 1,
                                     ),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
@@ -97,8 +97,8 @@ class _ExplorePageViewState extends State<ExplorePageView>
                                     style: const TextStyle(
                                       color: Colors.grey,
                                       fontWeight: FontWeight.w300,
-                                      fontSize: 20,
-                                      height: 1.2,
+                                      fontSize: 17,
+                                      height: 1,
                                     ),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
@@ -142,7 +142,7 @@ class _ExplorePageViewState extends State<ExplorePageView>
                                   Text(
                                     '${_anime[_currentIndex].score}/10',
                                     style: const TextStyle(
-                                      fontSize: 20,
+                                      fontSize: 17,
                                       fontWeight: FontWeight.w500,
                                       color: Colors.white,
                                     ),
@@ -169,7 +169,7 @@ class _ExplorePageViewState extends State<ExplorePageView>
                           top: 10,
                         ),
                         width: double.infinity,
-                        height: MediaQuery.of(context).size.height * .6,
+                        height: MediaQuery.of(context).size.height * .65,
                         child: SizedBox(
                           child: LoopPageView.builder(
                               onPageChanged: (value) {

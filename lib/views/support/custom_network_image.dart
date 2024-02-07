@@ -28,20 +28,9 @@ class CustomNetworkImage extends StatelessWidget {
       },
       errorBuilder: (context, error, stackTrace) {
         return Container(
-          decoration: BoxDecoration(color: Colors.grey.withOpacity(.3)),
+          decoration: BoxDecoration(color: Colors.grey.withOpacity(.7)),
           width: double.infinity,
           height: double.infinity,
-          child: const Padding(
-            padding: EdgeInsets.all(10),
-            child: Text(
-              'Some error occured while fetching image',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 15,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
         );
       },
     );

@@ -143,7 +143,7 @@ class _AnimePageViewState extends State<AnimePageView> {
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 25,
-                                        height: 1.2,
+                                        height: 1,
                                       ),
                                     ),
                                     Text(
