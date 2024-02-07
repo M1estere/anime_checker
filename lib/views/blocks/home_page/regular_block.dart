@@ -23,6 +23,7 @@ class _HomeRegularBlockState extends State<HomeRegularBlock> {
             .push(
           MaterialPageRoute(
             builder: (context) => AnimePageView(
+              path: widget.anime.images['jpg']['large_image_url'],
               animeImage: Image.network(
                 widget.anime.images['jpg']['large_image_url'],
                 fit: BoxFit.cover,

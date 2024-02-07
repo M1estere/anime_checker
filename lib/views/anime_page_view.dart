@@ -12,6 +12,7 @@ import 'package:film_checker/views/blocks/anime_page/anime_picture_block.dart';
 import 'package:film_checker/views/blocks/anime_page/anime_review_block.dart';
 import 'package:film_checker/views/blocks/anime_page/anime_video_block.dart';
 import 'package:film_checker/views/characters_page_view.dart';
+import 'package:film_checker/views/fullscreen_gallery_page_view.dart';
 import 'package:film_checker/views/reviews_page_view.dart';
 import 'package:film_checker/views/support/divider.dart';
 import 'package:film_checker/views/support/image_background.dart';
@@ -19,6 +20,7 @@ import 'package:film_checker/views/support/fetching_circle.dart';
 import 'package:flutter/material.dart';
 
 class AnimePageView extends StatefulWidget {
+  final String path;
   final Image animeImage;
   final Anime anime;
 
@@ -26,6 +28,7 @@ class AnimePageView extends StatefulWidget {
     super.key,
     required this.anime,
     required this.animeImage,
+    required this.path,
   });
 
   @override
@@ -600,16 +603,30 @@ class _AnimePageViewState extends State<AnimePageView> {
                   children: [
                     Hero(
                       tag: 'animeImage${widget.anime.malId}',
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * .3,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(40),
-                            bottomRight: Radius.circular(40),
-                          ),
-                          image: DecorationImage(
-                            image: widget.animeImage.image,
-                            fit: BoxFit.cover,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return FullScreenGalleryPageView(
+                                  currentIndex: 0,
+                                  imagePaths: [widget.path],
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * .3,
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(40),
+                              bottomRight: Radius.circular(40),
+                            ),
+                            image: DecorationImage(
+                              image: widget.animeImage.image,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),

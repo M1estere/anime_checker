@@ -17,6 +17,7 @@ class WideBlock extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => AnimePageView(
+              path: anime.images['jpg']['large_image_url'],
               animeImage: Image.network(
                 anime.images['jpg']['large_image_url'],
                 fit: BoxFit.cover,

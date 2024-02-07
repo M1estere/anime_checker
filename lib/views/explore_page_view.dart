@@ -195,6 +195,8 @@ class _ExplorePageViewState extends State<ExplorePageView>
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) => AnimePageView(
+                                          path: _anime[index].images['jpg']
+                                              ['large_image_url'],
                                           animeImage: _currentImage,
                                           anime: _anime[index],
                                         ),

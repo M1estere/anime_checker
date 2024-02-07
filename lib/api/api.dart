@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:film_checker/models/anime.dart';
 import 'package:http/http.dart' as http;
@@ -8,7 +9,7 @@ class Api {
   static const _randomAnimeUrl = 'https://api.jikan.moe/v4/random/anime';
 
   static const _libriaAnime =
-      'https://api.anilibria.tv/v2.13/getTitle?playlist_type=array&code=';
+      'https://api.anilibria.tv/v2.6.2/getTitle?playlist_type=array&code=';
 
   Future<List<Anime>> getTopAnimeFiltered(String filterType) async {
     List<Anime> result = [];
@@ -39,19 +40,23 @@ class Api {
   Future<(int, List)> getLibriaCode(String title) async {
     title = processTitleForLibria(title);
 
-    final libriaResponse = await http.get(Uri.parse(_libriaAnime + title));
-    int id = -1;
-    List playlist = [];
-    if (libriaResponse.statusCode == 200) {
-      final decoded = json.decode(libriaResponse.body) as Map;
-      if (decoded.containsKey('error')) {
-      } else {
-        id = decoded['id'];
-        playlist = decoded['player']['playlist'];
+    try {
+      final libriaResponse = await http.get(Uri.parse(_libriaAnime + title));
+      int id = -1;
+      List playlist = [];
+      if (libriaResponse.statusCode == 200) {
+        final decoded = json.decode(libriaResponse.body) as Map;
+        if (decoded.containsKey('error')) {
+        } else {
+          id = decoded['id'];
+          playlist = decoded['player']['playlist'];
+        }
       }
+      return (id, playlist);
+    } on HandshakeException catch (e) {
+      print(e);
+      return (-1, []);
     }
-
-    return (id, playlist);
   }
 
   Future<List<Anime>> getRandomAnime(int amount) async {

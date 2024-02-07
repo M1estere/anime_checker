@@ -1,4 +1,3 @@
-import 'package:film_checker/views/support/custom_network_image.dart';
 import 'package:flutter/material.dart';
 
 class FullScreenGalleryPageView extends StatefulWidget {

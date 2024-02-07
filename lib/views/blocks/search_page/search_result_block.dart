@@ -24,6 +24,7 @@ class _SearchResultBlockState extends State<SearchResultBlock> {
             .push(
           MaterialPageRoute(
             builder: (context) => AnimePageView(
+              path: widget.anime.images['jpg']['large_image_url'],
               animeImage: Image.network(
                 widget.anime.images['jpg']['large_image_url'],
                 fit: BoxFit.cover,

@@ -69,6 +69,8 @@ class _HomePageViewState extends State<HomePageView>
                           MaterialPageRoute(
                             builder: (context) {
                               return AnimePageView(
+                                path: _topBannerAnime.images['jpg']
+                                    ['large_image_url'],
                                 anime: _topBannerAnime,
                                 animeImage: Image.network(
                                   _topBannerAnime.images['jpg']
