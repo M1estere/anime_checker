@@ -71,7 +71,7 @@ class _FullScreenGalleryPageViewState extends State<FullScreenGalleryPageView> {
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: Stack(
             children: [
-              SizedBox.expand(
+              SizedBox(
                 child: PageView.builder(
                   pageSnapping: true,
                   onPageChanged: (value) {
@@ -84,12 +84,34 @@ class _FullScreenGalleryPageViewState extends State<FullScreenGalleryPageView> {
                   itemBuilder: (context, index) => Container(
                     margin: const EdgeInsets.symmetric(horizontal: 7),
                     child: InteractiveViewer(
-                      minScale: 1,
-                      maxScale: 5,
-                      child: CustomNetworkImage(
-                        path: widget.imagePaths[index],
-                      ),
-                    ),
+                        minScale: 1,
+                        maxScale: 5,
+                        child: Image.network(
+                          widget.imagePaths[index],
+                          width: double.infinity,
+                          height: double.infinity,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            } else {
+                              return const Center(
+                                child: SizedBox(
+                                  width: 30,
+                                  height: 30,
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            }
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(.7)),
+                              width: double.infinity,
+                              height: double.infinity,
+                            );
+                          },
+                        )),
                   ),
                 ),
               ),

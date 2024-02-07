@@ -189,9 +189,9 @@ class _GenreSeasonAnimePageViewState extends State<GenreSeasonAnimePageView> {
                               child: !_moreLoading
                                   ? GestureDetector(
                                       onTap: () => nextPage(),
-                                      child: const Text(
-                                        'LOAD MORE',
-                                        style: TextStyle(
+                                      child: Text(
+                                        'load more'.toUpperCase(),
+                                        style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 20,
                                           fontWeight: FontWeight.w500,

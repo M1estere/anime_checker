@@ -1,4 +1,12 @@
-import 'package:film_checker/views/support/no_anime_by_request.dart';
+import 'package:extended_wrap/extended_wrap.dart';
+import 'package:film_checker/api/genres_controller.dart';
+import 'package:film_checker/api/search_controller.dart' as search;
+import 'package:film_checker/models/anime.dart';
+import 'package:film_checker/models/genre.dart';
+import 'package:film_checker/models/pagination.dart';
+import 'package:film_checker/views/blocks/search_page/search_category_block.dart';
+import 'package:film_checker/views/blocks/search_page/search_result_block.dart';
+import 'package:film_checker/views/support/fetching_circle.dart';
 import 'package:flutter/material.dart';
 
 class SearchResultsPageView extends StatefulWidget {
@@ -9,171 +17,480 @@ class SearchResultsPageView extends StatefulWidget {
 }
 
 class _SearchResultsPageViewState extends State<SearchResultsPageView> {
+  final ScrollController _scrollController = ScrollController();
+  bool _showBtn = false;
+
   final TextEditingController _searchController = TextEditingController();
+
+  List<Anime> resultAnime = [];
+  Pagination _currentPage = Pagination.empty();
+
+  bool _allGenresDisplayed = false;
+
+  List<Genre> activeGenres = [];
+  List<Genre> excludedGenres = [];
+
+  List<Genre> allGenres = [];
+
+  bool _loadingGenres = true;
+  bool _loadingMore = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController.addListener(() {
+      double showoffset = 10.0;
+
+      if (_scrollController.offset >= showoffset &&
+          !_scrollController.position.outOfRange &&
+          !_showBtn) {
+        _showBtn = true;
+        setState(() {});
+      }
+
+      if (_scrollController.offset <=
+              _scrollController.position.minScrollExtent &&
+          !_scrollController.position.outOfRange) {
+        _showBtn = false;
+        setState(() {});
+      }
+    });
+
+    gatherInfo().then((value) {
+      if (mounted) {
+        setState(() {
+          _loadingGenres = false;
+        });
+      }
+    });
+  }
+
+  Future gatherInfo() async {
+    allGenres = await GenresController().getAllGenres();
+  }
 
   @override
   void dispose() {
     super.dispose();
+
     _searchController.dispose();
+    _scrollController.dispose();
   }
+
+  updatePage() {
+    performSearch().then((value) {
+      setState(() {});
+    });
+  }
+
+  Future nextPage() async {
+    if (_currentPage.hasNextPage) {
+      if (mounted) {
+        setState(() {
+          _loadingMore = true;
+        });
+      }
+
+      (List<Anime>, Pagination) t = await search.SearchController()
+          .getAnimeBySearch(
+              [for (var obj in activeGenres) obj.id.toString()],
+              [for (var obj in excludedGenres) obj.id.toString()],
+              _searchController.text,
+              _currentPage.currentPage + 1);
+
+      resultAnime.addAll(t.$1);
+      _currentPage = t.$2;
+
+      if (mounted) {
+        setState(() {
+          _loadingMore = false;
+        });
+      }
+    }
+  }
+
+  Future performSearch() async {
+    (List<Anime>, Pagination) t = await search.SearchController()
+        .getAnimeBySearch(
+            [for (var obj in activeGenres) obj.id.toString()],
+            [for (var obj in excludedGenres) obj.id.toString()],
+            _searchController.text,
+            1);
+
+    resultAnime = t.$1;
+    _currentPage = t.$2;
+  }
+
+  returnToTop() {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: _showBtn
+          ? FloatingActionButton(
+              onPressed: () {
+                _scrollController.animateTo(
+                    //go to top of scroll
+                    0, //scroll offset to go
+                    duration:
+                        const Duration(milliseconds: 500), //duration of scroll
+                    curve: Curves.fastOutSlowIn //scroll type
+                    );
+              },
+              child: const Icon(Icons.arrow_upward),
+            )
+          : null,
       extendBodyBehindAppBar: true,
-      body: Padding(
-        padding: const EdgeInsets.only(top: 30),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Hero(
-                tag: 'searchBox',
-                child: Material(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      border: Border(
-                        bottom: const BorderSide(
-                          color: Colors.grey,
-                        ),
-                        top: Theme.of(context)
-                            .inputDecorationTheme
-                            .outlineBorder!,
-                        left: Theme.of(context)
-                            .inputDecorationTheme
-                            .outlineBorder!,
-                        right: Theme.of(context)
-                            .inputDecorationTheme
-                            .outlineBorder!,
-                      ),
-                    ),
-                    child: SizedBox(
-                      height: 50,
-                      child: TextField(
-                        autofocus: true,
-                        controller: _searchController,
-                        textAlignVertical: TextAlignVertical.center,
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 22,
-                          fontWeight: FontWeight.w400,
-                          letterSpacing: .5,
-                        ),
-                        decoration: InputDecoration(
-                          border: Theme.of(context).inputDecorationTheme.border,
-                          focusedBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .focusedBorder,
-                          enabledBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .enabledBorder,
-                          errorBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .errorBorder,
-                          disabledBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .disabledBorder,
-                          prefixIcon: IconButton(
-                            icon: Icon(
-                              Icons.arrow_back_ios,
-                              size: 30,
-                              color: Theme.of(context)
-                                  .inputDecorationTheme
-                                  .prefixIconColor,
-                            ),
-                            onPressed: () => Navigator.of(context).pop(),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          return updatePage();
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(top: 30),
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Hero(
+                  tag: 'searchBox',
+                  child: Material(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        border: Border(
+                          bottom: const BorderSide(
+                            color: Colors.grey,
                           ),
-                          hintText: 'Search anything...',
-                          hintStyle:
-                              Theme.of(context).inputDecorationTheme.hintStyle,
-                          suffixIcon: _searchController.text.isNotEmpty
-                              ? const Icon(
-                                  Icons.close,
-                                  color: Colors.grey,
-                                  size: 30,
-                                )
-                              : null,
+                          top: Theme.of(context)
+                              .inputDecorationTheme
+                              .outlineBorder!,
+                          left: Theme.of(context)
+                              .inputDecorationTheme
+                              .outlineBorder!,
+                          right: Theme.of(context)
+                              .inputDecorationTheme
+                              .outlineBorder!,
+                        ),
+                      ),
+                      child: SizedBox(
+                        height: 50,
+                        child: TextField(
+                          onChanged: (value) {
+                            updatePage();
+                          },
+                          autofocus: true,
+                          controller: _searchController,
+                          textAlignVertical: TextAlignVertical.center,
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: .5,
+                          ),
+                          decoration: InputDecoration(
+                            border:
+                                Theme.of(context).inputDecorationTheme.border,
+                            focusedBorder: Theme.of(context)
+                                .inputDecorationTheme
+                                .focusedBorder,
+                            enabledBorder: Theme.of(context)
+                                .inputDecorationTheme
+                                .enabledBorder,
+                            errorBorder: Theme.of(context)
+                                .inputDecorationTheme
+                                .errorBorder,
+                            disabledBorder: Theme.of(context)
+                                .inputDecorationTheme
+                                .disabledBorder,
+                            prefixIcon: IconButton(
+                              icon: Icon(
+                                Icons.arrow_back_ios,
+                                size: 30,
+                                color: Theme.of(context)
+                                    .inputDecorationTheme
+                                    .prefixIconColor,
+                              ),
+                              onPressed: () => Navigator.of(context).pop(),
+                            ),
+                            hintText: 'Search (3< symbols)...',
+                            hintStyle: Theme.of(context)
+                                .inputDecorationTheme
+                                .hintStyle,
+                            suffixIcon: _searchController.text.isNotEmpty
+                                ? IconButton(
+                                    onPressed: () {
+                                      _searchController.text = '';
+                                      updatePage();
+                                    },
+                                    icon: const Icon(
+                                      Icons.close,
+                                      color: Colors.grey,
+                                      size: 30,
+                                    ),
+                                  )
+                                : null,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              (_searchController.text.isNotEmpty)
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * .12,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'Results'.toUpperCase(),
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const Icon(
+                              Icons.search,
+                              color: Colors.grey,
+                              size: 30,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              _searchController.text,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(
-                          height: 10,
+                          height: 5,
                         ),
-                        // SizedBox(
-                        //   height: MediaQuery.of(context).size.height * .7,
-                        //   child: ListView.builder(
-                        //     itemCount: _searchResults.length,
-                        //     scrollDirection: Axis.vertical,
-                        //     itemBuilder: (context, index) {
-                        //       return FullMangaBlock(
-                        //         title: _searchResults[index].title!,
-                        //         chapters: _searchResults[index].chapters!,
-                        //         status: _searchResults[index].status!,
-                        //         author: _searchResults[index].author!,
-                        //         image: _searchResults[index].image!,
-                        //         desc: _searchResults[index].desc!,
-                        //         rates: _searchResults[index].rates!,
-                        //         ratings: _searchResults[index].ratings!,
-                        //         releaseYear: _searchResults[index].year!,
-                        //       );
-                        //     },
-                        //   ),
-                        // ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const Icon(
+                              Icons.check,
+                              color: Colors.green,
+                              size: 30,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Expanded(
+                              child: SizedBox(
+                                height: 25,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: activeGenres.length,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        margin: const EdgeInsets.only(right: 5),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: Colors.grey.withOpacity(.5)),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 1.5, horizontal: 4),
+                                          child: Text(
+                                            activeGenres[index].name,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const Icon(
+                              Icons.close,
+                              color: Colors.red,
+                              size: 30,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Expanded(
+                              child: SizedBox(
+                                height: 25,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: excludedGenres.length,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        margin: const EdgeInsets.only(right: 5),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: Colors.grey.withOpacity(.5)),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 1.5, horizontal: 4),
+                                          child: Text(
+                                            excludedGenres[index].name,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
-                    )
-                  : const NoAnimeByRequest()
-              // : SizedBox(
-              //     height: MediaQuery.of(context).size.height * .75,
-              //     child: Center(
-              //       child: Column(
-              //         mainAxisAlignment: MainAxisAlignment.center,
-              //         crossAxisAlignment: CrossAxisAlignment.center,
-              //         children: [
-              //           const Icon(
-              //             Icons.article_outlined,
-              //             color: Colors.green,
-              //             size: 80,
-              //           ),
-              //           const SizedBox(
-              //             height: 5,
-              //           ),
-              //           SizedBox(
-              //             width: MediaQuery.of(context).size.width * .8,
-              //             child: Text(
-              //               textAlign: TextAlign.center,
-              //               'Type something to find!',
-              //               style: TextStyle(
-              //                 color: Theme.of(context).primaryColor,
-              //                 fontSize: 25,
-              //                 fontWeight: FontWeight.w500,
-              //               ),
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              // ),
-            ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Genres'.toUpperCase(),
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      !_loadingGenres
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: ExtendedWrap(
+                                    maxLines: _allGenresDisplayed ? 50 : 3,
+                                    minLines: _allGenresDisplayed ? 50 : 3,
+                                    alignment: WrapAlignment.start,
+                                    direction: Axis.horizontal,
+                                    children: List.generate(allGenres.length,
+                                        (index) {
+                                      return SearchPageCategoryBlock(
+                                        genre: allGenres[index],
+                                        included: activeGenres,
+                                        excluded: excludedGenres,
+                                        updateFunc: updatePage,
+                                      );
+                                    }),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _allGenresDisplayed =
+                                          !_allGenresDisplayed;
+                                    });
+                                  },
+                                  child: Text(
+                                    _allGenresDisplayed ? 'Collapse' : 'Expand',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : const FetchingCircle(),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                // const FetchingCircle(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Results'.toUpperCase(),
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Text(
+                            '${_currentPage.wholeAmount}',
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                      ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.only(top: 5),
+                        itemBuilder: (context, index) {
+                          return SearchResultBlock(
+                            anime: resultAnime[index],
+                          );
+                        },
+                        itemCount: resultAnime.length,
+                      ),
+                      _currentPage.hasNextPage
+                          ? GestureDetector(
+                              onTap: () => nextPage(),
+                              child: Container(
+                                width: double.infinity,
+                                height: 50,
+                                color: Colors.grey.withOpacity(.3),
+                                child: Center(
+                                  child: !_loadingMore
+                                      ? Text(
+                                          'Load more'.toUpperCase(),
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        )
+                                      : CircularProgressIndicator(),
+                                ),
+                              ),
+                            )
+                          : const Center(),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
