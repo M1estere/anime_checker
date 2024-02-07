@@ -52,9 +52,10 @@ class Api {
           playlist = decoded['player']['playlist'];
         }
       }
+      print('Libria id: $id');
       return (id, playlist);
     } on HandshakeException catch (e) {
-      print(e);
+      print('Error: $e');
       return (-1, []);
     }
   }

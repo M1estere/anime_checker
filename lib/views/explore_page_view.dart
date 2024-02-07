@@ -70,7 +70,7 @@ class _ExplorePageViewState extends State<ExplorePageView>
                       ),
                       SizedBox(
                         width: double.infinity,
-                        height: MediaQuery.of(context).size.height * .18,
+                        height: MediaQuery.of(context).size.height * .187,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,

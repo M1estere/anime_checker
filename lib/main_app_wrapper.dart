@@ -53,14 +53,15 @@ class _MainWrapperState extends State<MainWrapper> {
     // );
 
     return Scaffold(
-      // body: _pages[_currentPageIndex],
+      extendBodyBehindAppBar: false,
+      extendBody: false,
       body: PageView(
         controller: _pageController,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         children: _pages,
       ),
+      primary: true,
       bottomNavigationBar: StylishBottomBar(
-        hasNotch: true,
         currentIndex: _currentPageIndex,
         onTap: (index) {
           setState(() {

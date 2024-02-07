@@ -5,8 +5,7 @@ import 'package:film_checker/models/pagination.dart';
 import 'package:http/http.dart' as http;
 
 class SearchController {
-  static const _searchAnimeUrl =
-      'https://api.jikan.moe/v4/anime?order_by=mal_id&';
+  static const _searchAnimeUrl = 'https://api.jikan.moe/v4/anime?';
 
   Future<(List<Anime>, Pagination)> getAnimeBySearch(
     List<String> incGenreIdList,

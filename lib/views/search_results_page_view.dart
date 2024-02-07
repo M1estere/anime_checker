@@ -177,7 +177,7 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
                         ),
                       ),
                       child: SizedBox(
-                        height: 50,
+                        height: 65,
                         child: TextField(
                           onChanged: (value) {
                             updatePage();
@@ -240,7 +240,7 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
                   ),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * .12,
+                  height: MediaQuery.of(context).size.height * .13,
                   child: Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

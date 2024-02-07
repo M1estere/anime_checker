@@ -50,7 +50,7 @@ class _SearchResultBlockState extends State<SearchResultBlock> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: 70,
+                  width: MediaQuery.of(context).size.width * .2,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(5),
                     child: CustomNetworkImage(
@@ -62,7 +62,7 @@ class _SearchResultBlockState extends State<SearchResultBlock> {
                   width: 10,
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * .52,
+                  width: MediaQuery.of(context).size.width * .45,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,25 +108,27 @@ class _SearchResultBlockState extends State<SearchResultBlock> {
                 )
               ],
             ),
-            const SizedBox(
-              width: 5,
-            ),
-            Row(
-              children: [
-                Icon(
-                  Icons.star_rounded,
-                  size: 30,
-                  color: Colors.yellow,
-                ),
-                Text(
-                  '${widget.anime.score}/10',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
+            SizedBox(
+              width: MediaQuery.of(context).size.width * .25,
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.star_rounded,
+                    size: 30,
+                    color: Colors.yellow,
                   ),
-                ),
-              ],
+                  FittedBox(
+                    child: Text(
+                      '${widget.anime.score}/10',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             )
           ],
         ),

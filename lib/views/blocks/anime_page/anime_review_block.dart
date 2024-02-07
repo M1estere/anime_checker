@@ -27,7 +27,7 @@ class AnimeReviewBlock extends StatelessWidget {
             review.review,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 15,
+              fontSize: 14,
               fontWeight: FontWeight.w300,
               height: 1,
             ),
