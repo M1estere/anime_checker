@@ -20,6 +20,7 @@ class _SearchResultBlockState extends State<SearchResultBlock> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        FocusScope.of(context).unfocus();
         Navigator.of(context)
             .push(
           MaterialPageRoute(

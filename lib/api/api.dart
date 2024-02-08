@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:film_checker/models/anime.dart';
 import 'package:http/http.dart' as http;
@@ -14,8 +15,8 @@ class Api {
   Future<List<Anime>> getTopAnimeFiltered(String filterType) async {
     List<Anime> result = [];
 
-    final response =
-        await http.get(Uri.parse('$_topAnimeUrl?filter=$filterType'));
+    final response = await http.get(Uri.parse(
+        '$_topAnimeUrl?filter=$filterType&page=${Random().nextInt(4) + 1}'));
     if (response.statusCode == 200) {
       final decodedData = json.decode(response.body)['data'] as List;
 

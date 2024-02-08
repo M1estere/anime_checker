@@ -89,7 +89,7 @@ class _SearchPageViewState extends State<SearchPageView>
                                     .inputDecorationTheme
                                     .prefixIconColor,
                               ),
-                              hintText: 'Search anything...',
+                              hintText: 'Search anime...',
                               hintStyle: Theme.of(context)
                                   .inputDecorationTheme
                                   .hintStyle,
