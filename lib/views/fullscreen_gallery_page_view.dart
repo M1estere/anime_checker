@@ -21,20 +21,20 @@ class _FullScreenGalleryPageViewState extends State<FullScreenGalleryPageView> {
 
   @override
   void initState() {
-    super.initState();
-
     setState(() {
       _currentPageIndex = widget.currentIndex;
     });
 
     _pageController = PageController(initialPage: _currentPageIndex);
+
+    super.initState();
   }
 
   @override
   void dispose() {
-    super.dispose();
-
     _pageController.dispose();
+
+    super.dispose();
   }
 
   @override

@@ -31,13 +31,13 @@ class _ExplorePageViewState extends State<ExplorePageView>
 
   @override
   void initState() {
-    super.initState();
-
     gatherInfo().then((value) {
       if (mounted) {
         setState(() {});
       }
     });
+
+    super.initState();
   }
 
   Future gatherInfo() async {
@@ -55,6 +55,7 @@ class _ExplorePageViewState extends State<ExplorePageView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     return SingleChildScrollView(
       child: Stack(
         children: [
@@ -259,7 +260,12 @@ class _ExplorePageViewState extends State<ExplorePageView>
                     ],
                   ),
                 )
-              : const Center(child: FetchingCircle()),
+              : SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: const Align(
+                      alignment: Alignment.center, child: FetchingCircle()),
+                ),
         ],
       ),
     );

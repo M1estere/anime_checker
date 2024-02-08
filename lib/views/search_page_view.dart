@@ -17,6 +17,7 @@ class _SearchPageViewState extends State<SearchPageView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: SafeArea(

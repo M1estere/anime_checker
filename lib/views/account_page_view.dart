@@ -33,6 +33,7 @@ class _AccountPageViewState extends State<AccountPageView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: SafeArea(

@@ -23,8 +23,6 @@ class _SearchSectionPageViewState extends State<SearchSectionPageView> {
 
   @override
   void initState() {
-    super.initState();
-
     if (widget.title.toLowerCase() == 'genres') {
       gatherInfo(1).then((value) {
         if (mounted) {
@@ -42,6 +40,8 @@ class _SearchSectionPageViewState extends State<SearchSectionPageView> {
         }
       });
     }
+
+    super.initState();
   }
 
   Future gatherInfo(int type) async {

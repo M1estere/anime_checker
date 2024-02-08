@@ -29,9 +29,9 @@ class _YoutubeVideoPlayerPageViewState
 
   @override
   void initState() {
-    super.initState();
-
     _controller.cueVideoById(videoId: widget.youtubeUrl);
+
+    super.initState();
   }
 
   @override

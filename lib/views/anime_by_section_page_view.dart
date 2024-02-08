@@ -21,8 +21,6 @@ class _AnimeSectionPageViewState extends State<AnimeSectionPageView> {
 
   @override
   void initState() {
-    super.initState();
-
     gatherInfo().then((value) {
       if (mounted) {
         setState(() {
@@ -30,6 +28,8 @@ class _AnimeSectionPageViewState extends State<AnimeSectionPageView> {
         });
       }
     });
+
+    super.initState();
   }
 
   Future gatherInfo() async {

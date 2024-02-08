@@ -1,3 +1,4 @@
+import 'package:film_checker/views/anime_watch_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -18,18 +19,16 @@ class SeriesBlock extends StatelessWidget {
       child: InkWell(
         splashColor: Colors.blue.withOpacity(.15),
         onTap: () {
-          // Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //     builder: (context) {
-          //       return GenreAnimePageView(
-          //         sectionName: genre.name.toLowerCase(),
-          //         genreNumber: genre.id,
-          //         type: 0,
-          //         season: Season(year: 2024, title: ''),
-          //       );
-          //     },
-          //   ),
-          // );
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return AnimeWatchPageView(
+                  animeLinks: data['hls'],
+                  currentRes: 'Full HD',
+                );
+              },
+            ),
+          );
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),

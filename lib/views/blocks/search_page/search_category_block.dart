@@ -53,8 +53,6 @@ class _SearchPageCategoryBlockState extends State<SearchPageCategoryBlock> {
         }
         setState(() {});
         widget.updateFunc();
-        print('Inc: ${widget.included}');
-        print('Exc: ${widget.excluded}');
       },
       child: Container(
         margin: const EdgeInsets.only(right: 5, bottom: 5),

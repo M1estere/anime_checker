@@ -47,13 +47,13 @@ class _AnimePageViewState extends State<AnimePageView> {
 
   @override
   void initState() {
-    super.initState();
-
     gatherInfo().then((value) {
       if (mounted) {
         setState(() {});
       }
     });
+
+    super.initState();
   }
 
   Future gatherInfo() async {

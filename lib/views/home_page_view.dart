@@ -32,8 +32,6 @@ class _HomePageViewState extends State<HomePageView>
 
   @override
   void initState() {
-    super.initState();
-
     gatherInfo().then((value) {
       if (mounted) {
         setState(() {
@@ -41,6 +39,8 @@ class _HomePageViewState extends State<HomePageView>
         });
       }
     });
+
+    super.initState();
   }
 
   Future gatherInfo() async {
@@ -55,6 +55,7 @@ class _HomePageViewState extends State<HomePageView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Container(

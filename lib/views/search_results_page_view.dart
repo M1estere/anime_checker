@@ -42,8 +42,19 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
 
   @override
   void initState() {
-    super.initState();
+    setupScrollController();
+    gatherInfo().then((value) {
+      if (mounted) {
+        setState(() {
+          _loadingGenres = false;
+        });
+      }
+    });
 
+    super.initState();
+  }
+
+  setupScrollController() {
     _scrollController.addListener(() {
       double showoffset = 10.0;
 
@@ -61,14 +72,6 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
         setState(() {});
       }
     });
-
-    gatherInfo().then((value) {
-      if (mounted) {
-        setState(() {
-          _loadingGenres = false;
-        });
-      }
-    });
   }
 
   Future gatherInfo() async {
@@ -77,10 +80,10 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
 
   @override
   void dispose() {
-    super.dispose();
-
     _searchController.dispose();
     _scrollController.dispose();
+
+    super.dispose();
   }
 
   updatePage() {
@@ -132,8 +135,6 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
     resultAnime = t.$1;
     _currentPage = t.$2;
   }
-
-  returnToTop() {}
 
   @override
   Widget build(BuildContext context) {
@@ -448,7 +449,7 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
                                                           FontWeight.w500,
                                                     ),
                                                   )
-                                                : CircularProgressIndicator(),
+                                                : const CircularProgressIndicator(),
                                           ),
                                         ),
                                       )

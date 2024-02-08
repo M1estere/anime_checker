@@ -10,7 +10,7 @@ class Api {
   static const _randomAnimeUrl = 'https://api.jikan.moe/v4/random/anime';
 
   static const _libriaAnime =
-      'https://api.anilibria.tv/v2.13/getTitle?playlist_type=array&code=';
+      'https://api.anilibria.tv/v2.13/getTitle?filter=id,code,player&playlist_type=array&code=';
 
   Future<List<Anime>> getTopAnimeFiltered(String filterType) async {
     List<Anime> result = [];

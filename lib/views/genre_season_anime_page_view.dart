@@ -39,8 +39,19 @@ class _GenreSeasonAnimePageViewState extends State<GenreSeasonAnimePageView> {
 
   @override
   void initState() {
-    super.initState();
+    setupScrollController();
+    gatherInfo().then((value) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    });
 
+    super.initState();
+  }
+
+  setupScrollController() {
     _scrollController.addListener(
       () {
         if (_scrollController.offset >=
@@ -61,14 +72,6 @@ class _GenreSeasonAnimePageViewState extends State<GenreSeasonAnimePageView> {
         }
       },
     );
-
-    gatherInfo().then((value) {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    });
   }
 
   Future gatherInfo() async {
@@ -120,9 +123,9 @@ class _GenreSeasonAnimePageViewState extends State<GenreSeasonAnimePageView> {
 
   @override
   void dispose() {
-    super.dispose();
-
     _scrollController.dispose();
+
+    super.dispose();
   }
 
   @override
