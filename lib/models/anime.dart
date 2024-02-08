@@ -21,6 +21,8 @@ class Anime {
 
   List? series;
 
+  bool checked = false;
+
   Anime({
     required this.malId,
     required this.title,

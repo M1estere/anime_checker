@@ -62,9 +62,14 @@ class _AnimePageViewState extends State<AnimePageView> {
     _videos = await AnimeController().getVideos(widget.anime.malId);
     _pictures = await AnimeController().getPictures(widget.anime.malId);
 
-    (int, List) t = (await Api().getLibriaCode(widget.anime.title));
-    widget.anime.libriaId = t.$1;
-    widget.anime.series = t.$2;
+    if (widget.anime.checked == false) {
+      (int, List) t = (await Api().getLibriaCode(widget.anime.title));
+
+      widget.anime.libriaId = t.$1;
+      widget.anime.series = t.$2;
+
+      widget.anime.checked = true;
+    }
 
     _isLoading = false;
   }
