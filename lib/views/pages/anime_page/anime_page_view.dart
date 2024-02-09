@@ -123,7 +123,8 @@ class _AnimePageViewState extends State<AnimePageView> {
       ),
       floatingActionButton: widget.anime.libriaId != -1
           ? FloatingActionButton(
-              heroTag: 'animeAvailable${widget.anime.malId}',
+              heroTag:
+                  'animeAvailable${widget.anime.malId != -1 ? widget.anime.malId : widget.anime.libriaId}',
               splashColor: Colors.blue.withOpacity(.3),
               onPressed: () {
                 Navigator.of(context).push(
@@ -147,7 +148,10 @@ class _AnimePageViewState extends State<AnimePageView> {
           : null,
       body: Stack(
         children: [
-          ImageBackground(image: widget.image),
+          ImageBackground(
+            image: widget.image,
+            path: widget.path,
+          ),
           SizedBox(
             child: Stack(
               children: [
@@ -671,7 +675,8 @@ class _AnimePageViewState extends State<AnimePageView> {
                 Stack(
                   children: [
                     Hero(
-                      tag: 'animeImage${widget.anime.malId}',
+                      tag:
+                          'animeImage${(widget.anime.malId != -1 ? widget.anime.malId : widget.anime.libriaId)}',
                       child: GestureDetector(
                         onTap: () {
                           Navigator.of(context).push(

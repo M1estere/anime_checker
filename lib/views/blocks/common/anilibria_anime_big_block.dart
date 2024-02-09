@@ -33,6 +33,11 @@ class _AnilibriaAnimeBigBlockState extends State<AnilibriaAnimeBigBlock> {
               image: Image.network(
                 widget.anime.imagePath,
                 fit: BoxFit.cover,
+                key: Key(
+                  widget.anime.imagePath,
+                ),
+                width: double.infinity,
+                height: double.infinity,
               ),
               path: widget.anime.imagePath,
             ),
@@ -50,7 +55,8 @@ class _AnilibriaAnimeBigBlockState extends State<AnilibriaAnimeBigBlock> {
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * .26,
                 child: Hero(
-                  tag: 'animeImage${widget.anime.libriaId}',
+                  tag:
+                      'animeImage${widget.anime.malId != -1 ? widget.anime.malId : widget.anime.libriaId}',
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(5),
                     child: CustomNetworkImage(
@@ -83,7 +89,8 @@ class _AnilibriaAnimeBigBlockState extends State<AnilibriaAnimeBigBlock> {
               top: 5,
             ),
             child: Hero(
-              tag: 'animeAvailable${widget.anime.libriaId}',
+              tag:
+                  'animeAvailable${widget.anime.malId != -1 ? widget.anime.malId : widget.anime.libriaId}',
               child: Container(
                 width: 35,
                 height: 35,

@@ -47,6 +47,11 @@ class _ExplorePageViewState extends State<ExplorePageView>
     _currentImage = Image.network(
       _bgImage,
       fit: BoxFit.cover,
+      key: Key(
+        _anime[_currentIndex].imagePath,
+      ),
+      width: double.infinity,
+      height: double.infinity,
     );
 
     _isLoading = false;
@@ -59,7 +64,18 @@ class _ExplorePageViewState extends State<ExplorePageView>
     return SingleChildScrollView(
       child: Stack(
         children: [
-          !_isLoading ? ImageBackground(image: _currentImage) : const Center(),
+          !_isLoading
+              ?
+              // child: Image.network(
+
+              //   _bgImage,
+              //   fit: BoxFit.cover,
+              // ),
+              ImageBackground(
+                  image: _currentImage,
+                  path: _anime[_currentIndex].imagePath,
+                )
+              : const Center(),
           !_isLoading
               ? SizedBox(
                   height: MediaQuery.of(context).size.height,
@@ -140,7 +156,7 @@ class _ExplorePageViewState extends State<ExplorePageView>
                                   const Icon(
                                     Icons.star,
                                     color: Colors.yellow,
-                                    size: 35,
+                                    size: 32,
                                   ),
                                   const SizedBox(
                                     width: 5,
@@ -187,6 +203,11 @@ class _ExplorePageViewState extends State<ExplorePageView>
                                     _currentImage = Image.network(
                                       _bgImage,
                                       fit: BoxFit.fitHeight,
+                                      key: Key(
+                                        _anime[_currentIndex].imagePath,
+                                      ),
+                                      width: double.infinity,
+                                      height: double.infinity,
                                     );
                                   });
                                 }

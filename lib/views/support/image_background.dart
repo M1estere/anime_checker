@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 
 class ImageBackground extends StatelessWidget {
   final Image image;
+  final String path;
 
   const ImageBackground({
     super.key,
     required this.image,
+    required this.path,
   });
 
   @override
@@ -23,7 +25,10 @@ class ImageBackground extends StatelessWidget {
                 sigmaX: 5,
                 sigmaY: 5,
               ),
-              child: image,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: image,
+              ),
             ),
           ),
           Container(

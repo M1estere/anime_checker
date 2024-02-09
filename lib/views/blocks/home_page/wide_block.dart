@@ -42,6 +42,11 @@ class WideBlock extends StatelessWidget {
                     child: Image.network(
                       anime.imagePath,
                       fit: BoxFit.cover,
+                      key: Key(
+                        anime.imagePath,
+                      ),
+                      width: double.infinity,
+                      height: double.infinity,
                     ),
                   ),
                 ),

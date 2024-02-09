@@ -57,7 +57,7 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
     });
 
     streamcontroller.stream
-        .debounce(Duration(milliseconds: 500))
+        .debounce(const Duration(milliseconds: 500))
         .listen((event) {
       _updatePage();
     });

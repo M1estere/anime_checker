@@ -27,6 +27,11 @@ class _HomeRegularBlockState extends State<HomeRegularBlock> {
               image: Image.network(
                 widget.anime.imagePath,
                 fit: BoxFit.cover,
+                key: Key(
+                  widget.anime.imagePath,
+                ),
+                width: double.infinity,
+                height: double.infinity,
               ),
               anime: widget.anime,
             ),

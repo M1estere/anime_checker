@@ -63,29 +63,36 @@ class _ReviewInfoBlockState extends State<ReviewInfoBlock> {
                     const SizedBox(
                       width: 10,
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.review.nickname,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * .43,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          FittedBox(
+                            child: Text(
+                              widget.review.nickname,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                                height: 0,
+                              ),
+                            ),
                           ),
-                        ),
-                        Text(
-                          DateFormat('dd MMMM yyyy')
-                              .format(DateTime.parse(widget.review.date))
-                              .toString(),
-                          style: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w400,
+                          Text(
+                            DateFormat('dd MMMM yyyy')
+                                .format(DateTime.parse(widget.review.date))
+                                .toString(),
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              height: 0,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     Expanded(
                       child: Row(

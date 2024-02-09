@@ -29,6 +29,11 @@ class _SearchResultBlockState extends State<SearchResultBlock> {
               image: Image.network(
                 widget.anime.imagePath,
                 fit: BoxFit.cover,
+                key: Key(
+                  widget.anime.imagePath,
+                ),
+                width: double.infinity,
+                height: double.infinity,
               ),
               anime: widget.anime,
             ),
@@ -99,8 +104,9 @@ class _SearchResultBlockState extends State<SearchResultBlock> {
                               'Watch'.toUpperCase(),
                               style: const TextStyle(
                                 color: Colors.blue,
-                                fontSize: 15,
+                                fontSize: 13,
                                 fontWeight: FontWeight.w500,
+                                letterSpacing: 1.2,
                               ),
                             )
                           : const Center(),

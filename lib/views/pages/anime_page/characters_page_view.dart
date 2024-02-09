@@ -18,51 +18,54 @@ class _CharactersPageViewState extends State<CharactersPageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        leadingWidth: MediaQuery.of(context).size.width * .9,
-        leading: Row(
-          children: [
-            IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios_new,
-                size: 35,
-                color: Colors.white,
-              ),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            floating: true,
+            backgroundColor: Colors.black,
+            surfaceTintColor: Colors.black,
+            leadingWidth: MediaQuery.of(context).size.width * .9,
+            toolbarHeight: 60,
+            leading: Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new,
+                    size: 35,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  'characters'.toUpperCase(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 25,
+                  ),
+                )
+              ],
             ),
-            Text(
-              'Characters'.toUpperCase(),
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-                fontSize: 25,
-              ),
-            ),
-          ],
-        ),
-      ),
-      body: SafeArea(
-        child: ListView.separated(
-          separatorBuilder: (context, index) {
-            return const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-              child: Divider(
-                color: Colors.white,
-                thickness: .7,
-                height: 1,
-              ),
-            );
-          },
-          scrollDirection: Axis.vertical,
-          itemBuilder: (context, index) => CharacterInfoBlock(
-            character: widget.characters[index],
           ),
-          itemCount: widget.characters.length,
-        ),
+          SliverList.separated(
+            itemBuilder: (context, index) => index != 0
+                ? const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    child: Divider(
+                      color: Colors.white,
+                      thickness: .7,
+                      height: 1,
+                    ),
+                  )
+                : const Center(),
+            separatorBuilder: (context, index) => CharacterInfoBlock(
+              character: widget.characters[index],
+            ),
+            itemCount: widget.characters.length,
+          ),
+        ],
       ),
     );
   }

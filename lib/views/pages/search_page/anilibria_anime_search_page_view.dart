@@ -14,7 +14,8 @@ class AnilibriaAnimeSearchPageView extends StatefulWidget {
 
 class _AnilibriaAnimeSearchPageViewState
     extends State<AnilibriaAnimeSearchPageView> {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
+  bool _showBtn = false;
 
   List<AnilibriaAnime> _animeList = [];
 
@@ -22,6 +23,8 @@ class _AnilibriaAnimeSearchPageViewState
 
   @override
   void initState() {
+    _setupScrollController();
+
     _gatherInfo().then((value) {
       _isLoading = false;
       if (mounted) {
@@ -39,6 +42,27 @@ class _AnilibriaAnimeSearchPageViewState
     super.dispose();
   }
 
+  _setupScrollController() {
+    _scrollController.addListener(() {
+      double showoffset = 10.0;
+
+      if (_scrollController.offset >= showoffset &&
+          !_scrollController.position.outOfRange &&
+          !_showBtn) {
+        _showBtn = true;
+        setState(() {});
+      }
+
+      if (_scrollController.offset <=
+              _scrollController.position.minScrollExtent &&
+          !_scrollController.position.outOfRange &&
+          _showBtn) {
+        _showBtn = false;
+        setState(() {});
+      }
+    });
+  }
+
   Future _gatherInfo() async {
     _animeList = await AnilibriaAnimeController().getAnilibriaTitles();
   }
@@ -46,75 +70,86 @@ class _AnilibriaAnimeSearchPageViewState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        leadingWidth: MediaQuery.of(context).size.width * .9,
-        leading: Row(
-          children: [
-            IconButton(
+      floatingActionButton: _showBtn
+          ? FloatingActionButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                _scrollController.animateTo(
+                    //go to top of scroll
+                    0, //scroll offset to go
+                    duration:
+                        const Duration(milliseconds: 500), //duration of scroll
+                    curve: Curves.fastOutSlowIn //scroll type
+                    );
               },
-              icon: const Icon(
-                Icons.arrow_back_ios_new,
-                size: 35,
-                color: Colors.white,
-              ),
-            ),
-            Text(
-              'AniLibria'.toUpperCase(),
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-                fontSize: 25,
-              ),
+              child: const Icon(Icons.arrow_upward),
             )
-          ],
-        ),
-      ),
-      body: SafeArea(
-        child: !_isLoading
-            ? _animeList.isNotEmpty
-                ? Column(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: GridView.builder(
-                              controller: _scrollController,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                childAspectRatio: .57,
-                                mainAxisSpacing: 10,
-                                crossAxisSpacing: 10,
-                              ),
-                              itemBuilder: (context, index) {
-                                return AnilibriaAnimeBigBlock(
-                                  anime: _animeList[index],
-                                );
-                              },
-                              itemCount: _animeList.length,
+          : null,
+      body: CustomScrollView(
+        controller: _scrollController,
+        slivers: [
+          SliverAppBar(
+            floating: true,
+            backgroundColor: Colors.black,
+            surfaceTintColor: Colors.black,
+            leadingWidth: MediaQuery.of(context).size.width * .9,
+            toolbarHeight: 60,
+            leading: Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new,
+                    size: 35,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  'AniLibria'.toUpperCase(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 25,
+                  ),
+                )
+              ],
+            ),
+          ),
+          !_isLoading
+              ? SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  sliver: SliverGrid.builder(
+                    itemCount: _animeList.length,
+                    itemBuilder: (context, index) {
+                      return AnilibriaAnimeBigBlock(
+                        anime: _animeList[index],
+                      );
+                    },
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: .57,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                    ),
+                  ),
+                )
+              : SliverFillRemaining(
+                  child: _animeList.isNotEmpty
+                      ? const Center(
+                          child: Text(
+                            'Sorry, currently unavailable',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                        ),
-                      ),
-                    ],
-                  )
-                : const Center(
-                    child: Text(
-                      'Sorry, currently unavailable',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  )
-            : const FetchingCircle(),
+                        )
+                      : const FetchingCircle(),
+                ),
+        ],
       ),
     );
   }
