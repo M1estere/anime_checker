@@ -17,9 +17,9 @@ class WideBlock extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => AnimePageView(
-              path: anime.images['jpg']['large_image_url'],
-              animeImage: Image.network(
-                anime.images['jpg']['large_image_url'],
+              path: anime.imagePath,
+              image: Image.network(
+                anime.imagePath,
                 fit: BoxFit.cover,
               ),
               anime: anime,
@@ -40,7 +40,7 @@ class WideBlock extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: Image.network(
-                      anime.images['jpg']['large_image_url'],
+                      anime.imagePath,
                       fit: BoxFit.cover,
                     ),
                   ),

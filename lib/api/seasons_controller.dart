@@ -13,6 +13,8 @@ class SeasonsController {
   Future<List<Anime>> getSeasonalAnime(int pageNum, Season season) async {
     List<Anime> result = [];
 
+    print(Uri.parse(
+        '$_seasonalAnimeUrl${season.year}/${season.title.toLowerCase()}?page=$pageNum'));
     final response = await http.get(Uri.parse(
         '$_seasonalAnimeUrl${season.year}/${season.title.toLowerCase()}?page=$pageNum'));
     if (response.statusCode == 200) {

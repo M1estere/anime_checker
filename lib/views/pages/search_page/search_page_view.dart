@@ -1,3 +1,4 @@
+import 'package:film_checker/views/blocks/search_page/anilibria_search_category_block.dart';
 import 'package:film_checker/views/blocks/search_page/category_block.dart';
 import 'package:film_checker/views/pages/search_page/search_results_page_view.dart';
 import 'package:flutter/material.dart';
@@ -118,11 +119,19 @@ class _SearchPageViewState extends State<SearchPageView>
               const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SearchCategoryBlock(title: 'Seasons'),
+                  Row(
+                    children: [
+                      SearchCategoryBlock(title: 'Seasons'),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      SearchCategoryBlock(title: 'Genres'),
+                    ],
+                  ),
                   SizedBox(
                     height: 10,
                   ),
-                  SearchCategoryBlock(title: 'Genres'),
+                  AnilibriaSearchCategoryBlock(title: 'Anilibria Available'),
                 ],
               ),
             ],

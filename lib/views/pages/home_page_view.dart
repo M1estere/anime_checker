@@ -47,8 +47,13 @@ class _HomePageViewState extends State<HomePageView>
     _topBannerAnime = (await Api().getRandomAnime(1))[0];
 
     _favouriteAnime = await Api().getTopAnimeFiltered('favorite');
-    _seasonalAnime = await SeasonsController()
-        .getSeasonalAnime(1, Season.fromJson(2024, 'winter'));
+    _seasonalAnime = await SeasonsController().getSeasonalAnime(
+      1,
+      Season.fromJson(
+        DateTime.now().year,
+        getSeason(DateTime.now()),
+      ),
+    );
     _topWatchedAnime = await Api().getTopAnimeFiltered('');
   }
 
@@ -70,12 +75,10 @@ class _HomePageViewState extends State<HomePageView>
                           MaterialPageRoute(
                             builder: (context) {
                               return AnimePageView(
-                                path: _topBannerAnime.images['jpg']
-                                    ['large_image_url'],
+                                path: _topBannerAnime.imagePath,
                                 anime: _topBannerAnime,
-                                animeImage: Image.network(
-                                  _topBannerAnime.images['jpg']
-                                      ['large_image_url'],
+                                image: Image.network(
+                                  _topBannerAnime.imagePath,
                                   fit: BoxFit.cover,
                                 ),
                               );
@@ -89,8 +92,8 @@ class _HomePageViewState extends State<HomePageView>
                             width: double.infinity,
                             height: MediaQuery.of(context).size.height * .35,
                             child: CustomNetworkImage(
-                                path: _topBannerAnime.images['jpg']
-                                    ['large_image_url']),
+                              path: _topBannerAnime.imagePath,
+                            ),
                           ),
                           Container(
                             width: double.infinity,
@@ -220,7 +223,10 @@ class _HomePageViewState extends State<HomePageView>
                                 return GenreSeasonAnimePageView(
                                   sectionName: 'Seasonal',
                                   genreNumber: -1,
-                                  season: Season.fromJson(2024, 'winter'),
+                                  season: Season.fromJson(
+                                    DateTime.now().year,
+                                    getSeason(DateTime.now()),
+                                  ),
                                   type: 1,
                                 );
                               },

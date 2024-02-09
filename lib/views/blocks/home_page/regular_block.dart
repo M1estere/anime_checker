@@ -23,9 +23,9 @@ class _HomeRegularBlockState extends State<HomeRegularBlock> {
             .push(
           MaterialPageRoute(
             builder: (context) => AnimePageView(
-              path: widget.anime.images['jpg']['large_image_url'],
-              animeImage: Image.network(
-                widget.anime.images['jpg']['large_image_url'],
+              path: widget.anime.imagePath,
+              image: Image.network(
+                widget.anime.imagePath,
                 fit: BoxFit.cover,
               ),
               anime: widget.anime,
@@ -49,7 +49,7 @@ class _HomeRegularBlockState extends State<HomeRegularBlock> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: Image.network(
-                      widget.anime.images['jpg']['large_image_url'],
+                      widget.anime.imagePath,
                       fit: BoxFit.cover,
                     ),
                   ),

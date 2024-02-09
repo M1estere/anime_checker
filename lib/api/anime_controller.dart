@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:film_checker/models/anilibria_anime.dart';
+import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/models/character.dart';
 import 'package:film_checker/models/picture.dart';
 import 'package:film_checker/models/review.dart';
@@ -9,6 +11,33 @@ import 'package:http/http.dart' as http;
 
 class AnimeController {
   static const _animeUrl = 'https://api.jikan.moe/v4/anime';
+
+  static const _searchUrl = 'https://api.jikan.moe/v4/anime?q=';
+
+  Future setupAnimeFields(AnilibriaAnime anime) async {
+    final response = await http.get(Uri.parse(_searchUrl + anime.title));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body)['data'] as List;
+
+      if (data.isNotEmpty) {
+        anime.malId = data[0]['mal_id'];
+        anime.originalTitle = data[0]['title_japanese'];
+        anime.score = data[0]['score'];
+        anime.scoredBy = data[0]['scored_by'];
+        anime.synopsis = data[0]['synopsis'] != null
+            ? processSynopsis(data[0]['synopsis'].toString())
+            : '';
+        anime.status = data[0]['status'];
+        anime.genres = data[0]['rating'] != null
+            ? processGenres(data[0]['genres'], data[0]['rating'])
+            : data[0]['genres'];
+        anime.type = data[0]['type'];
+        anime.episodes = data[0]['episodes'] ?? 0;
+        anime.midDuration = processMidDuration(data[0]['duration']);
+      }
+    }
+  }
 
   Future<List<Character>> getCharacters(int id) async {
     List<Character> result = [];

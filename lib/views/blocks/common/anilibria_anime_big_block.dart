@@ -1,21 +1,26 @@
-import 'package:film_checker/models/anime.dart';
+import 'package:film_checker/models/anilibria_anime.dart';
 import 'package:film_checker/views/pages/anime_page/anime_page_view.dart';
 import 'package:film_checker/views/support/custom_network_image.dart';
 import 'package:flutter/material.dart';
 
-class AnimeBigBlock extends StatefulWidget {
-  final AnimeParent anime;
+class AnilibriaAnimeBigBlock extends StatefulWidget {
+  final AnilibriaAnime anime;
 
-  const AnimeBigBlock({
+  const AnilibriaAnimeBigBlock({
     super.key,
     required this.anime,
   });
 
   @override
-  State<AnimeBigBlock> createState() => _AnimeBigBlockState();
+  State<AnilibriaAnimeBigBlock> createState() => _AnilibriaAnimeBigBlockState();
 }
 
-class _AnimeBigBlockState extends State<AnimeBigBlock> {
+class _AnilibriaAnimeBigBlockState extends State<AnilibriaAnimeBigBlock> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -24,12 +29,12 @@ class _AnimeBigBlockState extends State<AnimeBigBlock> {
             .push(
           MaterialPageRoute(
             builder: (context) => AnimePageView(
-              path: widget.anime.imagePath,
+              anime: widget.anime,
               image: Image.network(
                 widget.anime.imagePath,
                 fit: BoxFit.cover,
               ),
-              anime: widget.anime,
+              path: widget.anime.imagePath,
             ),
           ),
         )
@@ -45,10 +50,12 @@ class _AnimeBigBlockState extends State<AnimeBigBlock> {
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * .26,
                 child: Hero(
-                  tag: 'animeImage${widget.anime.malId}',
+                  tag: 'animeImage${widget.anime.libriaId}',
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(5),
-                    child: CustomNetworkImage(path: widget.anime.imagePath),
+                    child: CustomNetworkImage(
+                      path: widget.anime.imagePath,
+                    ),
                   ),
                 ),
               ),
@@ -70,29 +77,30 @@ class _AnimeBigBlockState extends State<AnimeBigBlock> {
               )
             ],
           ),
-          widget.anime.libriaId != -1
-              ? Padding(
-                  padding: const EdgeInsets.only(
-                    left: 5,
-                    top: 5,
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 5,
+              top: 5,
+            ),
+            child: Hero(
+              tag: 'animeAvailable${widget.anime.libriaId}',
+              child: Container(
+                width: 35,
+                height: 35,
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(90),
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.play_arrow_rounded,
+                    color: Colors.white,
+                    size: 20,
                   ),
-                  child: Container(
-                    width: 35,
-                    height: 35,
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(90),
-                    ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.play_arrow_rounded,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-                )
-              : const Center(),
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );

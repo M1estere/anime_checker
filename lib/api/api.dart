@@ -16,7 +16,7 @@ class Api {
     List<Anime> result = [];
 
     final response = await http.get(Uri.parse(
-        '$_topAnimeUrl?filter=$filterType&page=${Random().nextInt(4) + 1}'));
+        '$_topAnimeUrl?filter=$filterType&page=${Random().nextInt(40) + 1}'));
     if (response.statusCode == 200) {
       final decodedData = json.decode(response.body)['data'] as List;
 
@@ -34,6 +34,7 @@ class Api {
 
       return result;
     } else {
+      print('test 2');
       return await getRandomAnime(15);
     }
   }
@@ -79,19 +80,6 @@ class Api {
           continue;
         }
 
-        // final libriaResponse = await http.get(Uri.parse(
-        //     _libriaAnime + processTitleForLibria(decodedData['title']).trim()));
-
-        // int id = -1;
-        // if (libriaResponse.statusCode == 200) {
-        //   print(libriaResponse.body);
-        //   final decoded = json.decode(libriaResponse.body) as Map;
-        //   if (decoded.containsKey('error')) {
-        //   } else {
-        //     id = decoded['id'];
-        //   }
-        // }
-
         int id = -1;
         result.add(Anime.fromJson(decodedData, id));
       } else {
@@ -118,4 +106,10 @@ String processTitleForLibria(String title) {
   result = result.replaceAll('nd-season', '');
 
   return result;
+}
+
+String getSeason(DateTime date) {
+  const List<String> seasons = ['Winter', 'Spring', 'Summer', 'Autumn'];
+  int month = date.month;
+  return seasons[(month % 12 ~/ 3)];
 }

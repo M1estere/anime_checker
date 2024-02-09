@@ -43,7 +43,7 @@ class _ExplorePageViewState extends State<ExplorePageView>
   Future gatherInfo() async {
     _anime = await Api().getTopAnimeFiltered('bypopularity');
 
-    _bgImage = _anime[0].images['jpg']['large_image_url'];
+    _bgImage = _anime[0].imagePath;
     _currentImage = Image.network(
       _bgImage,
       fit: BoxFit.cover,
@@ -183,9 +183,7 @@ class _ExplorePageViewState extends State<ExplorePageView>
                                   setState(() {
                                     _currentIndex = value;
 
-                                    _bgImage = _anime[_currentIndex]
-                                        .images['jpg']['large_image_url']
-                                        .toString();
+                                    _bgImage = _anime[_currentIndex].imagePath;
                                     _currentImage = Image.network(
                                       _bgImage,
                                       fit: BoxFit.fitHeight,
@@ -201,9 +199,8 @@ class _ExplorePageViewState extends State<ExplorePageView>
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) => AnimePageView(
-                                          path: _anime[index].images['jpg']
-                                              ['large_image_url'],
-                                          animeImage: _currentImage,
+                                          path: _anime[index].imagePath,
+                                          image: _currentImage,
                                           anime: _anime[index],
                                         ),
                                       ),
@@ -225,10 +222,7 @@ class _ExplorePageViewState extends State<ExplorePageView>
                                                 borderRadius:
                                                     BorderRadius.circular(50),
                                                 child: CustomNetworkImage(
-                                                  path: _anime[index]
-                                                      .images['jpg']
-                                                          ['large_image_url']
-                                                      .toString(),
+                                                  path: _anime[index].imagePath,
                                                 )),
                                           ),
                                         ),

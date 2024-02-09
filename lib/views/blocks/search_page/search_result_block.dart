@@ -25,9 +25,9 @@ class _SearchResultBlockState extends State<SearchResultBlock> {
             .push(
           MaterialPageRoute(
             builder: (context) => AnimePageView(
-              path: widget.anime.images['jpg']['large_image_url'],
-              animeImage: Image.network(
-                widget.anime.images['jpg']['large_image_url'],
+              path: widget.anime.imagePath,
+              image: Image.network(
+                widget.anime.imagePath,
                 fit: BoxFit.cover,
               ),
               anime: widget.anime,
@@ -55,7 +55,7 @@ class _SearchResultBlockState extends State<SearchResultBlock> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(5),
                     child: CustomNetworkImage(
-                      path: widget.anime.images['jpg']['large_image_url'],
+                      path: widget.anime.imagePath,
                     ),
                   ),
                 ),
