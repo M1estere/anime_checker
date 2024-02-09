@@ -188,20 +188,25 @@ class _GenreSeasonAnimePageViewState extends State<GenreSeasonAnimePageView> {
                   ),
                   _isBottom
                       ? _currentPage.hasNextPage
-                          ? Container(
-                              child: !_moreLoading
-                                  ? GestureDetector(
-                                      onTap: () => nextPage(),
-                                      child: Text(
-                                        'load more'.toUpperCase(),
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    )
-                                  : const CircularProgressIndicator(),
+                          ? GestureDetector(
+                              onTap: () => nextPage(),
+                              child: Container(
+                                width: double.infinity,
+                                height: 50,
+                                color: Colors.grey.withOpacity(.3),
+                                child: Center(
+                                  child: !_moreLoading
+                                      ? Text(
+                                          'Load more'.toUpperCase(),
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        )
+                                      : const CircularProgressIndicator(),
+                                ),
+                              ),
                             )
                           : const Center()
                       : const Center(),

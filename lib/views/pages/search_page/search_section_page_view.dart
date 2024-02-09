@@ -2,6 +2,7 @@ import 'package:film_checker/api/genres_controller.dart';
 import 'package:film_checker/api/seasons_controller.dart';
 import 'package:film_checker/views/blocks/common/genre_block.dart';
 import 'package:film_checker/views/blocks/common/season_block.dart';
+import 'package:film_checker/views/support/fetching_circle.dart';
 import 'package:flutter/material.dart';
 
 class SearchSectionPageView extends StatefulWidget {
@@ -114,7 +115,7 @@ class _SearchSectionPageViewState extends State<SearchSectionPageView> {
                 },
                 itemCount: _content.length,
               )
-            : const Center(),
+            : const FetchingCircle(),
       ),
     );
   }

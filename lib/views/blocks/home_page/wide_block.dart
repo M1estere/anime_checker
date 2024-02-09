@@ -37,10 +37,7 @@ class WideBlock extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height * .16,
-                  child: //Hero(
-                      //tag: 'animeImage${anime.malId}',
-                      //child: ClipRRect(
-                      ClipRRect(
+                  child: ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: Image.network(
                       anime.images['jpg']['large_image_url'],
@@ -48,7 +45,6 @@ class WideBlock extends StatelessWidget {
                     ),
                   ),
                 ),
-                // ),
                 const SizedBox(
                   height: 5,
                 ),
@@ -61,7 +57,7 @@ class WideBlock extends StatelessWidget {
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),
-                    textAlign: TextAlign.start,
+                    textAlign: TextAlign.center,
                     maxLines: 2,
                   ),
                 )
@@ -69,10 +65,7 @@ class WideBlock extends StatelessWidget {
             ),
           ),
           anime.libriaId != -1
-              ? //Hero(
-              //tag: 'animeAvailable${anime.malId}',
-              //child: Padding(
-              Padding(
+              ? Padding(
                   padding: const EdgeInsets.only(
                     left: 5,
                     top: 5,
@@ -92,7 +85,6 @@ class WideBlock extends StatelessWidget {
                       ),
                     ),
                   ),
-                  //),
                 )
               : const Center(),
         ],

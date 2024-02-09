@@ -154,40 +154,43 @@ class _HomePageViewState extends State<HomePageView>
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Most Favorited',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return AnimeSectionPageView(
+                                  sectionName: 'Most Favorited',
+                                  animeList: _favouriteAnime,
+                                );
+                              },
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return AnimeSectionPageView(
-                                      sectionName: 'Most Favorited',
-                                      animeList: _favouriteAnime,
-                                    );
-                                  },
+                          );
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Most Favorited',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w400,
                                 ),
-                              );
-                            },
-                            child: const Text(
-                              'see all',
-                              style: TextStyle(
-                                color: Color(0xFF00A3FF),
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500,
                               ),
-                            ),
+                              Text(
+                                'see all',
+                                style: TextStyle(
+                                  color: Color(0xFF00A3FF),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -207,47 +210,47 @@ class _HomePageViewState extends State<HomePageView>
                         itemCount: (_favouriteAnime.length / 2).round(),
                       ),
                     ),
-                    const SizedBox(
-                      height: 15,
-                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Seasonal',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return GenreSeasonAnimePageView(
+                                  sectionName: 'Seasonal',
+                                  genreNumber: -1,
+                                  season: Season.fromJson(2024, 'winter'),
+                                  type: 1,
+                                );
+                              },
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return GenreSeasonAnimePageView(
-                                      sectionName: 'Seasonal',
-                                      genreNumber: -1,
-                                      season: Season.fromJson(2024, 'winter'),
-                                      type: 1,
-                                    );
-                                  },
+                          );
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Seasonal',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w400,
                                 ),
-                              );
-                            },
-                            child: const Text(
-                              'see all',
-                              style: TextStyle(
-                                color: Color(0xFF00A3FF),
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500,
                               ),
-                            ),
+                              Text(
+                                'see all',
+                                style: TextStyle(
+                                  color: Color(0xFF00A3FF),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -272,40 +275,43 @@ class _HomePageViewState extends State<HomePageView>
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Top Watched',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return AnimeSectionPageView(
+                                  sectionName: 'Top Watched',
+                                  animeList: _topWatchedAnime,
+                                );
+                              },
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return AnimeSectionPageView(
-                                      sectionName: 'Top Watched',
-                                      animeList: _topWatchedAnime,
-                                    );
-                                  },
+                          );
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Top Watched',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w400,
                                 ),
-                              );
-                            },
-                            child: const Text(
-                              'see all',
-                              style: TextStyle(
-                                color: Color(0xFF00A3FF),
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500,
                               ),
-                            ),
+                              Text(
+                                'see all',
+                                style: TextStyle(
+                                  color: Color(0xFF00A3FF),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                     const SizedBox(

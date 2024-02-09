@@ -1,4 +1,5 @@
 import 'package:film_checker/models/character.dart';
+import 'package:film_checker/views/pages/anime_page/fullscreen_gallery_page_view.dart';
 import 'package:film_checker/views/support/custom_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -19,12 +20,26 @@ class CharacterInfoBlock extends StatelessWidget {
         height: MediaQuery.of(context).size.height * .12,
         child: Row(
           children: [
-            SizedBox(
-              height: double.infinity,
-              width: MediaQuery.of(context).size.width * .2,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: CustomNetworkImage(path: character.imagePath),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) {
+                    return FullScreenGalleryPageView(
+                      currentIndex: 0,
+                      imagePaths: [
+                        character.imagePath,
+                      ],
+                    );
+                  },
+                ));
+              },
+              child: SizedBox(
+                height: double.infinity,
+                width: MediaQuery.of(context).size.width * .2,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: CustomNetworkImage(path: character.imagePath),
+                ),
               ),
             ),
             const SizedBox(

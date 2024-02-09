@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:extended_wrap/extended_wrap.dart';
 import 'package:film_checker/api/genres_controller.dart';
 import 'package:film_checker/api/search_controller.dart' as search;
@@ -9,6 +11,7 @@ import 'package:film_checker/views/blocks/search_page/search_result_block.dart';
 import 'package:film_checker/views/support/fetching_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel2/sliding_up_panel2.dart';
+import 'package:stream_transform/stream_transform.dart';
 
 class SearchResultsPageView extends StatefulWidget {
   const SearchResultsPageView({super.key});
@@ -18,6 +21,8 @@ class SearchResultsPageView extends StatefulWidget {
 }
 
 class _SearchResultsPageViewState extends State<SearchResultsPageView> {
+  StreamController streamcontroller = StreamController();
+
   final PanelController _panelController = PanelController();
 
   final ScrollController _scrollController = ScrollController();
@@ -42,8 +47,8 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
 
   @override
   void initState() {
-    setupScrollController();
-    gatherInfo().then((value) {
+    _setupScrollController();
+    _gatherInfo().then((value) {
       if (mounted) {
         setState(() {
           _loadingGenres = false;
@@ -51,10 +56,16 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
       }
     });
 
+    streamcontroller.stream
+        .debounce(Duration(milliseconds: 500))
+        .listen((event) {
+      _updatePage();
+    });
+
     super.initState();
   }
 
-  setupScrollController() {
+  _setupScrollController() {
     _scrollController.addListener(() {
       double showoffset = 10.0;
 
@@ -74,7 +85,7 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
     });
   }
 
-  Future gatherInfo() async {
+  Future _gatherInfo() async {
     allGenres = await GenresController().getAllGenres();
   }
 
@@ -86,14 +97,14 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
     super.dispose();
   }
 
-  updatePage() {
-    performSearch().then((value) {
+  _updatePage() {
+    _performSearch().then((value) {
       _loadingResults = false;
       setState(() {});
     });
   }
 
-  Future nextPage() async {
+  Future _nextPage() async {
     if (_currentPage.hasNextPage) {
       if (mounted) {
         setState(() {
@@ -119,7 +130,7 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
     }
   }
 
-  Future performSearch() async {
+  Future _performSearch() async {
     if (mounted) {
       setState(() {
         _loadingResults = true;
@@ -158,7 +169,7 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
         children: [
           RefreshIndicator(
             onRefresh: () async {
-              return updatePage();
+              return _updatePage();
             },
             child: Padding(
               padding: const EdgeInsets.only(top: 30),
@@ -194,7 +205,13 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
                             height: 65,
                             child: TextField(
                               onChanged: (value) {
-                                updatePage();
+                                streamcontroller.add(value);
+                              },
+                              onSubmitted: (value) {
+                                _updatePage();
+                              },
+                              onEditingComplete: () {
+                                _updatePage();
                               },
                               autofocus: true,
                               controller: _searchController,
@@ -433,7 +450,7 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
                                 ),
                                 _currentPage.hasNextPage
                                     ? GestureDetector(
-                                        onTap: () => nextPage(),
+                                        onTap: () => _nextPage(),
                                         child: Container(
                                           width: double.infinity,
                                           height: 50,
@@ -540,7 +557,7 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
                                               genre: allGenres[index],
                                               included: activeGenres,
                                               excluded: excludedGenres,
-                                              updateFunc: updatePage,
+                                              updateFunc: _updatePage,
                                             );
                                           }),
                                         ),

@@ -20,8 +20,8 @@ class ImageBackground extends StatelessWidget {
           SizedBox.expand(
             child: ImageFiltered(
               imageFilter: ImageFilter.blur(
-                sigmaX: 15,
-                sigmaY: 15,
+                sigmaX: 5,
+                sigmaY: 5,
               ),
               child: image,
             ),
