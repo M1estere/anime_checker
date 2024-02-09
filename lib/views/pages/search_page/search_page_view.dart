@@ -1,5 +1,5 @@
 import 'package:film_checker/views/blocks/search_page/category_block.dart';
-import 'package:film_checker/views/search_page/search_results_page_view.dart';
+import 'package:film_checker/views/pages/search_page/search_results_page_view.dart';
 import 'package:flutter/material.dart';
 
 class SearchPageView extends StatefulWidget {

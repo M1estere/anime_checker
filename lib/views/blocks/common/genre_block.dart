@@ -1,6 +1,6 @@
 import 'package:film_checker/models/genre.dart';
 import 'package:film_checker/models/season.dart';
-import 'package:film_checker/views/genre_season_anime_page_view.dart';
+import 'package:film_checker/views/pages/genre_season_anime_page_view.dart';
 import 'package:flutter/material.dart';
 
 class GenreBlock extends StatelessWidget {

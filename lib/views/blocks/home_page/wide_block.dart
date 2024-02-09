@@ -1,5 +1,5 @@
 import 'package:film_checker/models/anime.dart';
-import 'package:film_checker/views/anime_page_view.dart';
+import 'package:film_checker/views/pages/anime_page/anime_page_view.dart';
 import 'package:flutter/material.dart';
 
 class WideBlock extends StatelessWidget {

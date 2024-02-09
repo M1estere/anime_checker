@@ -1,4 +1,4 @@
-import 'package:film_checker/views/anime_watch_page_view.dart';
+import 'package:film_checker/views/pages/anime_page/anime_watch_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

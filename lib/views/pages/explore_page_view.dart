@@ -1,7 +1,7 @@
 import 'package:film_checker/api/api.dart';
 import 'package:film_checker/models/anime.dart';
-import 'package:film_checker/views/anime_page/anime_page_view.dart';
 import 'package:film_checker/views/blocks/anime_page/anime_category_block.dart';
+import 'package:film_checker/views/pages/anime_page/anime_page_view.dart';
 import 'package:film_checker/views/support/custom_network_image.dart';
 import 'package:film_checker/views/support/fetching_circle.dart';
 import 'package:film_checker/views/support/image_background.dart';

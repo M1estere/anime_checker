@@ -1,6 +1,6 @@
 import 'package:film_checker/models/video.dart';
+import 'package:film_checker/views/pages/anime_page/youtube_video_player_page_view.dart';
 import 'package:film_checker/views/support/custom_network_image.dart';
-import 'package:film_checker/views/youtube_video_player_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

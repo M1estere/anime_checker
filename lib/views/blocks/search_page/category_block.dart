@@ -1,4 +1,4 @@
-import 'package:film_checker/views/search_section_page_view.dart';
+import 'package:film_checker/views/pages/search_page/search_section_page_view.dart';
 import 'package:flutter/material.dart';
 
 class SearchCategoryBlock extends StatelessWidget {
