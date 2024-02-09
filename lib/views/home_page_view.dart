@@ -3,7 +3,7 @@ import 'package:film_checker/api/seasons_controller.dart';
 import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/models/season.dart';
 import 'package:film_checker/views/anime_by_section_page_view.dart';
-import 'package:film_checker/views/anime_page_view.dart';
+import 'package:film_checker/views/anime_page/anime_page_view.dart';
 import 'package:film_checker/views/blocks/home_page/regular_block.dart';
 import 'package:film_checker/views/blocks/home_page/wide_block.dart';
 import 'package:film_checker/views/genre_season_anime_page_view.dart';

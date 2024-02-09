@@ -1,7 +1,7 @@
 import 'package:film_checker/views/account_page_view.dart';
 import 'package:film_checker/views/explore_page_view.dart';
 import 'package:film_checker/views/home_page_view.dart';
-import 'package:film_checker/views/search_page_view.dart';
+import 'package:film_checker/views/search_page/search_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:stylish_bottom_bar/model/bar_items.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
@@ -22,7 +22,7 @@ class _MainWrapperState extends State<MainWrapper> {
   @override
   void initState() {
     _currentPageIndex = 0;
-    _pages = [
+    _pages = const [
       ExplorePageView(),
       HomePageView(),
       SearchPageView(),

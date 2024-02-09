@@ -49,7 +49,7 @@ class _CharactersPageViewState extends State<CharactersPageView> {
         child: ListView.separated(
           separatorBuilder: (context, index) {
             return const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
               child: Divider(
                 color: Colors.white,
                 thickness: .7,

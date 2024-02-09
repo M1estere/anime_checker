@@ -5,15 +5,15 @@ import 'package:film_checker/models/character.dart';
 import 'package:film_checker/models/review.dart';
 import 'package:film_checker/models/video.dart';
 import 'package:film_checker/models/picture.dart';
-import 'package:film_checker/views/anime_series_list_page_view.dart';
+import 'package:film_checker/views/anime_page/anime_series_list_page_view.dart';
+import 'package:film_checker/views/anime_page/characters_page_view.dart';
+import 'package:film_checker/views/anime_page/fullscreen_gallery_page_view.dart';
+import 'package:film_checker/views/anime_page/reviews_page_view.dart';
 import 'package:film_checker/views/blocks/anime_page/anime_category_block.dart';
 import 'package:film_checker/views/blocks/anime_page/anime_character_block.dart';
 import 'package:film_checker/views/blocks/anime_page/anime_picture_block.dart';
 import 'package:film_checker/views/blocks/anime_page/anime_review_block.dart';
 import 'package:film_checker/views/blocks/anime_page/anime_video_block.dart';
-import 'package:film_checker/views/characters_page_view.dart';
-import 'package:film_checker/views/fullscreen_gallery_page_view.dart';
-import 'package:film_checker/views/reviews_page_view.dart';
 import 'package:film_checker/views/support/divider.dart';
 import 'package:film_checker/views/support/image_background.dart';
 import 'package:film_checker/views/support/fetching_circle.dart';
@@ -174,7 +174,11 @@ class _AnimePageViewState extends State<AnimePageView> {
                               SizedBox(
                                 height: 30,
                                 width: double.infinity,
-                                child: ListView.builder(
+                                child: ListView.separated(
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                    width: 10,
+                                  ),
                                   padding: const EdgeInsets.only(left: 15),
                                   itemCount: widget.anime.genres.length,
                                   scrollDirection: Axis.horizontal,

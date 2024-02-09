@@ -1,6 +1,6 @@
 import 'package:film_checker/api/api.dart';
 import 'package:film_checker/models/anime.dart';
-import 'package:film_checker/views/anime_page_view.dart';
+import 'package:film_checker/views/anime_page/anime_page_view.dart';
 import 'package:film_checker/views/blocks/anime_page/anime_category_block.dart';
 import 'package:film_checker/views/support/custom_network_image.dart';
 import 'package:film_checker/views/support/fetching_circle.dart';
@@ -113,8 +113,13 @@ class _ExplorePageViewState extends State<ExplorePageView>
                             SizedBox(
                               height: 30,
                               width: double.infinity,
-                              child: ListView.builder(
-                                padding: const EdgeInsets.only(left: 30),
+                              child: ListView.separated(
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                  width: 10,
+                                ),
+                                padding:
+                                    const EdgeInsets.only(left: 30, right: 30),
                                 itemCount: _anime[_currentIndex].genres.length,
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) =>

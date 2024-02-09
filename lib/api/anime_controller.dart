@@ -54,12 +54,20 @@ class AnimeController {
           json.decode(response.body)['data']['music_videos'] as List;
 
       for (var obj in promoData) {
+        if (obj['trailer']['youtube_id'] == null) {
+          continue;
+        }
+
         result.add(
           Video.fromJson(obj, true),
         );
       }
 
       for (var obj in musicVideosData) {
+        if (obj['video']['youtube_id'] == null) {
+          continue;
+        }
+
         result.add(
           Video.fromJson(obj, false),
         );

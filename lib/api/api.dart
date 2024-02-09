@@ -106,9 +106,14 @@ class Api {
 
 String processTitleForLibria(String title) {
   String result = title.toLowerCase();
+  
   result = result.replaceAll(' ', '-');
   result = result.replaceAll(';', '');
   result = result.replaceAll(':', '');
+  result = result.replaceAll('!', '');
+  result = result.replaceAll(',', '');
+  result = result.replaceAll('`', '');
+
   result = result.replaceAll('nd-season', '');
 
   return result;
