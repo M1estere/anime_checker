@@ -1,5 +1,7 @@
 import 'package:film_checker/models/review.dart';
 import 'package:film_checker/views/blocks/info_pages/review_block.dart';
+import 'package:film_checker/views/support/default_sliver_appbar.dart';
+import 'package:film_checker/views/support/scroll_up_button.dart';
 import 'package:flutter/material.dart';
 
 class ReviewsPageView extends StatefulWidget {
@@ -20,9 +22,9 @@ class _ReviewsPageViewState extends State<ReviewsPageView> {
 
   @override
   void initState() {
-    _setupScrollController();
-
     super.initState();
+
+    _setupScrollController();
   }
 
   @override
@@ -39,16 +41,18 @@ class _ReviewsPageViewState extends State<ReviewsPageView> {
       if (_scrollController.offset >= showoffset &&
           !_scrollController.position.outOfRange &&
           !_showBtn) {
-        _showBtn = true;
-        setState(() {});
+        setState(() {
+          _showBtn = true;
+        });
       }
 
       if (_scrollController.offset <=
               _scrollController.position.minScrollExtent &&
           !_scrollController.position.outOfRange &&
           _showBtn) {
-        _showBtn = false;
-        setState(() {});
+        setState(() {
+          _showBtn = false;
+        });
       }
     });
   }
@@ -57,50 +61,13 @@ class _ReviewsPageViewState extends State<ReviewsPageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: _showBtn
-          ? FloatingActionButton(
-              onPressed: () {
-                _scrollController.animateTo(
-                    //go to top of scroll
-                    0, //scroll offset to go
-                    duration:
-                        const Duration(milliseconds: 500), //duration of scroll
-                    curve: Curves.fastOutSlowIn //scroll type
-                    );
-              },
-              child: const Icon(Icons.arrow_upward),
-            )
+          ? ScrollUpFloatingButton(scrollController: _scrollController)
           : null,
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
-          SliverAppBar(
-            floating: true,
-            backgroundColor: Colors.black,
-            surfaceTintColor: Colors.black,
-            leadingWidth: MediaQuery.of(context).size.width * .9,
-            toolbarHeight: 60,
-            leading: Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new,
-                    size: 35,
-                    color: Colors.white,
-                  ),
-                ),
-                Text(
-                  'reviews'.toUpperCase(),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 25,
-                  ),
-                )
-              ],
-            ),
+          const DefaultSliverAppBar(
+            title: 'reviews',
           ),
           SliverList.builder(
             itemBuilder: (context, index) => ReviewInfoBlock(
@@ -110,42 +77,6 @@ class _ReviewsPageViewState extends State<ReviewsPageView> {
           ),
         ],
       ),
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   surfaceTintColor: Colors.transparent,
-      //   leadingWidth: MediaQuery.of(context).size.width * .9,
-      //   leading: Row(
-      //     children: [
-      //       IconButton(
-      //         onPressed: () {
-      //           Navigator.of(context).pop();
-      //         },
-      //         icon: const Icon(
-      //           Icons.arrow_back_ios_new,
-      //           size: 35,
-      //           color: Colors.white,
-      //         ),
-      //       ),
-      //       Text(
-      //         'reviews'.toUpperCase(),
-      //         style: const TextStyle(
-      //           color: Colors.white,
-      //           fontWeight: FontWeight.w500,
-      //           fontSize: 25,
-      //         ),
-      //       )
-      //     ],
-      //   ),
-      // ),
-      // body: SafeArea(
-      //   child: ListView.builder(
-      //     scrollDirection: Axis.vertical,
-      //     itemBuilder: (context, index) => ReviewInfoBlock(
-      //       review: widget.reviews[index],
-      //     ),
-      //     itemCount: widget.reviews.length,
-      //   ),
-      // ),
     );
   }
 }

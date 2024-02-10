@@ -21,31 +21,31 @@ class SearchPageCategoryBlock extends StatefulWidget {
 }
 
 class _SearchPageCategoryBlockState extends State<SearchPageCategoryBlock> {
-  int state = 0;
-  Color activeColor = Colors.grey;
+  int _state = 0;
+  Color _activeColor = Colors.grey;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        switch (state) {
+        switch (_state) {
           case 0:
-            state = 1;
-            activeColor = Colors.blue;
+            _state = 1;
+            _activeColor = Colors.blue;
 
             widget.included.add(widget.genre);
             widget.excluded.remove(widget.genre);
             break;
           case 1:
-            state = 2;
-            activeColor = Colors.red;
+            _state = 2;
+            _activeColor = Colors.red;
 
             widget.excluded.add(widget.genre);
             widget.included.remove(widget.genre);
             break;
           case 2:
-            state = 0;
-            activeColor = Colors.grey;
+            _state = 0;
+            _activeColor = Colors.grey;
 
             widget.included.remove(widget.genre);
             widget.excluded.remove(widget.genre);
@@ -57,7 +57,7 @@ class _SearchPageCategoryBlockState extends State<SearchPageCategoryBlock> {
       child: Container(
         margin: const EdgeInsets.only(right: 5, bottom: 5),
         decoration: BoxDecoration(
-          color: activeColor.withOpacity(.4),
+          color: _activeColor.withOpacity(.4),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 7),

@@ -20,6 +20,7 @@ class _YoutubeVideoPlayerPageViewState
     extends State<YoutubeVideoPlayerPageView> {
   final _controller = YoutubePlayerController(
     params: const YoutubePlayerParams(
+      color: 'red',
       mute: false,
       showControls: true,
       showFullscreenButton: false,
@@ -29,9 +30,9 @@ class _YoutubeVideoPlayerPageViewState
 
   @override
   void initState() {
-    _controller.cueVideoById(videoId: widget.youtubeUrl);
-
     super.initState();
+
+    _controller.cueVideoById(videoId: widget.youtubeUrl);
   }
 
   @override
@@ -40,20 +41,16 @@ class _YoutubeVideoPlayerPageViewState
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
-        leadingWidth: MediaQuery.of(context).size.width * .9,
-        leading: Row(
-          children: [
-            IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios_new,
-                size: 35,
-                color: Colors.white,
-              ),
-            ),
-          ],
+        toolbarHeight: 50,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            size: 25,
+            color: Colors.white,
+          ),
         ),
       ),
       body: Column(
@@ -67,25 +64,5 @@ class _YoutubeVideoPlayerPageViewState
         ],
       ),
     );
-    // return SafeArea(
-    //   child: SizedBox(
-    //     child: YoutubePlayerScaffold(
-    //       backgroundColor: Colors.blue,
-    //       enableFullScreenOnVerticalDrag: true,
-    //       autoFullScreen: true,
-    //       defaultOrientations: const [
-    //         DeviceOrientation.portraitUp,
-    //         DeviceOrientation.portraitDown,
-    //       ],
-    //       controller: _controller,
-    //       aspectRatio: 16 / 9,
-    //       builder: (context, player) => Column(
-    //         mainAxisAlignment: MainAxisAlignment.center,
-    //         crossAxisAlignment: CrossAxisAlignment.center,
-    //         children: [player],
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }

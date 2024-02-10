@@ -17,11 +17,6 @@ class AnilibriaAnimeBigBlock extends StatefulWidget {
 
 class _AnilibriaAnimeBigBlockState extends State<AnilibriaAnimeBigBlock> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {

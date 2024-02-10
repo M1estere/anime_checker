@@ -1,7 +1,9 @@
 import 'package:film_checker/api/anilibria_anime_controller.dart';
 import 'package:film_checker/models/anilibria_anime.dart';
 import 'package:film_checker/views/blocks/common/anilibria_anime_big_block.dart';
+import 'package:film_checker/views/support/default_sliver_appbar.dart';
 import 'package:film_checker/views/support/fetching_circle.dart';
+import 'package:film_checker/views/support/scroll_up_button.dart';
 import 'package:flutter/material.dart';
 
 class AnilibriaAnimeSearchPageView extends StatefulWidget {
@@ -18,21 +20,21 @@ class _AnilibriaAnimeSearchPageViewState
   bool _showBtn = false;
 
   List<AnilibriaAnime> _animeList = [];
-
   bool _isLoading = true;
 
   @override
   void initState() {
+    super.initState();
+
     _setupScrollController();
 
     _gatherInfo().then((value) {
-      _isLoading = false;
       if (mounted) {
-        setState(() {});
+        setState(() {
+          _isLoading = false;
+        });
       }
     });
-
-    super.initState();
   }
 
   @override
@@ -49,16 +51,18 @@ class _AnilibriaAnimeSearchPageViewState
       if (_scrollController.offset >= showoffset &&
           !_scrollController.position.outOfRange &&
           !_showBtn) {
-        _showBtn = true;
-        setState(() {});
+        setState(() {
+          _showBtn = true;
+        });
       }
 
       if (_scrollController.offset <=
               _scrollController.position.minScrollExtent &&
           !_scrollController.position.outOfRange &&
           _showBtn) {
-        _showBtn = false;
-        setState(() {});
+        setState(() {
+          _showBtn = false;
+        });
       }
     });
   }
@@ -71,51 +75,12 @@ class _AnilibriaAnimeSearchPageViewState
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: _showBtn
-          ? FloatingActionButton(
-              onPressed: () {
-                _scrollController.animateTo(
-                    //go to top of scroll
-                    0, //scroll offset to go
-                    duration:
-                        const Duration(milliseconds: 500), //duration of scroll
-                    curve: Curves.fastOutSlowIn //scroll type
-                    );
-              },
-              child: const Icon(Icons.arrow_upward),
-            )
+          ? ScrollUpFloatingButton(scrollController: _scrollController)
           : null,
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
-          SliverAppBar(
-            floating: true,
-            backgroundColor: Colors.black,
-            surfaceTintColor: Colors.black,
-            leadingWidth: MediaQuery.of(context).size.width * .9,
-            toolbarHeight: 60,
-            leading: Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new,
-                    size: 35,
-                    color: Colors.white,
-                  ),
-                ),
-                Text(
-                  'AniLibria'.toUpperCase(),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 25,
-                  ),
-                )
-              ],
-            ),
-          ),
+          const DefaultSliverAppBar(title: 'AniLibria'),
           !_isLoading
               ? SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),

@@ -24,7 +24,7 @@ class SearchCategoryBlock extends StatelessWidget {
         );
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(90),
           color: Colors.grey.withOpacity(.5),
@@ -33,8 +33,8 @@ class SearchCategoryBlock extends StatelessWidget {
           title,
           style: const TextStyle(
             color: Colors.white,
-            fontSize: 15,
-            fontWeight: FontWeight.w300,
+            fontSize: 17,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ),

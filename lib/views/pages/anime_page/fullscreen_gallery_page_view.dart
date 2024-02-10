@@ -1,3 +1,4 @@
+import 'package:film_checker/support/string_extension.dart';
 import 'package:flutter/material.dart';
 
 class FullScreenGalleryPageView extends StatefulWidget {
@@ -17,14 +18,17 @@ class FullScreenGalleryPageView extends StatefulWidget {
 
 class _FullScreenGalleryPageViewState extends State<FullScreenGalleryPageView>
     with TickerProviderStateMixin {
-  bool _visible = true;
   late final AnimationController _controller;
 
-  int _currentPageIndex = 0;
   late PageController _pageController;
+  int _currentPageIndex = 0;
+
+  bool _visible = true;
 
   @override
   void initState() {
+    super.initState();
+
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
@@ -35,8 +39,6 @@ class _FullScreenGalleryPageViewState extends State<FullScreenGalleryPageView>
     });
 
     _pageController = PageController(initialPage: _currentPageIndex);
-
-    super.initState();
   }
 
   @override
@@ -56,29 +58,26 @@ class _FullScreenGalleryPageViewState extends State<FullScreenGalleryPageView>
         child: AppBar(
           backgroundColor: Colors.black,
           surfaceTintColor: Colors.black,
-          toolbarHeight: 60,
-          leadingWidth: MediaQuery.of(context).size.width * .9,
-          leading: Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: const Icon(
-                  Icons.arrow_back_ios_new,
-                  size: 35,
-                  color: Colors.white,
-                ),
-              ),
-              Text(
-                'gallery'.toUpperCase(),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 25,
-                ),
-              ),
-            ],
+          toolbarHeight: 50,
+          title: Text(
+            'gallery'.capitalize(),
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+              fontSize: 20,
+              letterSpacing: 1.2,
+            ),
+          ),
+          centerTitle: true,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              size: 25,
+              color: Colors.white,
+            ),
           ),
         ),
       ),

@@ -51,8 +51,8 @@ class GenreBlock extends StatelessWidget {
                         orderNumber.toString(),
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
@@ -71,6 +71,7 @@ class GenreBlock extends StatelessWidget {
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
+                            letterSpacing: 1,
                           ),
                         ),
                         Text(

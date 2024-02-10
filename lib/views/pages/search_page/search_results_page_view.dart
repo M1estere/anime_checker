@@ -6,9 +6,11 @@ import 'package:film_checker/api/search_controller.dart' as search;
 import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/models/genre.dart';
 import 'package:film_checker/models/pagination.dart';
-import 'package:film_checker/views/blocks/search_page/search_category_block.dart';
+import 'package:film_checker/support/string_extension.dart';
+import 'package:film_checker/views/blocks/search_page/search_page_category_block.dart';
 import 'package:film_checker/views/blocks/search_page/search_result_block.dart';
 import 'package:film_checker/views/support/fetching_circle.dart';
+import 'package:film_checker/views/support/scroll_up_button.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel2/sliding_up_panel2.dart';
 import 'package:stream_transform/stream_transform.dart';
@@ -21,32 +23,30 @@ class SearchResultsPageView extends StatefulWidget {
 }
 
 class _SearchResultsPageViewState extends State<SearchResultsPageView> {
-  StreamController streamcontroller = StreamController();
-
-  final PanelController _panelController = PanelController();
-
   final ScrollController _scrollController = ScrollController();
   bool _showBtn = false;
 
+  final StreamController _streamcontroller = StreamController();
+  final PanelController _panelController = PanelController();
   final TextEditingController _searchController = TextEditingController();
 
-  List<Anime> resultAnime = [];
+  List<Anime> _resultAnime = [];
   Pagination _currentPage = Pagination.empty();
 
-  bool _allGenresDisplayed = false;
+  bool __allGenresDisplayed = false;
 
-  List<Genre> activeGenres = [];
-  List<Genre> excludedGenres = [];
-
-  List<Genre> allGenres = [];
+  List<Genre> _allGenres = [];
+  final List<Genre> _activeGenres = [];
+  final List<Genre> _excludedGenres = [];
 
   bool _loadingResults = false;
-
   bool _loadingGenres = true;
   bool _loadingMore = false;
 
   @override
   void initState() {
+    super.initState();
+
     _setupScrollController();
     _gatherInfo().then((value) {
       if (mounted) {
@@ -56,13 +56,11 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
       }
     });
 
-    streamcontroller.stream
+    _streamcontroller.stream
         .debounce(const Duration(milliseconds: 500))
         .listen((event) {
       _updatePage();
     });
-
-    super.initState();
   }
 
   _setupScrollController() {
@@ -72,21 +70,23 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
       if (_scrollController.offset >= showoffset &&
           !_scrollController.position.outOfRange &&
           !_showBtn) {
-        _showBtn = true;
-        setState(() {});
+        setState(() {
+          _showBtn = true;
+        });
       }
 
       if (_scrollController.offset <=
               _scrollController.position.minScrollExtent &&
           !_scrollController.position.outOfRange) {
-        _showBtn = false;
-        setState(() {});
+        setState(() {
+          _showBtn = false;
+        });
       }
     });
   }
 
   Future _gatherInfo() async {
-    allGenres = await GenresController().getAllGenres();
+    _allGenres = await GenresController().getAllGenres();
   }
 
   @override
@@ -114,12 +114,12 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
 
       (List<Anime>, Pagination) t = await search.SearchController()
           .getAnimeBySearch(
-              [for (var obj in activeGenres) obj.id.toString()],
-              [for (var obj in excludedGenres) obj.id.toString()],
+              [for (var obj in _activeGenres) obj.id.toString()],
+              [for (var obj in _excludedGenres) obj.id.toString()],
               _searchController.text,
               _currentPage.currentPage + 1);
 
-      resultAnime.addAll(t.$1);
+      _resultAnime.addAll(t.$1);
       _currentPage = t.$2;
 
       if (mounted) {
@@ -138,12 +138,12 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
     }
     (List<Anime>, Pagination) t = await search.SearchController()
         .getAnimeBySearch(
-            [for (var obj in activeGenres) obj.id.toString()],
-            [for (var obj in excludedGenres) obj.id.toString()],
+            [for (var obj in _activeGenres) obj.id.toString()],
+            [for (var obj in _excludedGenres) obj.id.toString()],
             _searchController.text,
             1);
 
-    resultAnime = t.$1;
+    _resultAnime = t.$1;
     _currentPage = t.$2;
   }
 
@@ -151,18 +151,7 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: _showBtn
-          ? FloatingActionButton(
-              onPressed: () {
-                _scrollController.animateTo(
-                    //go to top of scroll
-                    0, //scroll offset to go
-                    duration:
-                        const Duration(milliseconds: 500), //duration of scroll
-                    curve: Curves.fastOutSlowIn //scroll type
-                    );
-              },
-              child: const Icon(Icons.arrow_upward),
-            )
+          ? ScrollUpFloatingButton(scrollController: _scrollController)
           : null,
       extendBodyBehindAppBar: true,
       body: Stack(
@@ -202,10 +191,10 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
                             ),
                           ),
                           child: SizedBox(
-                            height: 65,
+                            height: 50,
                             child: TextField(
                               onChanged: (value) {
-                                streamcontroller.add(value);
+                                _streamcontroller.add(value);
                               },
                               onSubmitted: (value) {
                                 _updatePage();
@@ -218,9 +207,9 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
                               textAlignVertical: TextAlignVertical.center,
                               style: TextStyle(
                                 color: Theme.of(context).primaryColor,
-                                fontSize: 22,
+                                fontSize: 17,
                                 fontWeight: FontWeight.w400,
-                                letterSpacing: .5,
+                                letterSpacing: 1.2,
                               ),
                               decoration: InputDecoration(
                                 border: Theme.of(context)
@@ -241,7 +230,7 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
                                 prefixIcon: IconButton(
                                   icon: Icon(
                                     Icons.arrow_back_ios,
-                                    size: 30,
+                                    size: 25,
                                     color: Theme.of(context)
                                         .inputDecorationTheme
                                         .prefixIconColor,
@@ -249,23 +238,43 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
                                   onPressed: () => Navigator.of(context).pop(),
                                 ),
                                 hintText: 'Search anime',
-                                hintStyle: Theme.of(context)
-                                    .inputDecorationTheme
-                                    .hintStyle,
-                                suffixIcon: IconButton(
-                                  onPressed: () {
-                                    if (_panelController.isPanelOpen) {
-                                      _panelController.close();
-                                    } else {
-                                      _panelController.open();
-                                    }
-                                    FocusScope.of(context).unfocus();
-                                    setState(() {});
-                                  },
-                                  icon: const Icon(
-                                    Icons.filter_alt_rounded,
-                                    size: 30,
-                                    color: Colors.grey,
+                                hintStyle: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 1.2,
+                                ),
+                                suffixIcon: Container(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  width: 100,
+                                  child: IntrinsicHeight(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        const VerticalDivider(
+                                          color: Colors.white,
+                                          indent: 10,
+                                          endIndent: 10,
+                                          thickness: .5,
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            if (_panelController.isPanelOpen) {
+                                              _panelController.close();
+                                            } else {
+                                              _panelController.open();
+                                            }
+                                            FocusScope.of(context).unfocus();
+                                            setState(() {});
+                                          },
+                                          icon: const Icon(
+                                            Icons.filter_alt_rounded,
+                                            size: 25,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -322,7 +331,7 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
                                     height: 25,
                                     child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
-                                        itemCount: activeGenres.length,
+                                        itemCount: _activeGenres.length,
                                         itemBuilder: (context, index) {
                                           return Container(
                                             margin:
@@ -338,7 +347,7 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
                                                       vertical: 1.5,
                                                       horizontal: 4),
                                               child: Text(
-                                                activeGenres[index].name,
+                                                _activeGenres[index].name,
                                                 style: const TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 15,
@@ -367,7 +376,7 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
                                     height: 25,
                                     child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
-                                        itemCount: excludedGenres.length,
+                                        itemCount: _excludedGenres.length,
                                         itemBuilder: (context, index) {
                                           return Container(
                                             margin:
@@ -383,7 +392,7 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
                                                       vertical: 1.5,
                                                       horizontal: 4),
                                               child: Text(
-                                                excludedGenres[index].name,
+                                                _excludedGenres[index].name,
                                                 style: const TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 15,
@@ -414,39 +423,44 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      'Results'.toUpperCase(),
-                                      style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${_currentPage.wholeAmount}',
-                                      style: const TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                _resultAnime.isNotEmpty
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            'Found anime'.capitalize(),
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w500,
+                                              letterSpacing: 1.2,
+                                            ),
+                                          ),
+                                          Text(
+                                            '${_currentPage.wholeAmount}',
+                                            style: const TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : const Center(),
                                 ListView.builder(
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   padding: const EdgeInsets.only(top: 5),
                                   itemBuilder: (context, index) {
                                     return SearchResultBlock(
-                                      anime: resultAnime[index],
+                                      anime: _resultAnime[index],
                                     );
                                   },
-                                  itemCount: resultAnime.length,
+                                  itemCount: _resultAnime.length,
                                 ),
                                 _currentPage.hasNextPage
                                     ? GestureDetector(
@@ -546,17 +560,17 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
                                         width: double.infinity,
                                         child: ExtendedWrap(
                                           maxLines:
-                                              _allGenresDisplayed ? 50 : 3,
+                                              __allGenresDisplayed ? 50 : 3,
                                           minLines:
-                                              _allGenresDisplayed ? 50 : 3,
+                                              __allGenresDisplayed ? 50 : 3,
                                           alignment: WrapAlignment.start,
                                           direction: Axis.horizontal,
                                           children: List.generate(
-                                              allGenres.length, (index) {
+                                              _allGenres.length, (index) {
                                             return SearchPageCategoryBlock(
-                                              genre: allGenres[index],
-                                              included: activeGenres,
-                                              excluded: excludedGenres,
+                                              genre: _allGenres[index],
+                                              included: _activeGenres,
+                                              excluded: _excludedGenres,
                                               updateFunc: _updatePage,
                                             );
                                           }),
@@ -565,12 +579,12 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
                                       GestureDetector(
                                         onTap: () {
                                           setState(() {
-                                            _allGenresDisplayed =
-                                                !_allGenresDisplayed;
+                                            __allGenresDisplayed =
+                                                !__allGenresDisplayed;
                                           });
                                         },
                                         child: Text(
-                                          _allGenresDisplayed
+                                          __allGenresDisplayed
                                               ? 'Collapse'
                                               : 'Expand',
                                           style: const TextStyle(
@@ -586,25 +600,6 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
                           ],
                         ),
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(vertical: 5),
-                      //   child: Column(
-                      //     crossAxisAlignment: CrossAxisAlignment.start,
-                      //     children: [
-                      //       Text(
-                      //         'YEAR'.toUpperCase(),
-                      //         style: TextStyle(
-                      //           color: Theme.of(context).primaryColor,
-                      //           fontSize: 15,
-                      //           fontWeight: FontWeight.w500,
-                      //         ),
-                      //       ),
-                      //       const SizedBox(
-                      //         height: 5,
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),

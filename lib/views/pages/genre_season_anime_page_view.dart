@@ -4,8 +4,9 @@ import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/models/pagination.dart';
 import 'package:film_checker/models/season.dart';
 import 'package:film_checker/views/blocks/common/anime_big_block.dart';
-import 'package:film_checker/views/pages/anime_by_section_page_view.dart';
+import 'package:film_checker/views/support/default_sliver_appbar.dart';
 import 'package:film_checker/views/support/fetching_circle.dart';
+import 'package:film_checker/views/support/scroll_up_button.dart';
 import 'package:flutter/material.dart';
 
 class GenreSeasonAnimePageView extends StatefulWidget {
@@ -38,24 +39,53 @@ class _GenreSeasonAnimePageViewState extends State<GenreSeasonAnimePageView> {
   bool _moreLoading = false;
 
   bool _isBottom = false;
+  bool _showBtn = false;
 
   @override
   void initState() {
-    setupScrollController();
-    gatherInfo().then((value) {
+    super.initState();
+
+    _setupScrollController();
+    _gatherInfo().then((value) {
       if (mounted) {
         setState(() {
           _isLoading = false;
         });
       }
     });
-
-    super.initState();
   }
 
-  setupScrollController() {
+  @override
+  void dispose() {
+    _scrollController.dispose();
+
+    super.dispose();
+  }
+
+  _setupScrollController() {
     _scrollController.addListener(
       () {
+        // for floating button
+        double showoffset = 10.0;
+
+        if (_scrollController.offset >= showoffset &&
+            !_scrollController.position.outOfRange &&
+            !_showBtn) {
+          setState(() {
+            _showBtn = true;
+          });
+        }
+
+        if (_scrollController.offset <=
+                _scrollController.position.minScrollExtent &&
+            !_scrollController.position.outOfRange &&
+            _showBtn) {
+          setState(() {
+            _showBtn = false;
+          });
+        }
+
+        // for load more button
         if (_scrollController.offset >=
                 _scrollController.position.maxScrollExtent &&
             !_scrollController.position.outOfRange) {
@@ -76,7 +106,7 @@ class _GenreSeasonAnimePageViewState extends State<GenreSeasonAnimePageView> {
     );
   }
 
-  Future gatherInfo() async {
+  Future _gatherInfo() async {
     if (widget.type == 0) {
       _animeList = await GenresController()
           .getAnimeListByGenre(widget.genreNumber.toString(), 1);
@@ -91,7 +121,7 @@ class _GenreSeasonAnimePageViewState extends State<GenreSeasonAnimePageView> {
     }
   }
 
-  Future nextPage() async {
+  Future _nextPage() async {
     if (_currentPage.hasNextPage) {
       if (mounted) {
         setState(() {
@@ -124,130 +154,69 @@ class _GenreSeasonAnimePageViewState extends State<GenreSeasonAnimePageView> {
   }
 
   @override
-  void dispose() {
-    _scrollController.dispose();
-
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: _showBtn
+          ? ScrollUpFloatingButton(scrollController: _scrollController)
+          : null,
       body: CustomScrollView(
+        controller: _scrollController,
         slivers: [
-          SliverPersistentHeader(
-            floating: true,
-            delegate: MySliverPersistentHeaderDelegate(
-              widget.sectionName.toUpperCase(),
-            ),
-          ),
+          DefaultSliverAppBar(title: widget.sectionName),
           !_isLoading
-              ? SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  sliver: SliverGrid.builder(
-                    itemCount: _animeList.length,
-                    itemBuilder: (context, index) {
-                      return AnimeBigBlock(
-                        anime: _animeList[index],
-                      );
-                    },
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: .57,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
+              ? SliverMainAxisGroup(
+                  slivers: [
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      sliver: SliverGrid.builder(
+                        itemCount: _animeList.length,
+                        itemBuilder: (context, index) {
+                          return AnimeBigBlock(
+                            anime: _animeList[index],
+                          );
+                        },
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: .57,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                        ),
+                      ),
                     ),
-                  ),
+                    _isBottom
+                        ? _currentPage.hasNextPage
+                            ? SliverToBoxAdapter(
+                                child: GestureDetector(
+                                  onTap: () => _nextPage(),
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: 50,
+                                    color: Colors.grey.withOpacity(.3),
+                                    child: Center(
+                                      child: !_moreLoading
+                                          ? Text(
+                                              'Load more'.toUpperCase(),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            )
+                                          : const CircularProgressIndicator(),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : const SliverToBoxAdapter()
+                        : const SliverToBoxAdapter(),
+                  ],
                 )
               : const SliverFillRemaining(
                   child: FetchingCircle(),
                 ),
         ],
       ),
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   surfaceTintColor: Colors.transparent,
-      //   leadingWidth: MediaQuery.of(context).size.width * .9,
-      //   leading: Row(
-      //     children: [
-      //       IconButton(
-      //         onPressed: () {
-      //           Navigator.of(context).pop();
-      //         },
-      //         icon: const Icon(
-      //           Icons.arrow_back_ios_new,
-      //           size: 35,
-      //           color: Colors.white,
-      //         ),
-      //       ),
-      //       Text(
-      //         widget.sectionName.toUpperCase(),
-      //         style: const TextStyle(
-      //           color: Colors.white,
-      //           fontWeight: FontWeight.w500,
-      //           fontSize: 25,
-      //         ),
-      //       )
-      //     ],
-      //   ),
-      // ),
-      // body: SafeArea(
-      //   child: !_isLoading
-      //       ? Column(
-      //           children: [
-      //             Expanded(
-      //               child: Padding(
-      //                 padding: const EdgeInsets.symmetric(horizontal: 15),
-      //                 child: SizedBox(
-      //                   width: double.infinity,
-      //                   child: GridView.builder(
-      //                     controller: _scrollController,
-      //                     gridDelegate:
-      //                         const SliverGridDelegateWithFixedCrossAxisCount(
-      //                       crossAxisCount: 2,
-      //                       childAspectRatio: .57,
-      //                       mainAxisSpacing: 10,
-      //                       crossAxisSpacing: 10,
-      //                     ),
-      //                     itemBuilder: (context, index) {
-      //                       return AnimeBigBlock(
-      //                         anime: _animeList[index],
-      //                       );
-      //                     },
-      //                     itemCount: _animeList.length,
-      //                   ),
-      //                 ),
-      //               ),
-      //             ),
-      //             _isBottom
-      //                 ? _currentPage.hasNextPage
-      //                     ? GestureDetector(
-      //                         onTap: () => nextPage(),
-      //                         child: Container(
-      //                           width: double.infinity,
-      //                           height: 50,
-      //                           color: Colors.grey.withOpacity(.3),
-      //                           child: Center(
-      //                             child: !_moreLoading
-      //                                 ? Text(
-      //                                     'Load more'.toUpperCase(),
-      //                                     style: const TextStyle(
-      //                                       color: Colors.white,
-      //                                       fontSize: 20,
-      //                                       fontWeight: FontWeight.w500,
-      //                                     ),
-      //                                   )
-      //                                 : const CircularProgressIndicator(),
-      //                           ),
-      //                         ),
-      //                       )
-      //                     : const Center()
-      //                 : const Center(),
-      //           ],
-      //         )
-      //       : const Center(),
-      // ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/views/blocks/common/anime_big_block.dart';
+import 'package:film_checker/views/support/default_sliver_appbar.dart';
 import 'package:film_checker/views/support/fetching_circle.dart';
 import 'package:flutter/material.dart';
 
@@ -22,18 +23,18 @@ class _AnimeSectionPageViewState extends State<AnimeSectionPageView> {
 
   @override
   void initState() {
-    gatherInfo().then((value) {
+    super.initState();
+
+    _gatherInfo().then((value) {
       if (mounted) {
         setState(() {
           _isLoading = false;
         });
       }
     });
-
-    super.initState();
   }
 
-  Future gatherInfo() async {
+  Future _gatherInfo() async {
     await Future.delayed(const Duration(milliseconds: 300));
   }
 
@@ -42,12 +43,7 @@ class _AnimeSectionPageViewState extends State<AnimeSectionPageView> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverPersistentHeader(
-            floating: true,
-            delegate: MySliverPersistentHeaderDelegate(
-              widget.sectionName.toUpperCase(),
-            ),
-          ),
+          DefaultSliverAppBar(title: widget.sectionName),
           !_isLoading
               ? SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),

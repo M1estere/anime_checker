@@ -1,4 +1,5 @@
 import 'package:film_checker/models/season.dart';
+import 'package:film_checker/support/string_extension.dart';
 import 'package:film_checker/views/pages/genre_season_anime_page_view.dart';
 import 'package:flutter/material.dart';
 
@@ -45,11 +46,12 @@ class SeasonBlock extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${season.year} ${season.title} ',
+                          '${season.year} - ${season.title.capitalize()}',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
+                            letterSpacing: 1,
                           ),
                         ),
                       ],

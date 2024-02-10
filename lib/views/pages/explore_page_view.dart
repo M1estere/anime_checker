@@ -20,27 +20,28 @@ class _ExplorePageViewState extends State<ExplorePageView>
   @override
   bool get wantKeepAlive => true;
 
-  int _currentIndex = 0;
-
-  List<Anime> _anime = [];
-
   String _bgImage = '';
   Image _currentImage = Image.network('');
 
+  List<Anime> _anime = [];
   bool _isLoading = true;
+
+  int _currentIndex = 0;
 
   @override
   void initState() {
-    gatherInfo().then((value) {
+    super.initState();
+
+    _gatherInfo().then((value) {
       if (mounted) {
-        setState(() {});
+        setState(() {
+          _isLoading = false;
+        });
       }
     });
-
-    super.initState();
   }
 
-  Future gatherInfo() async {
+  Future _gatherInfo() async {
     _anime = await Api().getTopAnimeFiltered('bypopularity');
 
     _bgImage = _anime[0].imagePath;
@@ -53,8 +54,6 @@ class _ExplorePageViewState extends State<ExplorePageView>
       width: double.infinity,
       height: double.infinity,
     );
-
-    _isLoading = false;
   }
 
   @override
@@ -65,13 +64,7 @@ class _ExplorePageViewState extends State<ExplorePageView>
       child: Stack(
         children: [
           !_isLoading
-              ?
-              // child: Image.network(
-
-              //   _bgImage,
-              //   fit: BoxFit.cover,
-              // ),
-              ImageBackground(
+              ? ImageBackground(
                   image: _currentImage,
                   path: _anime[_currentIndex].imagePath,
                 )
@@ -87,7 +80,7 @@ class _ExplorePageViewState extends State<ExplorePageView>
                       ),
                       SizedBox(
                         width: double.infinity,
-                        height: MediaQuery.of(context).size.height * .187,
+                        height: MediaQuery.of(context).size.height * .18,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,8 +96,8 @@ class _ExplorePageViewState extends State<ExplorePageView>
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 25,
-                                      height: 1,
+                                      fontSize: 20,
+                                      height: 1.1,
                                     ),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
@@ -114,7 +107,7 @@ class _ExplorePageViewState extends State<ExplorePageView>
                                     style: const TextStyle(
                                       color: Colors.grey,
                                       fontWeight: FontWeight.w300,
-                                      fontSize: 17,
+                                      fontSize: 15,
                                       height: 1,
                                     ),
                                     overflow: TextOverflow.ellipsis,
@@ -156,7 +149,7 @@ class _ExplorePageViewState extends State<ExplorePageView>
                                   const Icon(
                                     Icons.star,
                                     color: Colors.yellow,
-                                    size: 32,
+                                    size: 25,
                                   ),
                                   const SizedBox(
                                     width: 5,
@@ -164,7 +157,7 @@ class _ExplorePageViewState extends State<ExplorePageView>
                                   Text(
                                     '${_anime[_currentIndex].score}/10',
                                     style: const TextStyle(
-                                      fontSize: 17,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.w500,
                                       color: Colors.white,
                                     ),
@@ -176,7 +169,7 @@ class _ExplorePageViewState extends State<ExplorePageView>
                                     '(${_anime[_currentIndex].scoredBy})',
                                     style: const TextStyle(
                                       color: Colors.grey,
-                                      fontSize: 15,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.w400,
                                     ),
                                   ),

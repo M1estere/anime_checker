@@ -2,7 +2,9 @@ import 'package:film_checker/api/genres_controller.dart';
 import 'package:film_checker/api/seasons_controller.dart';
 import 'package:film_checker/views/blocks/common/genre_block.dart';
 import 'package:film_checker/views/blocks/common/season_block.dart';
+import 'package:film_checker/views/support/default_sliver_appbar.dart';
 import 'package:film_checker/views/support/fetching_circle.dart';
+import 'package:film_checker/views/support/scroll_up_button.dart';
 import 'package:flutter/material.dart';
 
 class SearchSectionPageView extends StatefulWidget {
@@ -18,14 +20,19 @@ class SearchSectionPageView extends StatefulWidget {
 }
 
 class _SearchSectionPageViewState extends State<SearchSectionPageView> {
-  List _content = [];
+  final ScrollController _scrollController = ScrollController();
+  bool _showBtn = false;
 
+  List _content = [];
   bool _isLoading = true;
 
   @override
   void initState() {
+    super.initState();
+
+    _setupScrollController();
     if (widget.title.toLowerCase() == 'genres') {
-      gatherInfo(1).then((value) {
+      _gatherInfo(1).then((value) {
         if (mounted) {
           setState(() {
             _isLoading = false;
@@ -33,7 +40,7 @@ class _SearchSectionPageViewState extends State<SearchSectionPageView> {
         }
       });
     } else if (widget.title.toLowerCase() == 'seasons') {
-      gatherInfo(3).then((value) {
+      _gatherInfo(3).then((value) {
         if (mounted) {
           setState(() {
             _isLoading = false;
@@ -41,11 +48,16 @@ class _SearchSectionPageViewState extends State<SearchSectionPageView> {
         }
       });
     }
-
-    super.initState();
   }
 
-  Future gatherInfo(int type) async {
+  @override
+  void dispose() {
+    _scrollController.dispose();
+
+    super.dispose();
+  }
+
+  Future _gatherInfo(int type) async {
     if (type == 1) {
       _content = await GenresController().getAllGenres();
     } else if (type == 3) {
@@ -55,67 +67,73 @@ class _SearchSectionPageViewState extends State<SearchSectionPageView> {
     }
   }
 
+  _setupScrollController() {
+    _scrollController.addListener(() {
+      double showoffset = 10.0;
+
+      if (_scrollController.offset >= showoffset &&
+          !_scrollController.position.outOfRange &&
+          !_showBtn) {
+        setState(() {
+          _showBtn = true;
+        });
+      }
+
+      if (_scrollController.offset <=
+              _scrollController.position.minScrollExtent &&
+          !_scrollController.position.outOfRange &&
+          _showBtn) {
+        setState(() {
+          _showBtn = false;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        leadingWidth: MediaQuery.of(context).size.width * .9,
-        leading: Row(
-          children: [
-            IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios_new,
-                size: 35,
-                color: Colors.white,
-              ),
-            ),
-            Text(
-              widget.title.toUpperCase(),
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-                fontSize: 25,
-              ),
-            ),
-          ],
-        ),
-      ),
-      body: SafeArea(
-        child: !_isLoading
-            ? ListView.separated(
-                separatorBuilder: (context, index) {
-                  return const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 0),
-                    child: Divider(
-                      color: Colors.white,
-                      thickness: .7,
-                      height: 1,
-                    ),
-                  );
-                },
-                scrollDirection: Axis.vertical,
-                itemBuilder: (context, index) {
-                  if (widget.title.toLowerCase() == 'genres') {
+      floatingActionButton: _showBtn
+          ? ScrollUpFloatingButton(scrollController: _scrollController)
+          : null,
+      body: CustomScrollView(
+        controller: _scrollController,
+        slivers: [
+          DefaultSliverAppBar(
+            title: widget.title,
+          ),
+          !_isLoading
+              ? SliverList.separated(
+                  separatorBuilder: (context, index) {
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 0),
+                      child: Divider(
+                        color: Colors.white,
+                        thickness: .7,
+                        height: 1,
+                      ),
+                    );
+                  },
+                  itemBuilder: (context, index) {
+                    if (widget.title.toLowerCase() == 'genres') {
+                      return GenreBlock(
+                        orderNumber: index + 1,
+                        genre: _content[index],
+                      );
+                    } else if (widget.title.toLowerCase() == 'seasons') {
+                      return SeasonBlock(season: _content[index]);
+                    }
                     return GenreBlock(
                       orderNumber: index + 1,
                       genre: _content[index],
                     );
-                  } else if (widget.title.toLowerCase() == 'seasons') {
-                    return SeasonBlock(season: _content[index]);
-                  }
-                  return GenreBlock(
-                    orderNumber: index + 1,
-                    genre: _content[index],
-                  );
-                },
-                itemCount: _content.length,
-              )
-            : const FetchingCircle(),
+                  },
+                  itemCount: _content.length,
+                )
+              : const SliverFillRemaining(
+                  child: FetchingCircle(),
+                ),
+        ],
       ),
     );
   }

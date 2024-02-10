@@ -45,7 +45,7 @@ class SeriesBlock extends StatelessWidget {
                         'Episode $index',
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 18,
+                          fontSize: 20,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -60,11 +60,6 @@ class SeriesBlock extends StatelessWidget {
                     ],
                   ),
                 ),
-                // Icon(
-                //   Icons.check_circle_outline_outlined,
-                //   size: 35,
-                //   color: Colors.grey,
-                // ),
               ],
             ),
           ),

@@ -40,7 +40,9 @@ class Anime extends AnimeParent {
       imagePath: json['images']['jpg']['large_image_url'] ?? '',
     );
 
-    result.score = json['score'] == null ? 0.0 : json['score'].toDouble();
+    result.score = json['score'] == null
+        ? 0.0
+        : double.parse(json['score'].toStringAsFixed(1));
     result.scoredBy = json['scored_by'] ?? 0;
     result.synopsis = json['synopsis'] != null
         ? processSynopsis(json['synopsis'].toString())

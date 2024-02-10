@@ -15,12 +15,14 @@ class MainWrapper extends StatefulWidget {
 
 class _MainWrapperState extends State<MainWrapper> {
   PageController _pageController = PageController();
-  List<Widget> _pages = [];
 
+  List<Widget> _pages = [];
   int _currentPageIndex = 0;
 
   @override
   void initState() {
+    super.initState();
+
     _currentPageIndex = 0;
     _pages = const [
       ExplorePageView(),
@@ -30,8 +32,6 @@ class _MainWrapperState extends State<MainWrapper> {
     ];
 
     _pageController = PageController(initialPage: _currentPageIndex);
-
-    super.initState();
   }
 
   @override

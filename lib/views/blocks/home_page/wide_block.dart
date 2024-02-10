@@ -2,7 +2,7 @@ import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/views/pages/anime_page/anime_page_view.dart';
 import 'package:flutter/material.dart';
 
-class WideBlock extends StatelessWidget {
+class WideBlock extends StatefulWidget {
   final Anime anime;
 
   const WideBlock({
@@ -11,21 +11,35 @@ class WideBlock extends StatelessWidget {
   });
 
   @override
+  State<WideBlock> createState() => _WideBlockState();
+}
+
+class _WideBlockState extends State<WideBlock> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
+        Navigator.of(context)
+            .push(
           MaterialPageRoute(
             builder: (context) => AnimePageView(
-              path: anime.imagePath,
+              path: widget.anime.imagePath,
               image: Image.network(
-                anime.imagePath,
+                widget.anime.imagePath,
                 fit: BoxFit.cover,
+                key: Key(
+                  widget.anime.imagePath,
+                ),
+                width: double.infinity,
+                height: double.infinity,
               ),
-              anime: anime,
+              anime: widget.anime,
             ),
           ),
-        );
+        )
+            .then((value) {
+          setState(() {});
+        });
       },
       child: Stack(
         children: [
@@ -40,13 +54,8 @@ class WideBlock extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: Image.network(
-                      anime.imagePath,
+                      widget.anime.imagePath,
                       fit: BoxFit.cover,
-                      key: Key(
-                        anime.imagePath,
-                      ),
-                      width: double.infinity,
-                      height: double.infinity,
                     ),
                   ),
                 ),
@@ -56,7 +65,7 @@ class WideBlock extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: Text(
-                    anime.title,
+                    widget.anime.title,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 15,
@@ -69,7 +78,7 @@ class WideBlock extends StatelessWidget {
               ],
             ),
           ),
-          anime.libriaId != -1
+          widget.anime.libriaId != -1
               ? Padding(
                   padding: const EdgeInsets.only(
                     left: 5,

@@ -12,7 +12,7 @@ class AnimeCategoryBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: 7,
+        horizontal: 12,
         vertical: 3,
       ),
       decoration: BoxDecoration(

@@ -23,6 +23,8 @@ class _AnimeWatchPageViewState extends State<AnimeWatchPageView> {
 
   @override
   void initState() {
+    super.initState();
+
     _dataMap = {
       'Full HD': widget.animeLinks['fhd'] ?? '',
       'HD': widget.animeLinks['hd'] ?? '',
@@ -36,8 +38,6 @@ class _AnimeWatchPageViewState extends State<AnimeWatchPageView> {
     } else if (widget.animeLinks['sd'] == null) {
       _currentRes = '';
     }
-
-    super.initState();
   }
 
   @override
@@ -46,23 +46,18 @@ class _AnimeWatchPageViewState extends State<AnimeWatchPageView> {
       extendBody: true,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        toolbarHeight: _fullScreenActive ? 0 : 60,
+        toolbarHeight: _fullScreenActive ? 0 : 50,
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
-        leadingWidth: MediaQuery.of(context).size.width * .9,
-        leading: Row(
-          children: [
-            IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios_new,
-                size: 35,
-                color: Colors.white,
-              ),
-            ),
-          ],
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            size: 25,
+            color: Colors.white,
+          ),
         ),
       ),
       body: Column(
