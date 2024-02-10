@@ -1,5 +1,6 @@
 import 'package:film_checker/api/anime_player_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lecle_yoyo_player/lecle_yoyo_player.dart';
 import 'package:video_player/video_player.dart';
 
@@ -75,6 +76,8 @@ class _AnimeWatchPageViewState extends State<AnimeWatchPageView> {
                       .getFullAnimePath(_dataMap[_currentRes]!),
                   aspectRatio: 16 / 9,
                   videoStyle: VideoStyle(
+                    progressIndicatorPadding:
+                        const EdgeInsets.symmetric(vertical: 10),
                     qualityOptionWidth: 0,
                     qualityOptionStyle:
                         const TextStyle(color: Colors.transparent),
@@ -112,6 +115,7 @@ class _AnimeWatchPageViewState extends State<AnimeWatchPageView> {
                   ),
                   onFullScreen: (fullScreenTurnedOn) {
                     _fullScreenActive = fullScreenTurnedOn;
+
                     if (mounted) {
                       setState(() {});
                     }
