@@ -217,7 +217,8 @@ class _ExplorePageViewState extends State<ExplorePageView>
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    Navigator.of(context).push(
+                                    Navigator.of(context)
+                                        .push(
                                       MaterialPageRoute(
                                         builder: (context) => AnimePageView(
                                           path: _anime[index].imagePath,
@@ -225,7 +226,10 @@ class _ExplorePageViewState extends State<ExplorePageView>
                                           anime: _anime[index],
                                         ),
                                       ),
-                                    );
+                                    )
+                                        .then((value) {
+                                      setState(() {});
+                                    });
                                   },
                                   child: Container(
                                     margin: const EdgeInsets.symmetric(
