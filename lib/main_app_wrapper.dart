@@ -44,8 +44,19 @@ class _MainWrapperState extends State<MainWrapper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: false,
+      extendBodyBehindAppBar: true,
       extendBody: false,
+      appBar: PreferredSize(
+        preferredSize: AppBar().preferredSize,
+        child: Hero(
+          tag: AppBar,
+          child: AppBar(
+            toolbarHeight: 0,
+            backgroundColor: Colors.transparent,
+            surfaceTintColor: Colors.transparent,
+          ),
+        ),
+      ),
       body: PageView(
         controller: _pageController,
         physics: const NeverScrollableScrollPhysics(),

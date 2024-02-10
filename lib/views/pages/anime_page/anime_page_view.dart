@@ -102,22 +102,28 @@ class _AnimePageViewState extends State<AnimePageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        surfaceTintColor: Colors.transparent,
-        backgroundColor: Colors.transparent,
-        leadingWidth: 71, // 56
-        leading: ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          style: ElevatedButton.styleFrom(
-            shape: const CircleBorder(),
-            padding: const EdgeInsets.only(right: 0),
-          ),
-          child: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.black,
-            size: 31,
+      appBar: PreferredSize(
+        preferredSize: AppBar().preferredSize,
+        child: Hero(
+          tag: AppBar,
+          child: AppBar(
+            surfaceTintColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
+            leadingWidth: 71, // 56
+            leading: ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+                padding: const EdgeInsets.only(right: 0),
+              ),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.black,
+                size: 31,
+              ),
+            ),
           ),
         ),
       ),

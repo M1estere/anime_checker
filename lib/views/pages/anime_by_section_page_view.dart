@@ -1,5 +1,6 @@
 import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/views/blocks/common/anime_big_block.dart';
+import 'package:film_checker/views/support/fetching_circle.dart';
 import 'package:flutter/material.dart';
 
 class AnimeSectionPageView extends StatefulWidget {
@@ -39,40 +40,24 @@ class _AnimeSectionPageViewState extends State<AnimeSectionPageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        leadingWidth: MediaQuery.of(context).size.width * .9,
-        leading: Row(
-          children: [
-            IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios_new,
-                size: 35,
-                color: Colors.white,
-              ),
-            ),
-            Text(
+      body: CustomScrollView(
+        slivers: [
+          SliverPersistentHeader(
+            floating: true,
+            delegate: MySliverPersistentHeaderDelegate(
               widget.sectionName.toUpperCase(),
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-                fontSize: 25,
-              ),
-            )
-          ],
-        ),
-      ),
-      body: SafeArea(
-        child: !_isLoading
-            ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: GridView.builder(
+            ),
+          ),
+          !_isLoading
+              ? SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  sliver: SliverGrid.builder(
+                    itemCount: widget.animeList.length,
+                    itemBuilder: (context, index) {
+                      return AnimeBigBlock(
+                        anime: widget.animeList[index],
+                      );
+                    },
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
@@ -80,17 +65,66 @@ class _AnimeSectionPageViewState extends State<AnimeSectionPageView> {
                       mainAxisSpacing: 10,
                       crossAxisSpacing: 10,
                     ),
-                    itemBuilder: (context, index) {
-                      return AnimeBigBlock(
-                        anime: widget.animeList[index],
-                      );
-                    },
-                    itemCount: widget.animeList.length,
                   ),
+                )
+              : const SliverFillRemaining(
+                  child: FetchingCircle(),
                 ),
-              )
-            : const Center(),
+        ],
       ),
     );
   }
+}
+
+class MySliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
+  final String title;
+
+  MySliverPersistentHeaderDelegate(this.title);
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return PreferredSize(
+      preferredSize: AppBar().preferredSize,
+      child: Hero(
+        tag: AppBar,
+        child: AppBar(
+          backgroundColor: Colors.black,
+          surfaceTintColor: Colors.black,
+          leadingWidth: MediaQuery.of(context).size.width * .9,
+          leading: Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(
+                  Icons.arrow_back_ios_new,
+                  size: 35,
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 25,
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  double get maxExtent => 90;
+
+  @override
+  double get minExtent => 90;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
+      true;
 }

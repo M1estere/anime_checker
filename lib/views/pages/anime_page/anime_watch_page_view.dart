@@ -1,6 +1,5 @@
 import 'package:film_checker/api/anime_player_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:lecle_yoyo_player/lecle_yoyo_player.dart';
 import 'package:video_player/video_player.dart';
 
