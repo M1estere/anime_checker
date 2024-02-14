@@ -77,7 +77,7 @@ class _SettingsPageViewState extends State<SettingsPageView> {
                             child: Text(
                               'profile'.toUpperCase(),
                               style: const TextStyle(
-                                color: Colors.red,
+                                color: Colors.blue,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -207,7 +207,7 @@ class _SettingsPageViewState extends State<SettingsPageView> {
                             child: Text(
                               'app'.toUpperCase(),
                               style: const TextStyle(
-                                color: Colors.red,
+                                color: Colors.blue,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,
                               ),

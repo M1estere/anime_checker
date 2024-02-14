@@ -75,8 +75,8 @@ class _MyAppState extends State<MyApp> {
       theme: _appTheme.lightTheme,
       darkTheme: _appTheme.darkTheme,
       themeMode: _appTheme.themeMode,
-      // home: const MainWrapper(),
-      home: AuthPage(),
+      home: const MainWrapper(),
+      // home: AuthPage(),
     );
   }
 }
