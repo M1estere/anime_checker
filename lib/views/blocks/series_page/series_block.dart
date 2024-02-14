@@ -49,14 +49,59 @@ class SeriesBlock extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      Text(
-                        'Added: ${DateFormat('dd MMMM yyyy').format(DateTime.fromMillisecondsSinceEpoch(data['created_timestamp'] * 1000))}',
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
+                      FittedBox(
+                        child: Text(
+                          DateFormat('dd MMMM yyyy').format(
+                              DateTime.fromMillisecondsSinceEpoch(
+                                  data['created_timestamp'] * 1000)),
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                SizedBox(
+                  width: 120,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      for (final key in data['hls'].keys)
+                        Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return AnimeWatchPageView(
+                                      animeLinks: data['hls'],
+                                      defaultRes: key.toString().toUpperCase(),
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                            splashColor: Colors.grey.withOpacity(.4),
+                            child: Padding(
+                              padding: const EdgeInsets.all(7),
+                              child: Text(
+                                key.toString().toUpperCase(),
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),

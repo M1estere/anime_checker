@@ -34,7 +34,6 @@ class Api {
 
       return result;
     } else {
-      print('test 2');
       return await getRandomAnime(15);
     }
   }

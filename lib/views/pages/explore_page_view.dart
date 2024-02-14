@@ -61,6 +61,7 @@ class _ExplorePageViewState extends State<ExplorePageView>
     super.build(context);
 
     return SingleChildScrollView(
+      physics: const NeverScrollableScrollPhysics(),
       child: Stack(
         children: [
           !_isLoading

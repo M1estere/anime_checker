@@ -1,8 +1,9 @@
+import 'dart:async';
+
 import 'package:film_checker/api/api.dart';
 import 'package:film_checker/api/seasons_controller.dart';
 import 'package:film_checker/models/anime.dart';
 import 'package:film_checker/models/season.dart';
-import 'package:film_checker/views/blocks/common/anime_big_block.dart';
 import 'package:film_checker/views/blocks/home_page/regular_block.dart';
 import 'package:film_checker/views/blocks/home_page/wide_block.dart';
 import 'package:film_checker/views/pages/anime_by_section_page_view.dart';
@@ -11,6 +12,7 @@ import 'package:film_checker/views/pages/genre_season_anime_page_view.dart';
 import 'package:film_checker/views/support/custom_network_image.dart';
 import 'package:film_checker/views/support/fetching_circle.dart';
 import 'package:flutter/material.dart';
+import 'package:loop_page_view/loop_page_view.dart';
 
 enum HomeDataType {
   favs,
@@ -30,7 +32,13 @@ class _HomePageViewState extends State<HomePageView>
   @override
   bool get wantKeepAlive => true;
 
-  Anime _topBannerAnime = Anime.createEmpty();
+  late Timer _timer;
+  final LoopPageController _topBannerController =
+      LoopPageController(initialPage: 0);
+  int _currentTopItem = 0;
+
+  List<Anime> _topBannerAnimeList = [];
+  // Anime _topBannerAnime = Anime.createEmpty();
 
   List<Anime> _favouriteAnime = [];
   List<Anime> _seasonalAnime = [];
@@ -42,6 +50,20 @@ class _HomePageViewState extends State<HomePageView>
   void initState() {
     super.initState();
 
+    _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
+      if (_currentTopItem < _topBannerAnimeList.length - 1) {
+        _currentTopItem++;
+      } else {
+        _currentTopItem = 0;
+      }
+
+      _topBannerController.animateToPage(
+        _currentTopItem,
+        duration: const Duration(milliseconds: 350),
+        curve: Curves.linear,
+      );
+    });
+
     _gatherInfo().then((value) {
       if (mounted) {
         setState(() {
@@ -51,8 +73,17 @@ class _HomePageViewState extends State<HomePageView>
     });
   }
 
+  @override
+  void dispose() {
+    _topBannerController.dispose();
+    _timer.cancel();
+
+    super.dispose();
+  }
+
   Future _gatherInfo() async {
-    _topBannerAnime = (await Api().getRandomAnime(1))[0];
+    _topBannerAnimeList = await Api().getRandomAnime(3);
+    // _topBannerAnime = (await Api().getRandomAnime(1))[0];
 
     _favouriteAnime = await Api().getTopAnimeFiltered('favorite');
     _seasonalAnime = await SeasonsController().getSeasonalAnime(
@@ -77,91 +108,198 @@ class _HomePageViewState extends State<HomePageView>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return AnimePageView(
-                                path: _topBannerAnime.imagePath,
-                                anime: _topBannerAnime,
-                                image: Image.network(
-                                  _topBannerAnime.imagePath,
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                  height: double.infinity,
+                    SizedBox(
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * .35,
+                      child: Stack(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return AnimePageView(
+                                      path: _topBannerAnimeList[_currentTopItem]
+                                          .imagePath,
+                                      anime:
+                                          _topBannerAnimeList[_currentTopItem],
+                                      image: Image.network(
+                                        _topBannerAnimeList[_currentTopItem]
+                                            .imagePath,
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                      ),
+                                    );
+                                  },
                                 ),
                               );
                             },
-                          ),
-                        );
-                      },
-                      child: Stack(
-                        children: [
-                          SizedBox(
-                            width: double.infinity,
-                            height: MediaQuery.of(context).size.height * .35,
-                            child: CustomNetworkImage(
-                              path: _topBannerAnime.imagePath,
+                            child: LoopPageView.builder(
+                              controller: _topBannerController,
+                              onPageChanged: (value) {
+                                if (mounted) {
+                                  setState(() {
+                                    _currentTopItem = value;
+                                  });
+                                }
+                              },
+                              itemBuilder: (context, index) {
+                                return SizedBox.expand(
+                                  child: CustomNetworkImage(
+                                    path: _topBannerAnimeList[index].imagePath,
+                                  ),
+                                );
+                              },
+                              itemCount: _topBannerAnimeList.length,
                             ),
                           ),
-                          Container(
-                            width: double.infinity,
-                            height: MediaQuery.of(context).size.height * .35,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topRight,
-                                end: Alignment.bottomRight,
-                                stops: const [0, .5, .75, 1],
-                                colors: [
-                                  Theme.of(context)
-                                      .scaffoldBackgroundColor
-                                      .withOpacity(.1),
-                                  Theme.of(context)
-                                      .scaffoldBackgroundColor
-                                      .withOpacity(.5),
-                                  Theme.of(context)
-                                      .scaffoldBackgroundColor
-                                      .withOpacity(.8),
-                                  Theme.of(context)
-                                      .scaffoldBackgroundColor
-                                      .withOpacity(.95),
-                                ],
+                          IgnorePointer(
+                            child: Container(
+                              width: double.infinity,
+                              height: MediaQuery.of(context).size.height * .35,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topRight,
+                                  end: Alignment.bottomRight,
+                                  stops: const [0, .5, .75, 1],
+                                  colors: [
+                                    Theme.of(context)
+                                        .scaffoldBackgroundColor
+                                        .withOpacity(.1),
+                                    Theme.of(context)
+                                        .scaffoldBackgroundColor
+                                        .withOpacity(.5),
+                                    Theme.of(context)
+                                        .scaffoldBackgroundColor
+                                        .withOpacity(.8),
+                                    Theme.of(context)
+                                        .scaffoldBackgroundColor
+                                        .withOpacity(.95),
+                                  ],
+                                ),
                               ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 10),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    _topBannerAnime.title,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w500,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 10),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      _topBannerAnimeList[_currentTopItem]
+                                          .title,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  Text(
-                                    _topBannerAnime.originalTitle,
-                                    style: const TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w500,
+                                    Text(
+                                      _topBannerAnimeList[_currentTopItem]
+                                          .originalTitle,
+                                      style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      textAlign: TextAlign.center,
                                     ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ],
                       ),
                     ),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     Navigator.of(context).push(
+                    //       MaterialPageRoute(
+                    //         builder: (context) {
+                    //           return AnimePageView(
+                    //             path: _topBannerAnime.imagePath,
+                    //             anime: _topBannerAnime,
+                    //             image: Image.network(
+                    //               _topBannerAnime.imagePath,
+                    //               fit: BoxFit.cover,
+                    //               width: double.infinity,
+                    //               height: double.infinity,
+                    //             ),
+                    //           );
+                    //         },
+                    //       ),
+                    //     );
+                    //   },
+                    //   child: Stack(
+                    //     children: [
+                    //       SizedBox(
+                    //         width: double.infinity,
+                    //         height: MediaQuery.of(context).size.height * .35,
+                    //         child: CustomNetworkImage(
+                    //           path: _topBannerAnime.imagePath,
+                    //         ),
+                    //       ),
+                    //       Container(
+                    //         width: double.infinity,
+                    //         height: MediaQuery.of(context).size.height * .35,
+                    //         decoration: BoxDecoration(
+                    //           gradient: LinearGradient(
+                    //             begin: Alignment.topRight,
+                    //             end: Alignment.bottomRight,
+                    //             stops: const [0, .5, .75, 1],
+                    //             colors: [
+                    //               Theme.of(context)
+                    //                   .scaffoldBackgroundColor
+                    //                   .withOpacity(.1),
+                    //               Theme.of(context)
+                    //                   .scaffoldBackgroundColor
+                    //                   .withOpacity(.5),
+                    //               Theme.of(context)
+                    //                   .scaffoldBackgroundColor
+                    //                   .withOpacity(.8),
+                    //               Theme.of(context)
+                    //                   .scaffoldBackgroundColor
+                    //                   .withOpacity(.95),
+                    //             ],
+                    //           ),
+                    //         ),
+                    //         child: Padding(
+                    //           padding: const EdgeInsets.symmetric(
+                    //               horizontal: 15, vertical: 10),
+                    //           child: Column(
+                    //             mainAxisAlignment: MainAxisAlignment.end,
+                    //             children: [
+                    //               Text(
+                    //                 _topBannerAnime.title,
+                    //                 style: const TextStyle(
+                    //                   color: Colors.white,
+                    //                   fontSize: 25,
+                    //                   fontWeight: FontWeight.w500,
+                    //                 ),
+                    //                 textAlign: TextAlign.center,
+                    //                 maxLines: 2,
+                    //                 overflow: TextOverflow.ellipsis,
+                    //               ),
+                    //               Text(
+                    //                 _topBannerAnime.originalTitle,
+                    //                 style: const TextStyle(
+                    //                   color: Colors.grey,
+                    //                   fontSize: 13,
+                    //                   fontWeight: FontWeight.w500,
+                    //                 ),
+                    //                 textAlign: TextAlign.center,
+                    //               ),
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     const SizedBox(
                       height: 15,
                     ),

@@ -82,37 +82,39 @@ class _AnilibriaAnimeSearchPageViewState
         slivers: [
           const DefaultSliverAppBar(title: 'AniLibria'),
           !_isLoading
-              ? SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  sliver: SliverGrid.builder(
-                    itemCount: _animeList.length,
-                    itemBuilder: (context, index) {
-                      return AnilibriaAnimeBigBlock(
-                        anime: _animeList[index],
-                      );
-                    },
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: .57,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                    ),
-                  ),
-                )
-              : SliverFillRemaining(
-                  child: _animeList.isNotEmpty
-                      ? const Center(
-                          child: Text(
-                            'Sorry, currently unavailable',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
+              ? _animeList.isNotEmpty
+                  ? SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      sliver: SliverGrid.builder(
+                        itemCount: _animeList.length,
+                        itemBuilder: (context, index) {
+                          return AnilibriaAnimeBigBlock(
+                            anime: _animeList[index],
+                          );
+                        },
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: .57,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                        ),
+                      ),
+                    )
+                  : const SliverFillRemaining(
+                      child: Center(
+                        child: Text(
+                          'Sorry, service currently unavailable',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
                           ),
-                        )
-                      : const FetchingCircle(),
+                        ),
+                      ),
+                    )
+              : const SliverFillRemaining(
+                  child: FetchingCircle(),
                 ),
         ],
       ),

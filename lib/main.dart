@@ -57,6 +57,13 @@ class _MyAppState extends State<MyApp> {
     } else {
       AppTheme().enableTheme('dark', context);
     }
+
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: _appTheme.darkTheme.scaffoldBackgroundColor,
+      ),
+    );
   }
 
   @override

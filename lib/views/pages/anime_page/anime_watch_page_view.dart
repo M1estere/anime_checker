@@ -1,14 +1,17 @@
 import 'package:film_checker/api/anime_player_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lecle_yoyo_player/lecle_yoyo_player.dart';
 import 'package:video_player/video_player.dart';
 
 class AnimeWatchPageView extends StatefulWidget {
   final Map animeLinks;
+  final String defaultRes;
 
   const AnimeWatchPageView({
     super.key,
     required this.animeLinks,
+    this.defaultRes = 'HD',
   });
 
   @override
@@ -24,9 +27,14 @@ class _AnimeWatchPageViewState extends State<AnimeWatchPageView> {
   @override
   void initState() {
     super.initState();
+    print(widget.animeLinks);
+    print(widget.defaultRes);
+
+    _currentRes =
+        (widget.defaultRes != '') ? widget.defaultRes.toUpperCase() : 'HD';
 
     _dataMap = {
-      'Full HD': widget.animeLinks['fhd'] ?? '',
+      'FHD': widget.animeLinks['fhd'] ?? '',
       'HD': widget.animeLinks['hd'] ?? '',
       'SD': widget.animeLinks['sd'] ?? '',
     };
@@ -38,6 +46,8 @@ class _AnimeWatchPageViewState extends State<AnimeWatchPageView> {
     } else if (widget.animeLinks['sd'] == null) {
       _currentRes = '';
     }
+
+    print('Launching in ${_currentRes}');
   }
 
   @override
