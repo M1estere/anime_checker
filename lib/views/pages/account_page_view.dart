@@ -73,7 +73,7 @@ class _AccountPageViewState extends State<AccountPageView>
     final PaletteGenerator paletteGenerator =
         await PaletteGenerator.fromImageProvider(imageProvider);
 
-    return paletteGenerator.lightMutedColor?.color;
+    return paletteGenerator.dominantColor?.color;
   }
 
   _refresh() {}
@@ -94,7 +94,7 @@ class _AccountPageViewState extends State<AccountPageView>
                 child: Stack(
                   children: [
                     AnimatedContainer(
-                      duration: Duration(seconds: 1),
+                      duration: const Duration(milliseconds: 350),
                       curve: Curves.easeInOut,
                       decoration: BoxDecoration(color: _mainPictureColor),
                       height: MediaQuery.of(context).size.height * .25,
@@ -102,7 +102,7 @@ class _AccountPageViewState extends State<AccountPageView>
                     ),
                     Container(
                       margin: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height * .19),
+                          top: MediaQuery.of(context).size.height * .188),
                       width: double.infinity,
                       height: double.infinity,
                       child: Column(
@@ -112,10 +112,11 @@ class _AccountPageViewState extends State<AccountPageView>
                             backgroundColor: Colors.blue,
                             child: CircleAvatar(
                               radius: 50,
-                              backgroundColor: Colors.blue[200],
+                              backgroundColor: Colors.blue.shade200,
                               backgroundImage: _pageUser.imagePath != ''
                                   ? Image.network(
                                       _pageUser.imagePath,
+                                      fit: BoxFit.cover,
                                       loadingBuilder:
                                           (context, child, loadingProgress) {
                                         if (loadingProgress == null) {
@@ -125,12 +126,21 @@ class _AccountPageViewState extends State<AccountPageView>
                                             child: SizedBox(
                                               width: 30,
                                               height: 30,
-                                              child: CircularProgressIndicator(
-                                                color: Colors.white,
-                                              ),
+                                              child:
+                                                  CircularProgressIndicator(),
                                             ),
                                           );
                                         }
+                                      },
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                              color:
+                                                  Colors.grey.withOpacity(.7)),
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                        );
                                       },
                                     ).image
                                   : null,
