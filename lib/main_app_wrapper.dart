@@ -3,8 +3,7 @@ import 'package:film_checker/views/pages/explore_page_view.dart';
 import 'package:film_checker/views/pages/home_page_view.dart';
 import 'package:film_checker/views/pages/search_page/search_page_view.dart';
 import 'package:flutter/material.dart';
-import 'package:stylish_bottom_bar/model/bar_items.dart';
-import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
+import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 
 class MainWrapper extends StatefulWidget {
   const MainWrapper({super.key});
@@ -63,69 +62,52 @@ class _MainWrapperState extends State<MainWrapper> {
         children: _pages,
       ),
       primary: true,
-      bottomNavigationBar: StylishBottomBar(
+      bottomNavigationBar: SnakeNavigationBar.color(
+        behaviour: SnakeBarBehaviour.pinned,
+        snakeShape: SnakeShape.indicator,
+        snakeViewColor: Colors.blue,
+        height: 50,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
         currentIndex: _currentPageIndex,
-        onTap: (index) {
+        onTap: (value) {
           setState(() {
-            _currentPageIndex = index;
+            _currentPageIndex = value;
             _pageController.jumpToPage(_currentPageIndex);
           });
         },
-        backgroundColor:
-            Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-        option: AnimatedBarOptions(
-          iconSize: 30,
-          barAnimation: BarAnimation.liquid,
-          opacity: 0.3,
-        ),
-        items: [
-          BottomBarItem(
-            icon: const Icon(Icons.explore_outlined),
-            title: Text(
-              'Explore',
-              style:
-                  Theme.of(context).bottomNavigationBarTheme.selectedLabelStyle,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.explore_outlined,
             ),
-            unSelectedColor: Colors.grey,
-            selectedIcon: const Icon(Icons.explore),
-            selectedColor:
-                Theme.of(context).bottomNavigationBarTheme.selectedItemColor!,
+            activeIcon: Icon(
+              Icons.explore,
+            ),
           ),
-          BottomBarItem(
-            icon: const Icon(Icons.home_outlined),
-            title: Text(
-              'Home',
-              style:
-                  Theme.of(context).bottomNavigationBarTheme.selectedLabelStyle,
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home_outlined,
             ),
-            unSelectedColor: Colors.grey,
-            selectedIcon: const Icon(Icons.home),
-            selectedColor:
-                Theme.of(context).bottomNavigationBarTheme.selectedItemColor!,
+            activeIcon: Icon(
+              Icons.home,
+            ),
           ),
-          BottomBarItem(
-            icon: const Icon(Icons.search),
-            title: Text(
-              'Search',
-              style:
-                  Theme.of(context).bottomNavigationBarTheme.selectedLabelStyle,
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.search,
             ),
-            unSelectedColor: Colors.grey,
-            selectedIcon: const Icon(Icons.search),
-            selectedColor:
-                Theme.of(context).bottomNavigationBarTheme.selectedItemColor!,
+            activeIcon: Icon(
+              Icons.search,
+            ),
           ),
-          BottomBarItem(
-            icon: const Icon(Icons.person_outline),
-            title: Text(
-              'Account',
-              style:
-                  Theme.of(context).bottomNavigationBarTheme.selectedLabelStyle,
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person_outline,
             ),
-            unSelectedColor: Colors.grey,
-            selectedIcon: const Icon(Icons.person),
-            selectedColor:
-                Theme.of(context).bottomNavigationBarTheme.selectedItemColor!,
+            activeIcon: Icon(
+              Icons.person,
+            ),
           ),
         ],
       ),

@@ -60,7 +60,7 @@ class _AuthPageState extends State<AuthPage> {
         backgroundColor: Colors.black,
         surfaceTintColor: Colors.black,
         title: const Text(
-          'AniLibria',
+          'AniScape',
           style: TextStyle(
             color: Colors.white,
             fontSize: 25,
