@@ -6,6 +6,7 @@ import 'package:film_checker/views/pages/settings_page_view.dart';
 import 'package:film_checker/views/support/fetching_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:palette_generator/palette_generator.dart';
 
 class CustomUserSection {
   IconData iconData;
@@ -42,6 +43,8 @@ class _AccountPageViewState extends State<AccountPageView>
     registerDate: Timestamp.fromDate(DateTime.now()),
     imagePath: '',
   );
+  Color _mainPictureColor = Colors.transparent;
+
   bool _isLoading = true;
 
   @override
@@ -60,6 +63,17 @@ class _AccountPageViewState extends State<AccountPageView>
   Future _gatherInfo() async {
     _pageUser =
         await AuthProvider().getFullUserInfo(AuthProvider().currentUser!.id);
+    _mainPictureColor = await _getImagePalette(
+          Image.network(_pageUser.imagePath).image,
+        ) ??
+        Colors.transparent;
+  }
+
+  Future<Color?> _getImagePalette(ImageProvider imageProvider) async {
+    final PaletteGenerator paletteGenerator =
+        await PaletteGenerator.fromImageProvider(imageProvider);
+
+    return paletteGenerator.lightMutedColor?.color;
   }
 
   _refresh() {}
@@ -79,8 +93,10 @@ class _AccountPageViewState extends State<AccountPageView>
                 height: MediaQuery.of(context).size.height * .9,
                 child: Stack(
                   children: [
-                    Container(
-                      decoration: BoxDecoration(color: Colors.amber[300]),
+                    AnimatedContainer(
+                      duration: Duration(seconds: 1),
+                      curve: Curves.easeInOut,
+                      decoration: BoxDecoration(color: _mainPictureColor),
                       height: MediaQuery.of(context).size.height * .25,
                       width: double.infinity,
                     ),
@@ -91,12 +107,33 @@ class _AccountPageViewState extends State<AccountPageView>
                       height: double.infinity,
                       child: Column(
                         children: [
-                          const CircleAvatar(
-                            backgroundColor: Colors.blue,
+                          CircleAvatar(
                             radius: 55,
+                            backgroundColor: Colors.blue,
                             child: CircleAvatar(
-                              backgroundColor: Colors.red,
-                              radius: 45,
+                              radius: 50,
+                              backgroundColor: Colors.blue[200],
+                              backgroundImage: _pageUser.imagePath != ''
+                                  ? Image.network(
+                                      _pageUser.imagePath,
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        } else {
+                                          return const Center(
+                                            child: SizedBox(
+                                              width: 30,
+                                              height: 30,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    ).image
+                                  : null,
                             ),
                           ),
                           SizedBox(
