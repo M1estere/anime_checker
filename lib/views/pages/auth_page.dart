@@ -1,3 +1,6 @@
+import 'package:film_checker/firebase/auth_provider.dart';
+import 'package:film_checker/main_app_wrapper.dart';
+import 'package:film_checker/views/support/fetching_circle.dart';
 import 'package:flutter/material.dart';
 
 enum PasswordFormState {
@@ -33,6 +36,8 @@ class _AuthPageState extends State<AuthPage> {
 
   String _logErrorText = '';
   bool _hasLogError = false;
+
+  bool _sendingData = false;
 
   @override
   void dispose() {
@@ -157,7 +162,7 @@ class _AuthPageState extends State<AuthPage> {
             height: 20,
           ),
           SizedBox(
-            height: 420,
+            height: 330,
             child: PageView(
               controller: _pageController,
               pageSnapping: true,
@@ -192,7 +197,7 @@ class _AuthPageState extends State<AuthPage> {
                         height: 5,
                       ),
                       _hasLogError
-                          ? _displayError('Some error occured')
+                          ? _displayError(_logErrorText)
                           : const Center(),
                       const SizedBox(
                         height: 20,
@@ -201,7 +206,76 @@ class _AuthPageState extends State<AuthPage> {
                         borderRadius: BorderRadius.circular(5),
                         color: Colors.blue,
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            if (_sendingData) return;
+
+                            if (_loginEmail.text.trim().isEmpty ||
+                                _loginPassword.text.trim().isEmpty) {
+                              if (mounted) {
+                                setState(() {
+                                  _hasLogError = true;
+                                  _logErrorText = 'Fill all fields';
+                                });
+                              }
+                              return;
+                            }
+
+                            setState(() {
+                              _logErrorText = '';
+                              _sendingData = true;
+                            });
+
+                            AuthProvider()
+                                .signIn(
+                              _loginEmail.text.trim(),
+                              _loginPassword.text.trim(),
+                            )
+                                .then(
+                              (value) {
+                                if (mounted) {
+                                  switch (value) {
+                                    case 0: // all good
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const MainWrapper(),
+                                        ),
+                                      );
+                                      break;
+                                    case 1:
+                                      setState(() {
+                                        _hasLogError = true;
+                                        _logErrorText = 'User not found';
+                                        _sendingData = false;
+                                      });
+                                      break;
+                                    case 2:
+                                      setState(() {
+                                        _hasLogError = true;
+                                        _logErrorText = 'Wrong password';
+                                        _sendingData = false;
+                                      });
+                                      break;
+                                    case 3:
+                                      setState(() {
+                                        _hasLogError = true;
+                                        _logErrorText = 'Invalid email';
+                                        _sendingData = false;
+                                      });
+                                      break;
+                                    case 4:
+                                      setState(() {
+                                        _hasLogError = true;
+                                        _logErrorText = 'Something went wrong';
+                                        _sendingData = false;
+                                      });
+                                      break;
+                                  }
+                                }
+                              },
+                            );
+                          },
                           splashColor: Colors.blue.withOpacity(.6),
                           borderRadius: BorderRadius.circular(5),
                           child: SizedBox(
@@ -263,7 +337,7 @@ class _AuthPageState extends State<AuthPage> {
                         height: 5,
                       ),
                       _hasRegError
-                          ? _displayError('Some error occured')
+                          ? _displayError(_regErrorText)
                           : const Center(),
                       const SizedBox(
                         height: 20,
@@ -272,7 +346,90 @@ class _AuthPageState extends State<AuthPage> {
                         borderRadius: BorderRadius.circular(5),
                         color: Colors.blue,
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            if (_sendingData) return;
+
+                            if (_registerPassword.text.trim() !=
+                                _registerConfirmPassword.text.trim()) {
+                              if (mounted) {
+                                setState(() {
+                                  _hasRegError = true;
+                                  _regErrorText = 'Passwords mismatch';
+                                });
+                              }
+                              return;
+                            }
+
+                            if (_registerEmail.text.trim().isEmpty ||
+                                _registerPassword.text.trim().isEmpty ||
+                                _registerConfirmPassword.text.trim().isEmpty ||
+                                _registerNickname.text.trim().isEmpty) {
+                              if (mounted) {
+                                setState(() {
+                                  _hasRegError = true;
+                                  _regErrorText = 'Fill all fields';
+                                });
+                              }
+                              return;
+                            }
+
+                            setState(() {
+                              _regErrorText = '';
+                              _sendingData = true;
+                            });
+
+                            AuthProvider()
+                                .registerUser(
+                              _registerEmail.text.trim(),
+                              _registerPassword.text.trim(),
+                              _registerNickname.text.trim(),
+                            )
+                                .then(
+                              (value) {
+                                if (mounted) {
+                                  switch (value) {
+                                    case 0: // all good
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const MainWrapper(),
+                                        ),
+                                      );
+                                      break;
+                                    case 1:
+                                      setState(() {
+                                        _hasRegError = true;
+                                        _regErrorText = 'Weak password';
+                                        _sendingData = false;
+                                      });
+                                      break;
+                                    case 2:
+                                      setState(() {
+                                        _hasRegError = true;
+                                        _regErrorText = 'Email is in use';
+                                        _sendingData = false;
+                                      });
+                                      break;
+                                    case 3:
+                                      setState(() {
+                                        _hasRegError = true;
+                                        _regErrorText = 'Invalid email';
+                                        _sendingData = false;
+                                      });
+                                      break;
+                                    default:
+                                      setState(() {
+                                        _hasRegError = true;
+                                        _regErrorText = 'Something went wrong';
+                                        _sendingData = false;
+                                      });
+                                      break;
+                                  }
+                                }
+                              },
+                            );
+                          },
                           splashColor: Colors.blue.withOpacity(.6),
                           borderRadius: BorderRadius.circular(5),
                           child: SizedBox(
@@ -298,6 +455,7 @@ class _AuthPageState extends State<AuthPage> {
               ],
             ),
           ),
+          _sendingData ? const CircularProgressIndicator() : const Center(),
         ],
       ),
     );
@@ -380,8 +538,8 @@ class _AuthPageState extends State<AuthPage> {
           controller: controller,
           textAlignVertical: TextAlignVertical.center,
           obscureText: (passwordState == PasswordFormState.login
-              ? _logPasswordVisible
-              : _regPasswordVisible),
+              ? !_logPasswordVisible
+              : !_regPasswordVisible),
           style: TextStyle(
             color: Theme.of(context).primaryColor,
             fontSize: 17,

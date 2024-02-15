@@ -57,11 +57,13 @@ class _HomePageViewState extends State<HomePageView>
         _currentTopItem = 0;
       }
 
-      _topBannerController.animateToPage(
-        _currentTopItem,
-        duration: const Duration(milliseconds: 350),
-        curve: Curves.linear,
-      );
+      if (!_isLoading) {
+        _topBannerController.animateToPage(
+          _currentTopItem,
+          duration: const Duration(milliseconds: 350),
+          curve: Curves.linear,
+        );
+      }
     });
 
     _gatherInfo().then((value) {

@@ -17,22 +17,28 @@ class Api {
 
     final response = await http.get(Uri.parse(
         '$_topAnimeUrl?filter=$filterType&page=${Random().nextInt(40) + 1}'));
+    print('Code: ${response.statusCode}');
     if (response.statusCode == 200) {
-      final decodedData = json.decode(response.body)['data'] as List;
+      try {
+        final decodedData = json.decode(response.body)['data'] as List;
 
-      for (var data in decodedData) {
-        if (data['images']['jpg'] == null ||
-            data['synopsis'] == null ||
-            data['genres'].isEmpty ||
-            data['type'] == null) {
-          continue;
+        for (var data in decodedData) {
+          if (data['images']['jpg'] == null ||
+              data['synopsis'] == null ||
+              data['genres'].isEmpty ||
+              data['type'] == null) {
+            continue;
+          }
+
+          int id = -1;
+          result.add(Anime.fromJson(data, id));
         }
 
-        int id = -1;
-        result.add(Anime.fromJson(data, id));
+        return result;
+      } on TypeError catch (e) {
+        print(e);
+        return await getRandomAnime(15);
       }
-
-      return result;
     } else {
       return await getRandomAnime(15);
     }
@@ -85,6 +91,7 @@ class Api {
         amount++;
         continue;
       }
+      print('one random');
     }
 
     return result;

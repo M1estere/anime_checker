@@ -1,9 +1,12 @@
 import 'dart:io';
 
 import 'package:film_checker/app_theme.dart';
+import 'package:film_checker/firebase/auth_provider.dart';
+import 'package:film_checker/firebase_options.dart';
 import 'package:film_checker/main_app_wrapper.dart';
 import 'package:film_checker/support/my_http_overrides.dart';
 import 'package:film_checker/views/pages/auth_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,9 +14,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 late SharedPreferences prefs;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   prefs = await SharedPreferences.getInstance();
 
   HttpOverrides.global = MyHttpOverrides();
@@ -75,8 +78,8 @@ class _MyAppState extends State<MyApp> {
       theme: _appTheme.lightTheme,
       darkTheme: _appTheme.darkTheme,
       themeMode: _appTheme.themeMode,
-      home: const MainWrapper(),
-      // home: AuthPage(),
+      home:
+          AuthProvider().userLogged() ? const MainWrapper() : const AuthPage(),
     );
   }
 }
