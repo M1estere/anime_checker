@@ -63,10 +63,13 @@ class _AccountPageViewState extends State<AccountPageView>
   Future _gatherInfo() async {
     _pageUser =
         await AuthProvider().getFullUserInfo(AuthProvider().currentUser!.id);
-    _mainPictureColor = await _getImagePalette(
-          Image.network(_pageUser.imagePath).image,
-        ) ??
-        Colors.transparent;
+
+    _pageUser.imagePath.isNotEmpty
+        ? _mainPictureColor = await _getImagePalette(
+              Image.network(_pageUser.imagePath).image,
+            ) ??
+            Colors.transparent
+        : _mainPictureColor = Colors.blue.shade200;
   }
 
   Future<Color?> _getImagePalette(ImageProvider imageProvider) async {

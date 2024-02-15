@@ -17,7 +17,7 @@ class Api {
 
     final response = await http.get(Uri.parse(
         '$_topAnimeUrl?filter=$filterType&page=${Random().nextInt(40) + 1}'));
-    print('Code: ${response.statusCode}');
+
     if (response.statusCode == 200) {
       try {
         final decodedData = json.decode(response.body)['data'] as List;

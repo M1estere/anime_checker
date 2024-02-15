@@ -63,9 +63,9 @@ class _MyAppState extends State<MyApp> {
     }
 
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
+      const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor: _appTheme.darkTheme.scaffoldBackgroundColor,
+        systemNavigationBarColor: Color(0xFF1A1A1A),
       ),
     );
   }
