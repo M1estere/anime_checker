@@ -45,8 +45,8 @@ class AnimeCharacterBlock extends StatelessWidget {
           FittedBox(
             child: Text(
               character.name,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
                 fontSize: 15,
                 fontWeight: FontWeight.w300,
               ),

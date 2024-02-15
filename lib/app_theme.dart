@@ -16,37 +16,37 @@ class AppTheme extends ChangeNotifier {
 
   ThemeData get lightTheme => ThemeData(
         primaryColor: Colors.black,
-        secondaryHeaderColor: Colors.white,
+        secondaryHeaderColor: Colors.grey,
+        canvasColor: Colors.blue,
+        dividerColor: Colors.white,
+        cardColor: Colors.grey.shade500.withOpacity(.6),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Colors.white,
           selectedItemColor: Colors.blue,
-          selectedLabelStyle: TextStyle(
-            color: Colors.blue,
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-          ),
+          unselectedItemColor: Colors.grey,
         ),
-        cardColor: Colors.transparent,
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
           actionsIconTheme: IconThemeData(
             color: Colors.black,
+            size: 25,
           ),
           titleTextStyle: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
-            fontSize: 25,
-            letterSpacing: 0,
+            fontSize: 20,
+            letterSpacing: 1.2,
           ),
         ),
         snackBarTheme: const SnackBarThemeData(
+          actionBackgroundColor: Color(0xFF333333),
           contentTextStyle: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             fontSize: 17,
             fontWeight: FontWeight.w400,
           ),
-          backgroundColor: Colors.white,
+          backgroundColor: Color(0xFF616161),
         ),
         inputDecorationTheme: const InputDecorationTheme(
           border: InputBorder.none,
@@ -54,10 +54,7 @@ class AppTheme extends ChangeNotifier {
           enabledBorder: InputBorder.none,
           errorBorder: InputBorder.none,
           disabledBorder: InputBorder.none,
-          outlineBorder: BorderSide(
-            color: Colors.grey,
-            width: 1.5,
-          ),
+          outlineBorder: BorderSide.none,
           hintStyle: TextStyle(
             color: Color(0xFFA2A2A2),
             fontSize: 22,
@@ -79,31 +76,31 @@ class AppTheme extends ChangeNotifier {
 
   ThemeData get darkTheme => ThemeData(
         primaryColor: Colors.white,
-        secondaryHeaderColor: Colors.black,
+        secondaryHeaderColor: Colors.grey,
+        canvasColor: Colors.blue,
+        dividerColor: Colors.white,
+        cardColor: Colors.grey.shade500.withOpacity(.6),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Color(0xFF252525),
+          backgroundColor: Color(0xFF1A1A1A),
           selectedItemColor: Colors.blue,
-          selectedLabelStyle: TextStyle(
-            color: Colors.blue,
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-          ),
+          unselectedItemColor: Colors.grey,
         ),
-        cardColor: Colors.black,
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF121212),
+          backgroundColor: Colors.black,
           foregroundColor: Colors.white,
           actionsIconTheme: IconThemeData(
             color: Colors.white,
+            size: 25,
           ),
           titleTextStyle: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontSize: 25,
-            letterSpacing: 0,
+            fontSize: 20,
+            letterSpacing: 1.2,
           ),
         ),
         snackBarTheme: const SnackBarThemeData(
+          actionBackgroundColor: Color(0xFF333333),
           contentTextStyle: TextStyle(
             color: Colors.white,
             fontSize: 17,
@@ -128,7 +125,7 @@ class AppTheme extends ChangeNotifier {
         ),
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.blue,
-          background: const Color(0xFF121212),
+          background: Colors.black,
         ).copyWith(
           brightness: Brightness.dark,
         ),

@@ -133,9 +133,9 @@ class _AnimePageViewState extends State<AnimePageView> {
                     shape: const CircleBorder(),
                     padding: const EdgeInsets.only(right: 0),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.arrow_back_ios_new,
-                    color: Colors.black,
+                    color: Theme.of(context).appBarTheme.foregroundColor,
                     size: 25,
                   ),
                 ),

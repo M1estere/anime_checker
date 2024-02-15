@@ -18,7 +18,7 @@ class AnimeReviewBlock extends StatelessWidget {
       width: MediaQuery.of(context).size.width * .7,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: Colors.grey[600]!.withOpacity(.7),
+        color: Theme.of(context).cardColor,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

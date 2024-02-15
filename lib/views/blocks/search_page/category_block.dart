@@ -24,16 +24,16 @@ class SearchCategoryBlock extends StatelessWidget {
         );
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(90),
-          color: Colors.grey.withOpacity(.5),
+          color: Theme.of(context).cardColor,
         ),
         child: Text(
           title,
           style: const TextStyle(
             color: Colors.white,
-            fontSize: 17,
+            fontSize: 15,
             fontWeight: FontWeight.w500,
           ),
         ),

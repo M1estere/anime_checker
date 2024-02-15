@@ -190,8 +190,8 @@ class _HomePageViewState extends State<HomePageView>
                                     Text(
                                       _topBannerAnimeList[_currentTopItem]
                                           .title,
-                                      style: const TextStyle(
-                                        color: Colors.white,
+                                      style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
                                         fontSize: 25,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -217,91 +217,6 @@ class _HomePageViewState extends State<HomePageView>
                         ],
                       ),
                     ),
-                    // GestureDetector(
-                    //   onTap: () {
-                    //     Navigator.of(context).push(
-                    //       MaterialPageRoute(
-                    //         builder: (context) {
-                    //           return AnimePageView(
-                    //             path: _topBannerAnime.imagePath,
-                    //             anime: _topBannerAnime,
-                    //             image: Image.network(
-                    //               _topBannerAnime.imagePath,
-                    //               fit: BoxFit.cover,
-                    //               width: double.infinity,
-                    //               height: double.infinity,
-                    //             ),
-                    //           );
-                    //         },
-                    //       ),
-                    //     );
-                    //   },
-                    //   child: Stack(
-                    //     children: [
-                    //       SizedBox(
-                    //         width: double.infinity,
-                    //         height: MediaQuery.of(context).size.height * .35,
-                    //         child: CustomNetworkImage(
-                    //           path: _topBannerAnime.imagePath,
-                    //         ),
-                    //       ),
-                    //       Container(
-                    //         width: double.infinity,
-                    //         height: MediaQuery.of(context).size.height * .35,
-                    //         decoration: BoxDecoration(
-                    //           gradient: LinearGradient(
-                    //             begin: Alignment.topRight,
-                    //             end: Alignment.bottomRight,
-                    //             stops: const [0, .5, .75, 1],
-                    //             colors: [
-                    //               Theme.of(context)
-                    //                   .scaffoldBackgroundColor
-                    //                   .withOpacity(.1),
-                    //               Theme.of(context)
-                    //                   .scaffoldBackgroundColor
-                    //                   .withOpacity(.5),
-                    //               Theme.of(context)
-                    //                   .scaffoldBackgroundColor
-                    //                   .withOpacity(.8),
-                    //               Theme.of(context)
-                    //                   .scaffoldBackgroundColor
-                    //                   .withOpacity(.95),
-                    //             ],
-                    //           ),
-                    //         ),
-                    //         child: Padding(
-                    //           padding: const EdgeInsets.symmetric(
-                    //               horizontal: 15, vertical: 10),
-                    //           child: Column(
-                    //             mainAxisAlignment: MainAxisAlignment.end,
-                    //             children: [
-                    //               Text(
-                    //                 _topBannerAnime.title,
-                    //                 style: const TextStyle(
-                    //                   color: Colors.white,
-                    //                   fontSize: 25,
-                    //                   fontWeight: FontWeight.w500,
-                    //                 ),
-                    //                 textAlign: TextAlign.center,
-                    //                 maxLines: 2,
-                    //                 overflow: TextOverflow.ellipsis,
-                    //               ),
-                    //               Text(
-                    //                 _topBannerAnime.originalTitle,
-                    //                 style: const TextStyle(
-                    //                   color: Colors.grey,
-                    //                   fontSize: 13,
-                    //                   fontWeight: FontWeight.w500,
-                    //                 ),
-                    //                 textAlign: TextAlign.center,
-                    //               ),
-                    //             ],
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
                     const SizedBox(
                       height: 15,
                     ),
@@ -364,16 +279,16 @@ class _HomePageViewState extends State<HomePageView>
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
                       fontSize: 20,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  const Text(
+                  Text(
                     'see all',
                     style: TextStyle(
-                      color: Color(0xFF00A3FF),
+                      color: Theme.of(context).canvasColor,
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),

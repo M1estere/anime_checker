@@ -135,9 +135,7 @@ class _AccountPageViewState extends State<AccountPageView>
                                       errorBuilder:
                                           (context, error, stackTrace) {
                                         return Container(
-                                          decoration: BoxDecoration(
-                                              color:
-                                                  Colors.grey.withOpacity(.7)),
+                                          color: Theme.of(context).cardColor,
                                           width: double.infinity,
                                           height: double.infinity,
                                         );
@@ -160,8 +158,9 @@ class _AccountPageViewState extends State<AccountPageView>
                                         FittedBox(
                                           child: Text(
                                             _pageUser.nickname,
-                                            style: const TextStyle(
-                                              color: Colors.white,
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
                                               fontWeight: FontWeight.w500,
                                               fontSize: 25,
                                             ),
@@ -171,8 +170,9 @@ class _AccountPageViewState extends State<AccountPageView>
                                           DateFormat('dd.MM.yyyy').format(
                                             _pageUser.registerDate.toDate(),
                                           ),
-                                          style: const TextStyle(
-                                            color: Colors.grey,
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .secondaryHeaderColor,
                                             fontWeight: FontWeight.w400,
                                             fontSize: 15,
                                             height: .7,
@@ -194,9 +194,9 @@ class _AccountPageViewState extends State<AccountPageView>
                                         ),
                                       );
                                     },
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.settings,
-                                      color: Colors.white,
+                                      color: Theme.of(context).primaryColor,
                                       size: 25,
                                     ),
                                   ),

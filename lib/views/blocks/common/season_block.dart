@@ -16,7 +16,7 @@ class SeasonBlock extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        splashColor: Colors.blue.withOpacity(.15),
+        splashColor: Theme.of(context).canvasColor.withOpacity(.15),
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
@@ -47,8 +47,8 @@ class SeasonBlock extends StatelessWidget {
                       children: [
                         Text(
                           '${season.year} - ${season.title.capitalize()}',
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
                             letterSpacing: 1,

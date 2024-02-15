@@ -54,8 +54,8 @@ class SeriesBlock extends StatelessWidget {
                           DateFormat('dd MMMM yyyy').format(
                               DateTime.fromMillisecondsSinceEpoch(
                                   data['created_timestamp'] * 1000)),
-                          style: const TextStyle(
-                            color: Colors.grey,
+                          style: TextStyle(
+                            color: Theme.of(context).secondaryHeaderColor,
                             fontSize: 15,
                             fontWeight: FontWeight.w400,
                           ),
@@ -88,7 +88,7 @@ class SeriesBlock extends StatelessWidget {
                                 ),
                               );
                             },
-                            splashColor: Colors.grey.withOpacity(.4),
+                            splashColor: Theme.of(context).cardColor,
                             child: Padding(
                               padding: const EdgeInsets.all(7),
                               child: Text(

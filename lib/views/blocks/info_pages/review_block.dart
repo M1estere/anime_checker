@@ -28,7 +28,7 @@ class _ReviewInfoBlockState extends State<ReviewInfoBlock> {
         right: 15,
       ),
       child: Material(
-        color: const Color.fromARGB(255, 51, 51, 51),
+        color: Theme.of(context).snackBarTheme.actionBackgroundColor,
         elevation: 15,
         child: SizedBox(
           width: double.infinity,

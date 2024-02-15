@@ -67,8 +67,8 @@ class GenreBlock extends StatelessWidget {
                       children: [
                         Text(
                           genre.name,
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
                             letterSpacing: 1,
@@ -76,8 +76,8 @@ class GenreBlock extends StatelessWidget {
                         ),
                         Text(
                           '${genre.count.toString()} titles',
-                          style: const TextStyle(
-                            color: Colors.grey,
+                          style: TextStyle(
+                            color: Theme.of(context).secondaryHeaderColor,
                             fontSize: 15,
                             fontWeight: FontWeight.w400,
                           ),

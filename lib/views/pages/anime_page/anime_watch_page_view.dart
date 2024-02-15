@@ -27,8 +27,6 @@ class _AnimeWatchPageViewState extends State<AnimeWatchPageView> {
   @override
   void initState() {
     super.initState();
-    print(widget.animeLinks);
-    print(widget.defaultRes);
 
     _currentRes =
         (widget.defaultRes != '') ? widget.defaultRes.toUpperCase() : 'HD';
@@ -46,8 +44,6 @@ class _AnimeWatchPageViewState extends State<AnimeWatchPageView> {
     } else if (widget.animeLinks['sd'] == null) {
       _currentRes = '';
     }
-
-    print('Launching in ${_currentRes}');
   }
 
   @override

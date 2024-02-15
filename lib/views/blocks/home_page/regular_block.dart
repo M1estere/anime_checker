@@ -66,8 +66,8 @@ class _HomeRegularBlockState extends State<HomeRegularBlock> {
                   width: double.infinity,
                   child: Text(
                     widget.anime.title,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),
@@ -88,7 +88,7 @@ class _HomeRegularBlockState extends State<HomeRegularBlock> {
                     width: 35,
                     height: 35,
                     decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: Theme.of(context).canvasColor,
                       borderRadius: BorderRadius.circular(90),
                     ),
                     child: const Center(

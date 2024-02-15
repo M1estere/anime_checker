@@ -52,16 +52,16 @@ class CharacterInfoBlock extends StatelessWidget {
                 children: [
                   Text(
                     character.name,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   Text(
                     'ID: ${character.malId.toString()}',
-                    style: const TextStyle(
-                      color: Colors.grey,
+                    style: TextStyle(
+                      color: Theme.of(context).secondaryHeaderColor,
                       fontSize: 15,
                       fontWeight: FontWeight.w400,
                     ),

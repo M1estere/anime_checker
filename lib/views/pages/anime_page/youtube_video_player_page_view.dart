@@ -46,10 +46,10 @@ class _YoutubeVideoPlayerPageViewState
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new,
-            size: 25,
-            color: Colors.white,
+            size: Theme.of(context).appBarTheme.actionsIconTheme!.size,
+            color: Theme.of(context).appBarTheme.actionsIconTheme!.color,
           ),
         ),
       ),

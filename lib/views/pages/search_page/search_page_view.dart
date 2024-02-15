@@ -36,6 +36,7 @@ class _SearchPageViewState extends State<SearchPageView>
               child: Hero(
                 tag: 'searchBox',
                 child: Material(
+                  color: Colors.transparent,
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -99,11 +100,11 @@ class _SearchPageViewState extends State<SearchPageView>
             const SizedBox(
               height: 30,
             ),
-            const Text(
+            Text(
               'Categories',
               style: TextStyle(
-                color: Colors.white,
-                fontSize: 25,
+                color: Theme.of(context).primaryColor,
+                fontSize: 20,
                 fontWeight: FontWeight.w500,
               ),
             ),

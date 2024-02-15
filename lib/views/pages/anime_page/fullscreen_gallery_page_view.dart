@@ -56,27 +56,22 @@ class _FullScreenGalleryPageViewState extends State<FullScreenGalleryPageView>
         visible: _visible,
         controller: _controller,
         child: AppBar(
-          backgroundColor: Colors.black,
-          surfaceTintColor: Colors.black,
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+          surfaceTintColor: Theme.of(context).appBarTheme.backgroundColor,
           toolbarHeight: 50,
           title: Text(
             'gallery'.capitalize(),
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
-              fontSize: 20,
-              letterSpacing: 1.2,
-            ),
+            style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
           centerTitle: true,
           leading: IconButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_back_ios_new,
-              size: 25,
-              color: Colors.white,
+              size: Theme.of(context).appBarTheme.actionsIconTheme!.size,
+              color: Theme.of(context).appBarTheme.actionsIconTheme!.color,
             ),
           ),
         ),
@@ -128,7 +123,8 @@ class _FullScreenGalleryPageViewState extends State<FullScreenGalleryPageView>
                           errorBuilder: (context, error, stackTrace) {
                             return Container(
                               decoration: BoxDecoration(
-                                  color: Colors.grey.withOpacity(.7)),
+                                color: Theme.of(context).cardColor,
+                              ),
                               width: double.infinity,
                               height: double.infinity,
                             );

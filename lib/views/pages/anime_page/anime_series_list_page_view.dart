@@ -22,24 +22,24 @@ class _AnimeSeriesListPageViewState extends State<AnimeSeriesListPageView> {
       body: CustomScrollView(
         slivers: [
           const DefaultSliverAppBar(title: 'series list'),
-          const SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 15),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             sliver: SliverToBoxAdapter(
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Text(
                       'AniLibria',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Theme.of(context).primaryColor,
                         fontSize: 25,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                   ]),

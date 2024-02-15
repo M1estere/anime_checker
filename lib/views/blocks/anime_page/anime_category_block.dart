@@ -17,7 +17,7 @@ class AnimeCategoryBlock extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
-        color: Colors.grey[500]!.withOpacity(.4),
+        color: Theme.of(context).cardColor,
       ),
       child: Text(
         animeGenre['name'],

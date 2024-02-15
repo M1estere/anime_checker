@@ -45,7 +45,6 @@ class _SearchResultBlockState extends State<SearchResultBlock> {
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 15),
-        color: Colors.white.withOpacity(0),
         width: double.infinity,
         height: 100,
         child: Row(
@@ -79,8 +78,8 @@ class _SearchResultBlockState extends State<SearchResultBlock> {
                         children: [
                           Text(
                             widget.anime.title,
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
                               fontSize: 17,
                               fontWeight: FontWeight.w500,
                             ),
@@ -127,8 +126,8 @@ class _SearchResultBlockState extends State<SearchResultBlock> {
                   FittedBox(
                     child: Text(
                       '${widget.anime.score}/10',
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
                       ),

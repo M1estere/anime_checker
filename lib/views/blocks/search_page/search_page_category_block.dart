@@ -63,8 +63,8 @@ class _SearchPageCategoryBlockState extends State<SearchPageCategoryBlock> {
           padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 7),
           child: Text(
             widget.genre.name,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
               fontSize: 15,
               fontWeight: FontWeight.w400,
             ),

@@ -63,12 +63,17 @@ class _MainWrapperState extends State<MainWrapper> {
       ),
       primary: true,
       bottomNavigationBar: SnakeNavigationBar.color(
+        elevation: 50,
+        shadowColor: Colors.black,
         behaviour: SnakeBarBehaviour.pinned,
         snakeShape: SnakeShape.indicator,
-        snakeViewColor: Colors.blue,
+        snakeViewColor:
+            Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
         height: 50,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
+        selectedItemColor:
+            Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
+        unselectedItemColor:
+            Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
         currentIndex: _currentPageIndex,
         onTap: (value) {
           setState(() {

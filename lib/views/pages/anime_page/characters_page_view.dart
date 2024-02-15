@@ -24,10 +24,11 @@ class _CharactersPageViewState extends State<CharactersPageView> {
           const DefaultSliverAppBar(title: 'characters'),
           SliverList.separated(
             itemBuilder: (context, index) => index != 0
-                ? const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 15),
                     child: Divider(
-                      color: Colors.white,
+                      color: Theme.of(context).dividerColor,
                       thickness: .7,
                       height: 1,
                     ),

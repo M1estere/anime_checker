@@ -30,34 +30,29 @@ class _SettingsPageViewState extends State<SettingsPageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        surfaceTintColor: Colors.black,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        surfaceTintColor: Theme.of(context).appBarTheme.backgroundColor,
         toolbarHeight: 50,
         title: Text(
           'Settings'.capitalize(),
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w500,
-            fontSize: 20,
-            letterSpacing: 1.2,
-          ),
+          style: Theme.of(context).appBarTheme.titleTextStyle,
         ),
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new,
             size: 25,
-            color: Colors.white,
+            color: Theme.of(context).appBarTheme.actionsIconTheme!.color,
           ),
         ),
       ),
       body: !_isLoading
           ? SingleChildScrollView(
               child: SizedBox(
-                height: MediaQuery.of(context).size.height * .95,
+                height: MediaQuery.of(context).size.height * .9,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -90,7 +85,9 @@ class _SettingsPageViewState extends State<SettingsPageView> {
                                 Material(
                                   color: Colors.transparent,
                                   child: InkWell(
-                                    splashColor: Colors.grey.withOpacity(.3),
+                                    splashColor: Theme.of(context)
+                                        .cardColor
+                                        .withOpacity(.4),
                                     onTap: () {},
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
@@ -121,7 +118,9 @@ class _SettingsPageViewState extends State<SettingsPageView> {
                                 Material(
                                   color: Colors.transparent,
                                   child: InkWell(
-                                    splashColor: Colors.grey.withOpacity(.3),
+                                    splashColor: Theme.of(context)
+                                        .cardColor
+                                        .withOpacity(.4),
                                     onTap: () {},
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
@@ -152,7 +151,9 @@ class _SettingsPageViewState extends State<SettingsPageView> {
                                 Material(
                                   color: Colors.transparent,
                                   child: InkWell(
-                                    splashColor: Colors.grey.withOpacity(.3),
+                                    splashColor: Theme.of(context)
+                                        .cardColor
+                                        .withOpacity(.4),
                                     onTap: () {},
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
@@ -177,8 +178,9 @@ class _SettingsPageViewState extends State<SettingsPageView> {
                                           ),
                                           Text(
                                             'M1estere',
-                                            style: const TextStyle(
-                                              color: Colors.grey,
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .secondaryHeaderColor,
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400,
                                               letterSpacing: 1.5,
@@ -193,12 +195,10 @@ class _SettingsPageViewState extends State<SettingsPageView> {
                             ),
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 15,
-                          ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: Divider(
-                            color: Colors.grey,
+                            color: Theme.of(context).dividerColor,
                             height: 1,
                             thickness: 1.2,
                           ),
@@ -229,7 +229,9 @@ class _SettingsPageViewState extends State<SettingsPageView> {
                                 Material(
                                   color: Colors.transparent,
                                   child: InkWell(
-                                    splashColor: Colors.grey.withOpacity(.3),
+                                    splashColor: Theme.of(context)
+                                        .cardColor
+                                        .withOpacity(.4),
                                     onTap: () {},
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
@@ -258,8 +260,9 @@ class _SettingsPageViewState extends State<SettingsPageView> {
                                                 .toString()
                                                 .replaceAll('ThemeMode.', '')
                                                 .capitalize(),
-                                            style: const TextStyle(
-                                              color: Colors.grey,
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .secondaryHeaderColor,
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400,
                                               letterSpacing: 1.5,
@@ -276,7 +279,7 @@ class _SettingsPageViewState extends State<SettingsPageView> {
                         ),
                       ],
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 75,
                       width: double.infinity,
                       child: Row(
@@ -288,7 +291,7 @@ class _SettingsPageViewState extends State<SettingsPageView> {
                               Text(
                                 'AniScape',
                                 style: TextStyle(
-                                  color: Colors.grey,
+                                  color: Theme.of(context).secondaryHeaderColor,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w300,
                                   letterSpacing: 1.2,
@@ -297,7 +300,7 @@ class _SettingsPageViewState extends State<SettingsPageView> {
                               Text(
                                 'v1.0.1',
                                 style: TextStyle(
-                                  color: Colors.grey,
+                                  color: Theme.of(context).secondaryHeaderColor,
                                   fontSize: 13,
                                   fontWeight: FontWeight.w300,
                                 ),

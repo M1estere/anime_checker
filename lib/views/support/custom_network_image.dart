@@ -28,7 +28,7 @@ class CustomNetworkImage extends StatelessWidget {
       },
       errorBuilder: (context, error, stackTrace) {
         return Container(
-          decoration: BoxDecoration(color: Colors.grey.withOpacity(.7)),
+          color: Theme.of(context).cardColor,
           width: double.infinity,
           height: double.infinity,
         );
