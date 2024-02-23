@@ -15,7 +15,9 @@ class CustomNetworkImage extends StatelessWidget {
       fit: BoxFit.cover,
       loadingBuilder: (context, child, loadingProgress) {
         if (loadingProgress == null) {
-          return child;
+          return SizedBox.expand(
+            child: child,
+          );
         } else {
           return const Center(
             child: SizedBox(

@@ -33,8 +33,6 @@ class _HomePageViewState extends State<HomePageView>
   bool get wantKeepAlive => true;
 
   late Timer _timer;
-  final LoopPageController _topBannerController =
-      LoopPageController(initialPage: 0);
   int _currentTopItem = 0;
 
   List<Anime> _topBannerAnimeList = [];
@@ -52,17 +50,13 @@ class _HomePageViewState extends State<HomePageView>
 
     _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
       if (_currentTopItem < _topBannerAnimeList.length - 1) {
-        _currentTopItem++;
+        setState(() {
+          _currentTopItem++;
+        });
       } else {
-        _currentTopItem = 0;
-      }
-
-      if (!_isLoading) {
-        _topBannerController.animateToPage(
-          _currentTopItem,
-          duration: const Duration(milliseconds: 350),
-          curve: Curves.linear,
-        );
+        setState(() {
+          _currentTopItem = 0;
+        });
       }
     });
 
@@ -77,7 +71,6 @@ class _HomePageViewState extends State<HomePageView>
 
   @override
   void dispose() {
-    _topBannerController.dispose();
     _timer.cancel();
 
     super.dispose();
@@ -85,7 +78,6 @@ class _HomePageViewState extends State<HomePageView>
 
   Future _gatherInfo() async {
     _topBannerAnimeList = await Api().getRandomAnime(3);
-    // _topBannerAnime = (await Api().getRandomAnime(1))[0];
 
     _favouriteAnime = await Api().getTopAnimeFiltered('favorite');
     _seasonalAnime = await SeasonsController().getSeasonalAnime(
@@ -137,23 +129,9 @@ class _HomePageViewState extends State<HomePageView>
                                 ),
                               );
                             },
-                            child: LoopPageView.builder(
-                              controller: _topBannerController,
-                              onPageChanged: (value) {
-                                if (mounted) {
-                                  setState(() {
-                                    _currentTopItem = value;
-                                  });
-                                }
-                              },
-                              itemBuilder: (context, index) {
-                                return SizedBox.expand(
-                                  child: CustomNetworkImage(
-                                    path: _topBannerAnimeList[index].imagePath,
-                                  ),
-                                );
-                              },
-                              itemCount: _topBannerAnimeList.length,
+                            child: CustomNetworkImage(
+                              path: _topBannerAnimeList[_currentTopItem]
+                                  .imagePath,
                             ),
                           ),
                           IgnorePointer(

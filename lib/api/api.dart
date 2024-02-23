@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:film_checker/models/anime.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Api {
@@ -36,7 +37,7 @@ class Api {
 
         return result;
       } on TypeError catch (e) {
-        print(e);
+        debugPrint(e.toString());
         return await getRandomAnime(15);
       }
     } else {
@@ -60,10 +61,10 @@ class Api {
         }
       }
 
-      print('Libria id: $id');
+      debugPrint('Libria id: $id');
       return (id, playlist);
     } on HandshakeException catch (e) {
-      print('Error: $e');
+      debugPrint('Error: $e');
       return (-1, []);
     }
   }
@@ -91,7 +92,7 @@ class Api {
         amount++;
         continue;
       }
-      print('one random');
+      debugPrint('one random');
     }
 
     return result;
