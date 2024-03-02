@@ -46,7 +46,7 @@ class AnimeCharacterBlock extends StatelessWidget {
             child: Text(
               character.name,
               style: TextStyle(
-                color: Theme.of(context).primaryColor,
+                color: Colors.white,
                 fontSize: 15,
                 fontWeight: FontWeight.w300,
               ),

@@ -304,8 +304,8 @@ class _SearchResultsPageViewState extends State<SearchResultsPageView> {
                                 ),
                                 Text(
                                   _searchController.text,
-                                  style: const TextStyle(
-                                    color: Colors.white,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
                                     fontSize: 17,
                                     fontWeight: FontWeight.w400,
                                   ),

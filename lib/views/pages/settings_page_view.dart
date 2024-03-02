@@ -1,7 +1,7 @@
-import 'dart:io';
-
 import 'package:film_checker/app_theme.dart';
+import 'package:film_checker/firebase/auth_provider.dart';
 import 'package:film_checker/support/string_extension.dart';
+import 'package:film_checker/views/pages/auth_page.dart';
 import 'package:film_checker/views/support/fetching_circle.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +24,129 @@ class _SettingsPageViewState extends State<SettingsPageView> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  String? _currentTheme =
+      AppTheme().themeMode.toString().replaceFirst('ThemeMode.', '');
+  Future<void> _showThemePopup() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
+          title: Text(
+            'Change app theme',
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+              fontWeight: FontWeight.w500,
+              fontSize: 22,
+            ),
+          ),
+          content: GestureDetector(
+            onTap: () {
+              if (!_isLoading) {}
+            },
+            child: SizedBox(
+              height: 140,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ListTile(
+                    dense: true,
+                    contentPadding: const EdgeInsets.all(0),
+                    visualDensity:
+                        const VisualDensity(horizontal: 0, vertical: -4),
+                    selectedColor: Colors.red,
+                    title: Text(
+                      'Light',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    leading: Radio(
+                      value: 'light',
+                      groupValue: _currentTheme,
+                      onChanged: (value) {
+                        Navigator.of(context).pop();
+                        if (mounted) {
+                          setState(() {
+                            _currentTheme = value;
+                            AppTheme().enableTheme(_currentTheme!, context);
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    dense: true,
+                    contentPadding: const EdgeInsets.all(0),
+                    visualDensity:
+                        const VisualDensity(horizontal: 0, vertical: -4),
+                    selectedColor: Colors.red,
+                    title: Text(
+                      'Dark',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    leading: Radio(
+                      value: 'dark',
+                      groupValue: _currentTheme,
+                      onChanged: (value) {
+                        Navigator.of(context).pop();
+                        if (mounted) {
+                          setState(() {
+                            _currentTheme = value;
+                            AppTheme().enableTheme(_currentTheme!, context);
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    dense: true,
+                    contentPadding: const EdgeInsets.all(0),
+                    visualDensity:
+                        const VisualDensity(horizontal: 0, vertical: -4),
+                    selectedColor: Colors.red,
+                    title: Text(
+                      'System',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    leading: Radio(
+                      value: 'system',
+                      groupValue: _currentTheme,
+                      onChanged: (value) {
+                        setState(() {
+                          Navigator.of(context).pop();
+                          if (mounted) {
+                            setState(() {
+                              _currentTheme = value;
+                              AppTheme().enableTheme(_currentTheme!, context);
+                            });
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -88,7 +211,17 @@ class _SettingsPageViewState extends State<SettingsPageView> {
                                     splashColor: Theme.of(context)
                                         .cardColor
                                         .withOpacity(.4),
-                                    onTap: () {},
+                                    onTap: () {
+                                      AuthProvider().signOut().then((value) {
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return const AuthPage();
+                                            },
+                                          ),
+                                        );
+                                      });
+                                    },
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
                                         horizontal: 15,
@@ -232,7 +365,9 @@ class _SettingsPageViewState extends State<SettingsPageView> {
                                     splashColor: Theme.of(context)
                                         .cardColor
                                         .withOpacity(.4),
-                                    onTap: () {},
+                                    onTap: () {
+                                      _showThemePopup();
+                                    },
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
                                         horizontal: 15,

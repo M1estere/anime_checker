@@ -12,7 +12,6 @@ import 'package:film_checker/views/pages/genre_season_anime_page_view.dart';
 import 'package:film_checker/views/support/custom_network_image.dart';
 import 'package:film_checker/views/support/fetching_circle.dart';
 import 'package:flutter/material.dart';
-import 'package:loop_page_view/loop_page_view.dart';
 
 enum HomeDataType {
   favs,
@@ -77,7 +76,7 @@ class _HomePageViewState extends State<HomePageView>
   }
 
   Future _gatherInfo() async {
-    _topBannerAnimeList = await Api().getRandomAnime(3);
+    _topBannerAnimeList = await Api().getRandomAnime(1);
 
     _favouriteAnime = await Api().getTopAnimeFiltered('favorite');
     _seasonalAnime = await SeasonsController().getSeasonalAnime(

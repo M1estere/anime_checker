@@ -135,7 +135,7 @@ class _AnimePageViewState extends State<AnimePageView> {
                   ),
                   child: Icon(
                     Icons.arrow_back_ios_new,
-                    color: Theme.of(context).appBarTheme.foregroundColor,
+                    color: Theme.of(context).appBarTheme.backgroundColor,
                     size: 25,
                   ),
                 ),
@@ -326,32 +326,36 @@ class _AnimePageViewState extends State<AnimePageView> {
                                                 _maxLinesExpanded ? null : 5,
                                           ),
                                           widget.anime.synopsis.length > 314
-                                              ? Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        if (mounted) {
-                                                          setState(() {
-                                                            _maxLinesExpanded =
-                                                                !_maxLinesExpanded;
-                                                          });
-                                                        }
-                                                      },
-                                                      child: Text(
-                                                        _maxLinesExpanded
-                                                            ? 'read less'
-                                                            : 'read more',
-                                                        style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.w500,
+                                              ? GestureDetector(
+                                                  onTap: () {
+                                                    if (mounted) {
+                                                      setState(() {
+                                                        _maxLinesExpanded =
+                                                            !_maxLinesExpanded;
+                                                      });
+                                                    }
+                                                  },
+                                                  child: Container(
+                                                    color: Colors.transparent,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        Text(
+                                                          _maxLinesExpanded
+                                                              ? 'read less'
+                                                              : 'read more',
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
                                                         ),
-                                                      ),
+                                                      ],
                                                     ),
-                                                  ],
+                                                  ),
                                                 )
                                               : const Center(),
                                           const SizedBox(

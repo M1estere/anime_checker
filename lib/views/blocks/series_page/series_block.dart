@@ -43,8 +43,8 @@ class SeriesBlock extends StatelessWidget {
                     children: [
                       Text(
                         'Episode $index',
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
                         ),
@@ -88,7 +88,7 @@ class SeriesBlock extends StatelessWidget {
                                 ),
                               );
                             },
-                            splashColor: Theme.of(context).cardColor,
+                            splashColor: Theme.of(context).primaryColor,
                             child: Padding(
                               padding: const EdgeInsets.all(7),
                               child: Text(
